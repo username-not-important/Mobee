@@ -5,7 +5,9 @@ VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mobee.Client.WPF", "Mobee.Client.WPF\Mobee.Client.WPF.csproj", "{3FEF49B9-5A96-4184-9035-30BED1695AA4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mobee.Server.Aspnet", "Mobee.Server.Aspnet\Mobee.Server.Aspnet.csproj", "{89820B40-30E7-42FB-872F-C7D967C815B7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mobee.Server.Aspnet", "Mobee.Server.Aspnet\Mobee.Server.Aspnet.csproj", "{89820B40-30E7-42FB-872F-C7D967C815B7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mobee.Common", "Mobee.Common\Mobee.Common.csproj", "{CBB42BFE-E048-4C63-81A9-4B3D3A4070FD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{89820B40-30E7-42FB-872F-C7D967C815B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{89820B40-30E7-42FB-872F-C7D967C815B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{89820B40-30E7-42FB-872F-C7D967C815B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CBB42BFE-E048-4C63-81A9-4B3D3A4070FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CBB42BFE-E048-4C63-81A9-4B3D3A4070FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CBB42BFE-E048-4C63-81A9-4B3D3A4070FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CBB42BFE-E048-4C63-81A9-4B3D3A4070FD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

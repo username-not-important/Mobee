@@ -49,19 +49,6 @@
                                     ItemsSource="{Binding ElementName=Window, Path=Messages}">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate DataType="{x:Type local:HubMessage}">
-                                            <DataTemplate.Triggers>
-                                                <DataTrigger Binding="{Binding IsSelf}" Value="True">
-                                                    <Setter TargetName="_Part_MessageBorder"
-                                                        Property="Background"
-                                                        Value="White"></Setter>
-                                                    <Setter TargetName="_Part_MessageBorder"
-                                                        Property="Margin"
-                                                        Value="0,4,24,0"></Setter>
-                                                    <Setter TargetName="_Part_MessageBorder"
-                                                        Property="CornerRadius"
-                                                        Value="8,8,8,0"></Setter>
-                                                </DataTrigger>
-                                            </DataTemplate.Triggers>
                                             <Border Name="_Part_MessageBorder"
                                             Padding="8" Background="{StaticResource SecondaryHueMidBrush}"
                                                 CornerRadius="8,8,0,8" Margin="24,4,0,0">
@@ -70,6 +57,19 @@
                                                        Foreground="{StaticResource MaterialDesignLightForeground}">
                                                 </TextBlock>
                                             </Border>
+                                            <DataTemplate.Triggers>
+                                                <DataTrigger Binding="{Binding IsSelf}" Value="True">
+                                                    <Setter TargetName="_Part_MessageBorder"
+                                                            Property="Background"
+                                                            Value="White"></Setter>
+                                                    <Setter TargetName="_Part_MessageBorder"
+                                                            Property="Margin"
+                                                            Value="0,4,24,0"></Setter>
+                                                    <Setter TargetName="_Part_MessageBorder"
+                                                            Property="CornerRadius"
+                                                            Value="8,8,8,0"></Setter>
+                                                </DataTrigger>
+                                            </DataTemplate.Triggers>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>

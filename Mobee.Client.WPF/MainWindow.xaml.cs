@@ -14,14 +14,18 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.AspNetCore.SignalR.Client;
+using Mobee.Common;
+using TypedSignalR.Client;
 
 namespace Mobee.Client.WPF
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, IPlayerClient
     {
+        private IPlayerHub Hub { get; }
+
         private HubConnection connection;
         private string Id = new Random().Next(1, 1000).ToString("D4");
 
@@ -42,28 +46,13 @@ namespace Mobee.Client.WPF
                 await Task.Delay(new Random().Next(0,5) * 1000);
                 await connection.StartAsync();
             };
+
+            Hub = connection.CreateHubProxy<IPlayerHub>();
+            var subscription = connection.Register<IPlayerClient>(this);
         }
         
         private async void _Connect_Click(object sender, RoutedEventArgs e)
         {
-            connection.On<string, bool>("PlaybackToggled", (user, status) =>
-            {
-                Status = status;
-
-                this.Dispatcher.Invoke(() =>
-                {
-                    _StatusText.Text = status ? "Playing" : "Stopped";
-                });
-            });
-
-            connection.On<string, string>("ReceiveMessage", (from, message) =>
-            {
-                this.Dispatcher.Invoke(() =>
-                {
-                    Messages.Add(new HubMessage($"{from}: {message}"));
-                });
-            });
-
             try
             {
                 await connection.StartAsync();
@@ -84,8 +73,8 @@ namespace Mobee.Client.WPF
             {
                 Status = !Status;
 
-                await connection.InvokeAsync("TogglePlayback", 
-                    $"Player {Id}", Status);
+                await Hub.TogglePlayback($"Player {Id}", Status);
+                //await connection.InvokeAsync("TogglePlayback",  $"Player {Id}", Status);
             }
             catch (Exception ex)
             {         
@@ -102,7 +91,8 @@ namespace Mobee.Client.WPF
 
             try
             {
-                await connection.InvokeAsync("SendMessage", Id, message);
+                await Hub.SendMessage(Id, message);
+                //await connection.InvokeAsync("SendMessage", Id, message);
 
                 this.Dispatcher.Invoke(() =>
                 {
@@ -115,6 +105,24 @@ namespace Mobee.Client.WPF
             {
                 
             }
+        }
+
+        public async Task PlaybackToggled(string user, bool isPlaying)
+        {
+            Status = isPlaying;
+
+            await this.Dispatcher.InvokeAsync(() =>
+            {
+                _StatusText.Text = isPlaying ? "Playing" : "Stopped";
+            });
+        }
+
+        public async Task ReceiveMessage(string from, string message)
+        {
+            await this.Dispatcher.InvokeAsync(() =>
+            {
+                Messages.Add(new HubMessage($"{from}: {message}"));
+            });
         }
     }
     
