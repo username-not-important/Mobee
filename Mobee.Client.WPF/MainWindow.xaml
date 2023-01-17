@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:Mobee.Client.WPF"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:system="clr-namespace:System;assembly=System.Runtime"
+        xmlns:data="clr-namespace:Mobee.Client.WPF.Data"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         TextElement.FontWeight="Regular"
         TextElement.FontSize="13"
@@ -16,7 +17,7 @@
         mc:Ignorable="d"
         Name="Window"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
+    <Grid DataContext="{Binding ElementName=Window, Path=ViewModel}">
         <materialDesign:Card Padding="0" Margin="16">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -46,9 +47,9 @@
                             </Grid>
                             <ScrollViewer Margin="0,8,0,2" VerticalScrollBarVisibility="Auto">
                                 <ItemsControl Margin="0,0,8,0"
-                                    ItemsSource="{Binding ElementName=Window, Path=Messages}">
+                                    ItemsSource="{Binding ChatViewModel.Messages}">
                                     <ItemsControl.ItemTemplate>
-                                        <DataTemplate DataType="{x:Type local:HubMessage}">
+                                        <DataTemplate DataType="{x:Type data:ChatMessage}">
                                             <Border Name="_Part_MessageBorder"
                                             Padding="8" Background="{StaticResource SecondaryHueMidBrush}"
                                                 CornerRadius="8,8,0,8" Margin="24,4,0,0">

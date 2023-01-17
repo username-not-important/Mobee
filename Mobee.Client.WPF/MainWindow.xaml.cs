@@ -14,6 +14,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.AspNetCore.SignalR.Client;
+using Mobee.Client.WPF.Data;
+using Mobee.Client.WPF.ViewModels;
 using Mobee.Common;
 using TypedSignalR.Client;
 
@@ -31,12 +33,12 @@ namespace Mobee.Client.WPF
 
         private bool Status = false;
 
-        public ObservableCollection<HubMessage> Messages { get; set; } = new();
+        public MainWindowViewModel ViewModel { get; set; } = new();
 
         public MainWindow()
         {
             InitializeComponent();
-            
+
             connection = new HubConnectionBuilder()
                 .WithUrl("https://localhost:7016/PlayersHub")
                 .Build();
@@ -96,7 +98,7 @@ namespace Mobee.Client.WPF
 
                 this.Dispatcher.Invoke(() =>
                 {
-                    Messages.Add(new HubMessage($"me: {message}", true));
+                    ViewModel.ChatViewModel.Messages.Add(new ChatMessage($"me: {message}", true));
                 });
 
                 _MessageTextbox.Text = "";
@@ -121,22 +123,8 @@ namespace Mobee.Client.WPF
         {
             await this.Dispatcher.InvokeAsync(() =>
             {
-                Messages.Add(new HubMessage($"{from}: {message}"));
+                ViewModel.ChatViewModel.Messages.Add(new ChatMessage($"{from}: {message}"));
             });
         }
     }
-    
-    public class HubMessage
-    {
-        public HubMessage(string message, bool isSelf = false)
-        {
-            Message = message;
-            IsSelf = isSelf;
-        }
-
-        public bool IsSelf { get; set; }
-
-        public string Message { get; set; }
-    }
-
 }
