@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Mobee.Client.WPF"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:system="clr-namespace:System;assembly=System.Runtime"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         TextElement.FontWeight="Regular"
         TextElement.FontSize="13"
@@ -13,16 +14,70 @@
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
         mc:Ignorable="d"
+        Name="Window"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <materialDesign:Card Padding="32" Margin="16">
+        <materialDesign:Card Padding="0" Margin="16">
             <Grid>
-                <StackPanel>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="240"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Margin="8">
                     <TextBlock Style="{DynamicResource MaterialDesignTitleTextBlock}" FontSize="24" HorizontalAlignment="Center">Mobee Player</TextBlock>
                     <TextBlock Name="_StatusText" Margin="0,25,25,0" FontWeight="Bold" FontSize="18" HorizontalAlignment="Center">Stopped</TextBlock>
                     <Button Click="_Connect_Click" Margin="0,25,0,0" Name="_Connect_Button">Connect</Button>
                     <Button Click="_Toggle_Click" Margin="0,10,0,0" Name="_Toggle_Button" IsEnabled="false">Play / Pause</Button>
                 </StackPanel>
+                <materialDesign:Card Background="{StaticResource PrimaryHueDarkBrush}" Grid.Column="1" VerticalAlignment="Stretch">
+                    <materialDesign:ColorZone Mode="PrimaryDark" VerticalAlignment="Stretch">
+                        <DockPanel Margin="8">
+                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="16"
+                                       DockPanel.Dock="Top">Chat</TextBlock>
+                            <Grid DockPanel.Dock="Bottom">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="20*"/>
+                                    <ColumnDefinition Width="24"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox Background="White" Foreground="{StaticResource MaterialDesignLightForeground}" Name="_MessageTextbox"></TextBox>
+                                <Button Grid.Column="1" Padding="0,0,0,0" Name="_SendButton" Click="_SendButton_OnClick">
+                                    <materialDesign:PackIcon Kind="Send"></materialDesign:PackIcon>
+                                </Button>
+                            </Grid>
+                            <ScrollViewer Margin="0,8,0,2" VerticalScrollBarVisibility="Auto">
+                                <ItemsControl Margin="0,0,8,0"
+                                    ItemsSource="{Binding ElementName=Window, Path=Messages}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate DataType="{x:Type local:HubMessage}">
+                                            <DataTemplate.Triggers>
+                                                <DataTrigger Binding="{Binding IsSelf}" Value="True">
+                                                    <Setter TargetName="_Part_MessageBorder"
+                                                        Property="Background"
+                                                        Value="White"></Setter>
+                                                    <Setter TargetName="_Part_MessageBorder"
+                                                        Property="Margin"
+                                                        Value="0,4,24,0"></Setter>
+                                                    <Setter TargetName="_Part_MessageBorder"
+                                                        Property="CornerRadius"
+                                                        Value="8,8,8,0"></Setter>
+                                                </DataTrigger>
+                                            </DataTemplate.Triggers>
+                                            <Border Name="_Part_MessageBorder"
+                                            Padding="8" Background="{StaticResource SecondaryHueMidBrush}"
+                                                CornerRadius="8,8,0,8" Margin="24,4,0,0">
+                                                <TextBlock Text="{Binding Message}" 
+                                                       TextWrapping="Wrap"
+                                                       Foreground="{StaticResource MaterialDesignLightForeground}">
+                                                </TextBlock>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </ScrollViewer>
+
+                        </DockPanel>
+                    </materialDesign:ColorZone>
+                </materialDesign:Card>
             </Grid>
         </materialDesign:Card>
     </Grid>

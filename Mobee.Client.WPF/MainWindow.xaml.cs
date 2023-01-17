@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,7 +24,10 @@ namespace Mobee.Client.WPF
     {
         private HubConnection connection;
         private string Id = new Random().Next(1, 1000).ToString("D4");
+
         private bool Status = false;
+
+        public ObservableCollection<HubMessage> Messages { get; set; } = new();
 
         public MainWindow()
         {
@@ -49,6 +53,14 @@ namespace Mobee.Client.WPF
                 this.Dispatcher.Invoke(() =>
                 {
                     _StatusText.Text = status ? "Playing" : "Stopped";
+                });
+            });
+
+            connection.On<string, string>("ReceiveMessage", (from, message) =>
+            {
+                this.Dispatcher.Invoke(() =>
+                {
+                    Messages.Add(new HubMessage($"{from}: {message}"));
                 });
             });
 
@@ -81,5 +93,42 @@ namespace Mobee.Client.WPF
                 _Toggle_Button.IsEnabled = false;
             }
         }
+
+        private async void _SendButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            var message = _MessageTextbox.Text;
+            if (string.IsNullOrWhiteSpace(message))
+                return;
+
+            try
+            {
+                await connection.InvokeAsync("SendMessage", Id, message);
+
+                this.Dispatcher.Invoke(() =>
+                {
+                    Messages.Add(new HubMessage($"me: {message}", true));
+                });
+
+                _MessageTextbox.Text = "";
+            }
+            catch (Exception ex)
+            {
+                
+            }
+        }
     }
+    
+    public class HubMessage
+    {
+        public HubMessage(string message, bool isSelf = false)
+        {
+            Message = message;
+            IsSelf = isSelf;
+        }
+
+        public bool IsSelf { get; set; }
+
+        public string Message { get; set; }
+    }
+
 }
