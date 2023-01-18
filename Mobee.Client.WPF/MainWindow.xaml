@@ -5,6 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Mobee.Client.WPF"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        
+        xmlns:wpf="clr-namespace:FlyleafLib.Controls.WPF;assembly=FlyleafLib"
+        xmlns:wpf1="clr-namespace:FlyleafLib.Controls.WPF;assembly=FlyleafLib.Controls.WPF"
         xmlns:system="clr-namespace:System;assembly=System.Runtime"
         xmlns:data="clr-namespace:Mobee.Client.WPF.Data"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
@@ -24,12 +27,15 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="240"/>
                 </Grid.ColumnDefinitions>
-                <StackPanel Margin="8">
-                    <TextBlock Style="{DynamicResource MaterialDesignTitleTextBlock}" FontSize="24" HorizontalAlignment="Center">Mobee Player</TextBlock>
-                    <TextBlock Name="_StatusText" Margin="0,25,25,0" FontWeight="Bold" FontSize="18" HorizontalAlignment="Center">Stopped</TextBlock>
-                    <Button Click="_Connect_Click" Margin="0,25,0,0" Name="_Connect_Button">Connect</Button>
-                    <Button Click="_Toggle_Click" Margin="0,10,0,0" Name="_Toggle_Button" IsEnabled="false">Play / Pause</Button>
-                </StackPanel>
+                <DockPanel Margin="8">
+                    <TextBlock DockPanel.Dock="Top" Style="{DynamicResource MaterialDesignTitleTextBlock}" FontSize="24" HorizontalAlignment="Center">Mobee Player</TextBlock>
+                    <Button  DockPanel.Dock="Top" Click="_Connect_Click" Margin="0,5,0,0" Name="_Connect_Button">Connect</Button>
+                    <Button  DockPanel.Dock="Top" Click="_Toggle_Click" Margin="0,5,0,0" Name="_Toggle_Button">Play/Pause</Button>
+                    
+                    <wpf1:FlyleafME Player="{Binding Player}">
+
+                    </wpf1:FlyleafME>
+                </DockPanel>
                 <materialDesign:Card Background="{StaticResource PrimaryHueDarkBrush}" Grid.Column="1" VerticalAlignment="Stretch">
                     <materialDesign:ColorZone Mode="PrimaryDark" VerticalAlignment="Stretch">
                         <DockPanel Margin="8">
@@ -53,7 +59,7 @@
                                             <Border Name="_Part_MessageBorder"
                                             Padding="8" Background="{StaticResource SecondaryHueMidBrush}"
                                                 CornerRadius="8,8,0,8" Margin="24,4,0,0">
-                                                <TextBlock Text="{Binding Message}" 
+                                                <TextBlock Text="{Binding Message}" Name="_Part_MessageText"
                                                        TextWrapping="Wrap"
                                                        Foreground="{StaticResource MaterialDesignLightForeground}">
                                                 </TextBlock>
@@ -69,6 +75,23 @@
                                                     <Setter TargetName="_Part_MessageBorder"
                                                             Property="CornerRadius"
                                                             Value="8,8,8,0"></Setter>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding IsBroadcast}" Value="True">
+                                                    <Setter TargetName="_Part_MessageBorder"
+                                                            Property="Background"
+                                                            Value="Transparent"></Setter>
+                                                    <Setter TargetName="_Part_MessageBorder"
+                                                            Property="Padding"
+                                                            Value="2"></Setter>
+                                                    <Setter TargetName="_Part_MessageBorder"
+                                                            Property="Margin"
+                                                            Value="0,4,0,4"></Setter>
+                                                    <Setter TargetName="_Part_MessageBorder"
+                                                            Property="HorizontalAlignment"
+                                                            Value="Center"></Setter>
+                                                    <Setter TargetName="_Part_MessageText"
+                                                            Property="Foreground"
+                                                            Value="#D2D2D2"></Setter>
                                                 </DataTrigger>
                                             </DataTemplate.Triggers>
                                         </DataTemplate>

@@ -2,7 +2,7 @@
 {
     public interface IPlayerClient
     {
-        Task PlaybackToggled(string user, bool isPlaying);
+        Task PlaybackToggled(string user, bool isPlaying, long position);
 
         Task ReceiveMessage(string from, string message);
     }
