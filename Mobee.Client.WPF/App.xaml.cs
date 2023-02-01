@@ -6,6 +6,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using FlyleafLib;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Logger = Mobee.Client.WPF.Logs.Logger;
 
 namespace Mobee.Client.WPF
@@ -15,13 +17,37 @@ namespace Mobee.Client.WPF
     /// </summary>
     public partial class App : Application
     {
-        protected override void OnStartup(StartupEventArgs e)
+        public IHost? AppHost { get; }
+
+        public App()
         {
+            AppHost = Host.CreateDefaultBuilder()
+                .ConfigureServices((context, services) =>
+                {
+                    services.AddSingleton<MainWindow>();
+                }).Build();
+        }
+
+        protected override async void OnStartup(StartupEventArgs e)
+        {
+            initializeFFmpeg();
+
+            await AppHost!.StartAsync();
+
+            var mainWindow = AppHost.Services.GetRequiredService<WPF.MainWindow>();
+            mainWindow.Show();
+
             Logger.Instance.Log("Starting Up...", true);
 
             base.OnStartup(e);
 
-            initializeFFmpeg();
+        }
+
+        protected override async void OnExit(ExitEventArgs e)
+        {
+            await AppHost!.StopAsync();
+
+            base.OnExit(e);
         }
 
         private static void initializeFFmpeg()

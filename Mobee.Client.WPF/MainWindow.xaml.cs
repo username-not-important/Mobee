@@ -73,7 +73,6 @@ namespace Mobee.Client.WPF
                 {
                     ViewModel.ChatViewModel.Messages.Add(new ChatMessage("Seeked", false, true));
                 }
-
             }
         }
 
