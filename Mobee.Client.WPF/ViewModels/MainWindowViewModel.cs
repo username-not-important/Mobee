@@ -18,9 +18,14 @@ namespace Mobee.Client.WPF.ViewModels
 
         public MainWindowViewModel()
         {
-            Config = new Config();
-            Config.Player.SeekAccurate = true;
-            Config.Player.AutoPlay = false;
+            Config = new Config
+            {
+                Player =
+                {
+                    SeekAccurate = true,
+                    AutoPlay = false
+                }
+            };
 
             Player = new Player(Config);
         }

@@ -20,6 +20,7 @@ using FlyleafLib.MediaPlayer;
 using FlyleafLib;
 using Microsoft.AspNetCore.SignalR.Client;
 using Mobee.Client.WPF.Data;
+using Mobee.Client.WPF.IoC;
 using Mobee.Client.WPF.ViewModels;
 using Mobee.Common;
 using TypedSignalR.Client;
@@ -38,10 +39,12 @@ namespace Mobee.Client.WPF
 
         private bool Status = false;
 
-        public MainWindowViewModel ViewModel { get; set; } = new();
+        public MainWindowViewModel ViewModel { get; set; }
 
-        public MainWindow()
+        public MainWindow(IAbstractFactory<MainWindowViewModel> viewModelFactory)
         {
+            ViewModel = viewModelFactory.Create();
+
             InitializeComponent();
             
             connection = new HubConnectionBuilder()
