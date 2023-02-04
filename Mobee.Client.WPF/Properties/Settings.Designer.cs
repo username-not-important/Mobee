@@ -58,5 +58,17 @@ namespace Mobee.Client.WPF.Properties {
                 this["DEFAULT_LOG_FILE"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://localhost:7016")]
+        public string SERVER_BASEURI {
+            get {
+                return ((string)(this["SERVER_BASEURI"]));
+            }
+            set {
+                this["SERVER_BASEURI"] = value;
+            }
+        }
     }
 }

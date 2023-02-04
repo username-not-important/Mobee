@@ -29,14 +29,14 @@
                 </Grid.ColumnDefinitions>
                 <DockPanel Margin="8">
                     <TextBlock DockPanel.Dock="Top" Style="{DynamicResource MaterialDesignTitleTextBlock}" FontSize="24" HorizontalAlignment="Center">Mobee Player</TextBlock>
-                    <Button  DockPanel.Dock="Top" Click="_Connect_Click" Margin="0,5,0,0" Name="_Connect_Button">Connect</Button>
-                    <Button  DockPanel.Dock="Top" Click="_Toggle_Click" Margin="0,5,0,0" Name="_Toggle_Button">Play/Pause</Button>
-                    
-                    <wpf1:FlyleafME Player="{Binding Player}">
+                    <Button  DockPanel.Dock="Top" Click="_Connect_Click" Visibility="{Binding ConnectionViewModel.IsConnected, Converter={StaticResource InverseBoolToVisConverter}}" Margin="0,5,0,5" Name="_Connect_Button">Connect</Button>
+
+                    <wpf1:FlyleafME Player="{Binding Player}" IsEnabled="{Binding ConnectionViewModel.IsConnected}">
 
                     </wpf1:FlyleafME>
                 </DockPanel>
-                <materialDesign:Card Background="{StaticResource PrimaryHueDarkBrush}" Grid.Column="1" VerticalAlignment="Stretch">
+                <materialDesign:Card Background="{StaticResource PrimaryHueDarkBrush}" Grid.Column="1" VerticalAlignment="Stretch"
+                                     IsEnabled="{Binding ConnectionViewModel.IsConnected}">
                     <materialDesign:ColorZone Mode="PrimaryDark" VerticalAlignment="Stretch">
                         <DockPanel Margin="8">
                             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="16"

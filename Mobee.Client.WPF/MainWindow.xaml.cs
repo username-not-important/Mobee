@@ -32,7 +32,7 @@ namespace Mobee.Client.WPF
     /// </summary>
     public partial class MainWindow : Window, IPlayerClient
     {
-        private IPlayerHub Hub { get; }
+        private IPlayerHub Hub { get; set; }
 
         private HubConnection connection;
         private string Id = new Random().Next(1, 1000).ToString("D4");
@@ -46,13 +46,29 @@ namespace Mobee.Client.WPF
             ViewModel = viewModelFactory.Create();
 
             InitializeComponent();
+            InitializeHub();
             
+        }
+
+        private void InitializeHub()
+        {
+            var baseUri = Properties.Settings.Default.SERVER_BASEURI;
+
+            if (string.IsNullOrWhiteSpace(baseUri) || !baseUri.StartsWith("https://"))
+                return;
+            
+            baseUri = baseUri.TrimEnd('/');
+            //https://localhost:7016
+
             connection = new HubConnectionBuilder()
-                .WithUrl("https://localhost:7016/PlayersHub")
+                .WithUrl($"{baseUri}/PlayersHub")
                 .Build();
 
             connection.Closed += async (error) =>
             {
+                //TODO: test for dispatcher issues
+                ViewModel.ConnectionViewModel.IsConnected = false;
+
                 await Task.Delay(new Random().Next(0,5) * 1000);
                 await connection.StartAsync();
             };
@@ -64,7 +80,7 @@ namespace Mobee.Client.WPF
         }
 
         private long _lastCurTime = 0;
-        private void PlayerOnPropertyChanged(object? sender, PropertyChangedEventArgs e)
+        private async void PlayerOnPropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
             var _last = _lastCurTime;
 
@@ -77,6 +93,10 @@ namespace Mobee.Client.WPF
                     ViewModel.ChatViewModel.Messages.Add(new ChatMessage("Seeked", false, true));
                 }
             }
+            else if (e.PropertyName == "Status")
+            {
+                await onPlaybackStatusChanged();
+            }
         }
 
         private async void _Connect_Click(object sender, RoutedEventArgs e)
@@ -84,24 +104,26 @@ namespace Mobee.Client.WPF
             try
             {
                 await connection.StartAsync();
-
-                _Connect_Button.IsEnabled = false;
-                //_Toggle_Button.IsEnabled = true;
+                
+                ViewModel.ConnectionViewModel.IsConnected = true;
                 ViewModel.Player.Open(@"D:\Documents\Downloaded Videos\Symphonies\Mahler Symphony 2 - Janson.mkv");
                 ViewModel.Player.Pause();
             }
             catch (Exception ex)
             {
-                _Connect_Button.IsEnabled = true;
-                //_Toggle_Button.IsEnabled = false;
+                ViewModel.ConnectionViewModel.IsConnected = false;
             }
         }
 
-        private async void _Toggle_Click(object sender, RoutedEventArgs e)
+        private async Task onPlaybackStatusChanged()
         {
             try
             {
-                Status = !Status;
+                var newStatus = ViewModel.Player.Status == FlyleafLib.MediaPlayer.Status.Playing;
+                if (Status == newStatus)
+                    return;
+
+                Status = newStatus;
 
                 var position = (int)ViewModel.Player.CurTime;
                 var toggleTask = Hub.TogglePlayback($"Player {Id}", Status, position);
@@ -118,9 +140,8 @@ namespace Mobee.Client.WPF
                 await toggleTask;
             }
             catch (Exception ex)
-            {         
-                _Connect_Button.IsEnabled = true;
-                //_Toggle_Button.IsEnabled = false;
+            {
+                ViewModel.ConnectionViewModel.IsConnected = false;
             }
         }
 
@@ -133,7 +154,6 @@ namespace Mobee.Client.WPF
             try
             {
                 await Hub.SendMessage(Id, message);
-                //await connection.InvokeAsync("SendMessage", Id, message);
 
                 this.Dispatcher.Invoke(() =>
                 {
@@ -164,7 +184,6 @@ namespace Mobee.Client.WPF
                     ViewModel.Player.Play();
                 else
                     ViewModel.Player.Pause();
-                //_StatusText.Text = isPlaying ? "Playing" : "Stopped";
             });
         }
 

@@ -10,6 +10,8 @@ namespace Mobee.Client.WPF.ViewModels
 {
     public class MainWindowViewModel
     {
+        public ConnectionViewModel ConnectionViewModel { get; set; } = new();
+
         public ChatViewModel ChatViewModel { get; set; } = new();
         
         public Player Player { get; set; }
