@@ -23,7 +23,7 @@ namespace Mobee.Client.WPF.ViewModels
         {
             ServersList = new()
             {
-                new ServerItem() { Name = "Global Mobee Server (free)", Address = "mobee.ir/"},
+                new ServerItem() { Name = "Global Mobee Server (free)", Address = "mobee.ir"},
                 new ServerItem() {Name = "Test Mobee Server (local)", Address = "https://localhost:7016"}
             };
 

@@ -28,6 +28,8 @@ namespace Mobee.Client.WPF
         {
             ViewModel = viewModelFactory.Create();
 
+            loadConfiguration();
+
             InitializeComponent();
         }
 
@@ -45,10 +47,29 @@ namespace Mobee.Client.WPF
 
         private void Launch_Click(object sender, RoutedEventArgs e)
         {
+            saveConfiguration();
+
             var mainWindow = ((App)Application.Current).GetRequiredService<MainWindow>();
             mainWindow.Show();
 
             Close();
+        }
+
+        private void saveConfiguration()
+        {
+            Properties.Settings.Default.SERVER_BASEURI = ViewModel.ServerAddress;
+            Properties.Settings.Default.LAST_MEDIA_FILE = ViewModel.FilePath;
+
+            Properties.Settings.Default.Save();
+        }
+
+        private void loadConfiguration()
+        {
+            if (!string.IsNullOrWhiteSpace(Properties.Settings.Default.SERVER_BASEURI))
+                ViewModel.ServerAddress = Properties.Settings.Default.SERVER_BASEURI;
+
+            if (!string.IsNullOrWhiteSpace(Properties.Settings.Default.LAST_MEDIA_FILE))
+                ViewModel.FilePath = Properties.Settings.Default.LAST_MEDIA_FILE;
         }
     }
 }

@@ -38,6 +38,7 @@ namespace Mobee.Client.WPF
         private string Id = new Random().Next(1, 1000).ToString("D4");
 
         private bool Status = false;
+        private bool SyncLock = false;
 
         public MainWindowViewModel ViewModel { get; set; }
 
@@ -48,6 +49,12 @@ namespace Mobee.Client.WPF
             InitializeComponent();
             InitializeHub();
             
+            Loaded += OnLoaded;
+        }
+
+        private void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            Connect();
         }
 
         private void InitializeHub()
@@ -79,18 +86,32 @@ namespace Mobee.Client.WPF
             ViewModel.Player.PropertyChanged += PlayerOnPropertyChanged;
         }
 
+        private void ReleaseSyncLock()
+        {
+            Task.Run(() =>
+            {
+                Thread.Sleep(500);
+                SyncLock = false;
+            });
+        }
+
         private long _lastCurTime = 0;
         private async void PlayerOnPropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
+            if (SyncLock)
+                return;
+
             var _last = _lastCurTime;
 
             _lastCurTime = ViewModel.Player.CurTime;
 
             if (e.PropertyName == "CurTime")
             {
-                if (Math.Abs(_last - ViewModel.Player.CurTime) > 10000 * 1000)
+                if (Math.Abs(_last - ViewModel.Player.CurTime) > 50000 * 1000)
                 {
                     ViewModel.ChatViewModel.Messages.Add(new ChatMessage("Seeked", false, true));
+
+                    await onSeeked();
                 }
             }
             else if (e.PropertyName == "Status")
@@ -101,12 +122,17 @@ namespace Mobee.Client.WPF
 
         private async void _Connect_Click(object sender, RoutedEventArgs e)
         {
+            await Connect();
+        }
+
+        private async Task Connect()
+        {
             try
             {
                 await connection.StartAsync();
-                
+
                 ViewModel.ConnectionViewModel.IsConnected = true;
-                ViewModel.Player.Open(@"D:\Documents\Downloaded Videos\Symphonies\Mahler Symphony 2 - Janson.mkv");
+                ViewModel.Player.Open(Properties.Settings.Default.LAST_MEDIA_FILE);
                 ViewModel.Player.Pause();
             }
             catch (Exception ex)
@@ -125,7 +151,7 @@ namespace Mobee.Client.WPF
 
                 Status = newStatus;
 
-                var position = (int)ViewModel.Player.CurTime;
+                var position = ViewModel.Player.CurTime;
                 var toggleTask = Hub.TogglePlayback($"Player {Id}", Status, position);
 
                 if (Status)
@@ -142,6 +168,27 @@ namespace Mobee.Client.WPF
             catch (Exception ex)
             {
                 ViewModel.ConnectionViewModel.IsConnected = false;
+            }
+        }
+
+        private async Task onSeeked()
+        {
+            try
+            {
+                SyncLock = true;
+
+                var position = ViewModel.Player.CurTime;
+                var toggleTask = Hub.TogglePlayback($"Player {Id}", Status, position);
+
+                await toggleTask;
+
+                ReleaseSyncLock();
+            }
+            catch (Exception e)
+            {
+                ViewModel.ConnectionViewModel.IsConnected = false;
+
+                ReleaseSyncLock();
             }
         }
 
@@ -168,8 +215,18 @@ namespace Mobee.Client.WPF
             }
         }
 
+        #region IPlaybackClient (Receiving)
+
         public async Task PlaybackToggled(string user, bool isPlaying, long position)
         {
+            if (SyncLock)
+                return;
+
+            if (isPlaying && position < 0)
+                return;
+
+            SyncLock = true;
+
             Status = isPlaying;
 
             await this.Dispatcher.InvokeAsync(() =>
@@ -179,11 +236,13 @@ namespace Mobee.Client.WPF
                 ViewModel.ChatViewModel.Messages.Add(new ChatMessage($"Playback {action} at {TimeSpan.FromMilliseconds(position/10000):g}", false, true));
                 
                 ViewModel.Player.CurTime = position;
-
+                
                 if (isPlaying)
                     ViewModel.Player.Play();
                 else
                     ViewModel.Player.Pause();
+                
+                ReleaseSyncLock();
             });
         }
 
@@ -194,6 +253,8 @@ namespace Mobee.Client.WPF
                 ViewModel.ChatViewModel.Messages.Add(new ChatMessage($"{from}: {message}"));
             });
         }
+
+        #endregion
         
     }
 }
