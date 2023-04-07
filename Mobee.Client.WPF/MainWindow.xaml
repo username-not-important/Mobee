@@ -19,7 +19,7 @@
         FontFamily="{DynamicResource MaterialDesignFont}"
         mc:Ignorable="d"
         Name="Window"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="640" Width="1200">
     <Grid DataContext="{Binding ElementName=Window, Path=ViewModel}">
         <materialDesign:Card Padding="0" Margin="16">
             <Grid>

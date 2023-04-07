@@ -27,8 +27,15 @@ namespace Mobee.Client.WPF
                 .ConfigureServices((context, services) =>
                 {
                     services.AddSingleton<MainWindow>();
+                    services.AddSingleton<ConfigureWindow>();
                     services.AddAbstractFactory<MainWindowViewModel>();
+                    services.AddAbstractFactory<ConfigurationViewModel>();
                 }).Build();
+        }
+
+        public T GetRequiredService<T>()
+        {
+            return AppHost.Services.GetRequiredService<T>();
         }
 
         protected override async void OnStartup(StartupEventArgs e)
@@ -37,7 +44,7 @@ namespace Mobee.Client.WPF
 
             await AppHost!.StartAsync();
 
-            var mainWindow = AppHost.Services.GetRequiredService<WPF.MainWindow>();
+            var mainWindow = AppHost.Services.GetRequiredService<WPF.ConfigureWindow>();
             mainWindow.Show();
 
             Logger.Instance.Log("Starting Up...", true);

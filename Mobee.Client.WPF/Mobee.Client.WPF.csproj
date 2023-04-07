@@ -8,6 +8,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\MobeeLogoDark.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\MobeeLogoDark.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.0.0" />
     <PackageReference Include="Flurl.Http" Version="3.2.4" />
     <PackageReference Include="FlyleafLib" Version="3.6.6" />

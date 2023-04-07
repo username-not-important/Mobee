@@ -70,5 +70,17 @@ namespace Mobee.Client.WPF.Properties {
                 this["SERVER_BASEURI"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string LAST_MEDIA_FILE {
+            get {
+                return ((string)(this["LAST_MEDIA_FILE"]));
+            }
+            set {
+                this["LAST_MEDIA_FILE"] = value;
+            }
+        }
     }
 }
