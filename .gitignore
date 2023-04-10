@@ -396,3 +396,5 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+/Mobee.Server.Aspnet/wwwroot/css/minimal
+/Mobee.Server.Aspnet/wwwroot/js/minimal
