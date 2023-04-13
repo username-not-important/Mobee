@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR;
-using Mobee.Common;
 
-namespace Mobee.Server.Aspnet.Hubs
+namespace Mobee.Common.Hubs
 {
     public class PlayersHub : Hub<IPlayerClient>, IPlayerHub
     {

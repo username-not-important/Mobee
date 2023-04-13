@@ -1,0 +1,268 @@
+﻿<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+
+    <!-- Page Title -->
+    <title>@ViewData["Title"] | Mobees - Synced Video Player</title>
+
+    <!-- Meta Tags -->
+    <meta name="description" content="Mobees - Open-Source Synced Video Player for Windows">
+    <meta name="keywords" content="movies, opensource, csharp, player">
+    <meta name="author" content="JeyART">
+
+    <!-- Viewport Meta-->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <!-- Template Favicon & Icons Start -->
+    <link rel="icon" href="~/img/minimal/favicon/favicon.ico" sizes="any">
+    <link rel="apple-touch-icon" href="~/img/minimal/favicon/apple-touch-icon.png">
+    <link rel="manifest" href="~/img/minimal/favicon/manifest.webmanifest">
+    <!-- Template Favicon & Icons End -->
+    <!-- Facebook Metadata Start -->
+    <meta property="og:image:height" content="1200">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:title" content="Mobees - Synced Video Player">
+    <meta property="og:description" content="Mobees - Open-Source Synced Video Player for Windows">
+    <meta property="og:url" content="https://mobees.ir/">
+    <meta property="og:image" content="/img/minimal/banners/Banner.jpg">
+    <!-- Facebook Metadata End -->
+    <!-- Template Styles Start -->
+
+    <title>@ViewData["Title"] - Mobees</title>
+
+    <link rel="stylesheet" type="text/css" href="~/css/minimal/loaders/loader.css">
+    <link rel="stylesheet" type="text/css" href="~/css/minimal/plugins.css">
+    <link rel="stylesheet" type="text/css" href="~/css/minimal/main.css">
+    <!-- Template Styles End -->
+    <!-- Custom Browser Color Start -->
+    <meta name="theme-color" content="#0e0d26">
+    <meta name="msapplication-navbutton-color" content="#0e0d26">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#0e0d26">
+    <!-- Custom Browser Color End -->
+</head>
+
+<body>
+
+    <!-- Old Browsers Support Start -->
+    <!--[if lt IE 9]>
+      <script src="~/js/minimal/libs/es5-shim.min.js"></script>
+      <script src="~/js/minimal/libs/html5shiv.min.js"></script>
+      <script src="~/js/minimal/libs/html5shiv-printshiv.min.js"></script>
+      <script src="~/js/minimal/libs/respond.min.js"></script>
+    <![endif]-->
+    <!-- Old Browsers Support End -->
+    <!-- Loader Start -->
+    <div class="loader">
+        <div class="loader__container">
+            <div class="loader__circle">
+                <img src="~/img/minimal/logo-loader.png" alt="Mobees">
+            </div>
+        </div>
+    </div>
+    <!-- Loader End -->
+    <!-- Menu Start -->
+    <nav id="menu" class="menu">
+        <div class="menu__content">
+            <div class="container-fluid p-0 fullheight">
+                <div class="row g-0 flex-xl-row-reverse fullheight">
+
+                    <!--Menu Data Block Start -->
+                    <div class="col-12 col-xl-8 menu__data">
+
+                        <!-- Menu Controls Line Start -->
+                        <div class="menudata__controls">
+                            <div class="controls__content">
+                                <div class="container-fluid p-0">
+                                    <div class="row g-0">
+                                        <div class="col-8">
+                                            <div class="controls__leftline d-flex justify-content-start align-items-center">
+
+                                                <!-- Menu Notify Trigger Start -->
+                                                <a id="notify-trigger-menu" class="btn-round-mobile btn-notify btn-light-mobile hover-white hover-white-s" href="#0">
+                                                    <em></em>
+                                                    <i class="fa-solid fa-bell"></i>
+                                                    <span class="btn-caption">Donate</span>
+                                                </a>
+                                                <!-- Menu Notify Trigger End -->
+                                                <!-- Menu Socials Start -->
+                                                <div class="socials-menu">
+                                                    <ul>
+                                                        <li>
+                                                            <a href="https://github.com/username-not-important/Mobee" target="_blank">
+                                                                <i class="fa-brands fa-github"></i>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <!-- Menu Socials End -->
+
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="controls__rightline d-flex justify-content-end align-items-center">
+
+                                                <!-- Menu Close Button Start -->
+                                                <a id="menu-close" class="section-close hover-white hover-white-s" href="#0">
+                                                    <em></em>
+                                                    <span></span>
+                                                </a>
+                                                <!-- Menu Close Button End -->
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Menu Controls Line End -->
+                        <!-- Menu Links Start -->
+                        <div class="menudata__links">
+                            <div class="container-fluid p-0">
+                                <div class="row g-0 align-items-end">
+                                    <div class="col-12 col-md-6">
+
+                                        <!-- Navigation Start -->
+                                        <ul class="navigation">
+                                            <li>
+                                                <a href="#0" id="home-trigger">Home</a>
+                                            </li>
+                                            <li>
+                                                <a href="#0" id="about-trigger">About Mobee</a>
+                                            </li>
+                                            <li>
+                                                <a href="#0" id="contact-trigger">Contact</a>
+                                            </li>
+                                        </ul>
+                                        <!-- Navigation End -->
+
+                                    </div>
+                                    <div class="col-12 col-md-6">
+
+                                        <!-- Menu Contact Links Start -->
+                                        <ul class="menulinks__contact">
+                                            <li>
+                                                <p>
+                                                    <strong>
+                                                        Mobee Creator:
+                                                        <br />
+                                                        Alireza Joonbakhsh
+                                                    </strong>
+                                                </p>
+                                                <p><a class="contact-link" href="https://t.me/mralijey">Telegram: @@mralijey</a></p>
+                                                <p><a class="contact-link" href="https://alijey.ir">Personal Website</a></p>
+                                                <p><a class="contact-link" href="https://jeyart.ir">Portfolio Website</a></p>
+                                            </li>
+                                            <li>
+                                                <p><a class="contact-link" href="mailto:joonbakhshalireza@gmail.com?subject=Message%20from%20Mobee">joonbakhshalireza@gmail.com</a></p>
+                                            </li>
+                                        </ul>
+                                        <!-- Menu Contact Links End -->
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Menu Links End -->
+                        <!-- Menu Copyright Start -->
+                        <div class="menudata__copyright">
+                            <div class="container-fluid p-0">
+                                <div class="row g-0">
+                                    <div class="col-12">
+                                        <p class="copyright">By <a href="https://jeyart.ir" target="_blank">JeyART</a>, 2023</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Menu Copyright End -->
+
+                    </div>
+                    <!--Menu Data Block End -->
+                    <!--Menu Media Block Start -->
+                    <div class="col-12 col-xl-4 menu__media">
+                        <div class="media__content">
+
+                            <!-- Menu Image Background Start -->
+                            <div class="menu__image menu-image-1"></div>
+                            <!-- Menu Image Background End -->
+
+                        </div>
+                    </div>
+                    <!--Menu Media Block End -->
+
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- Menu End -->
+    <!-- Header Start -->
+    <header id="header" class="header">
+
+        <!-- Logo Start -->
+        <div class="header__logo">
+            <img src="~/img/minimal/logo.png" alt="Mobees - Synced Video Player">
+        </div>
+        <!-- Logo End -->
+        <!-- Header Content Start -->
+        <div class="header__content fullheight-mobile d-flex align-items-center">
+            <div class="container-fluid px-0">
+                <div class="row gx-0 justify-content-end justify-content-xl-start">
+                    <div class="col-auto col-xl-8">
+
+                        <!-- Header Controls Block Start -->
+                        <div class="header__buttons d-flex justify-content-end align-items-center">
+
+                            <!-- Socials Desktop Start -->
+                            <div class="socials-desktop">
+                                <ul>
+                                    <li>
+                                        <a href="https://github.com/username-not-important/Mobee" target="_blank">
+                                            <i class="fa-brands fa-github"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!-- Socials Desktop End -->
+                            <!-- Notify Trigger Start -->
+                            <a id="notify-trigger" class="btn-round-mobile btn-notify btn-light-outline notify-trigger hover-white hover-white-s" href="#0">
+                                <em></em>
+                                <i class="fa-solid fa-bell"></i>
+                                <span class="btn-caption">Donate</span>
+                            </a>
+                            <!-- Notify Trigger End -->
+
+                        </div>
+                        <!-- Header Controls Block End -->
+
+                    </div>
+                    <div class="col-auto col-xl-4">
+
+                        <!-- Menu Trigger Start -->
+                        <div class="header__menu d-flex justify-content-end">
+                            <a id="menu-trigger" class="menu-trigger" href="#0">
+                                <span class="menu-objects"></span>
+                            </a>
+                        </div>
+                        <!-- Menu Trigger End -->
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Header Content End -->
+
+    </header>
+    <!-- Header End -->
+    @RenderBody()
+
+    <!-- Load Scripts Start -->
+    <script src="~/js/minimal/libs.min.js"></script>
+    <script src="~/js/minimal/gallery-init.js"></script>
+    <script src="~/js/minimal/custom.js"></script>
+    <!-- Load Scripts End -->
+
+</body>
+
+</html>

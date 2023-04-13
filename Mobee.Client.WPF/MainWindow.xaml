@@ -5,7 +5,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Mobee.Client.WPF"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        
         xmlns:wpf="clr-namespace:FlyleafLib.Controls.WPF;assembly=FlyleafLib"
         xmlns:wpf1="clr-namespace:FlyleafLib.Controls.WPF;assembly=FlyleafLib.Controls.WPF"
         xmlns:system="clr-namespace:System;assembly=System.Runtime"
@@ -28,7 +27,6 @@
                     <ColumnDefinition Width="240"/>
                 </Grid.ColumnDefinitions>
                 <DockPanel Margin="8">
-                    <TextBlock DockPanel.Dock="Top" Style="{DynamicResource MaterialDesignTitleTextBlock}" FontSize="24" HorizontalAlignment="Center">Mobee Player</TextBlock>
                     <Button  DockPanel.Dock="Top" Click="_Connect_Click" Visibility="{Binding ConnectionViewModel.IsConnected, Converter={StaticResource InverseBoolToVisConverter}}" Margin="0,5,0,5" Name="_Connect_Button">Connect</Button>
 
                     <wpf1:FlyleafME Player="{Binding Player}" IsEnabled="{Binding ConnectionViewModel.IsConnected}">
@@ -46,14 +44,17 @@
                                     <ColumnDefinition Width="20*"/>
                                     <ColumnDefinition Width="24"/>
                                 </Grid.ColumnDefinitions>
-                                <TextBox Background="White" Foreground="{StaticResource MaterialDesignLightForeground}" Name="_MessageTextbox"></TextBox>
-                                <Button Grid.Column="1" Padding="0,0,0,0" Name="_SendButton" Click="_SendButton_OnClick">
+                                <TextBox Text="{Binding ChatViewModel.MessageInput, UpdateSourceTrigger=PropertyChanged}"
+                                         PreviewKeyUp="_MessageTextbox_OnPreviewKeyUp"
+                                    Background="White" Foreground="{StaticResource MaterialDesignLightForeground}" Name="_MessageTextbox">
+                                </TextBox>
+                                <Button Grid.Column="1" Padding="0,0,0,0" IsEnabled="{Binding ChatViewModel.CanSendMessage}" Name="_SendButton" Click="_SendButton_OnClick">
                                     <materialDesign:PackIcon Kind="Send"></materialDesign:PackIcon>
                                 </Button>
                             </Grid>
-                            <ScrollViewer Margin="0,8,0,2" VerticalScrollBarVisibility="Auto">
+                            <ScrollViewer Margin="0,8,0,2" VerticalScrollBarVisibility="Auto" Name="_MessagesScrollviewer">
                                 <ItemsControl Margin="0,0,8,0"
-                                    ItemsSource="{Binding ChatViewModel.Messages}">
+                                              ItemsSource="{Binding ChatViewModel.Messages}">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate DataType="{x:Type data:ChatMessage}">
                                             <Border Name="_Part_MessageBorder"
@@ -85,13 +86,16 @@
                                                             Value="2"></Setter>
                                                     <Setter TargetName="_Part_MessageBorder"
                                                             Property="Margin"
-                                                            Value="0,4,0,4"></Setter>
+                                                            Value="0,3,0,3"></Setter>
                                                     <Setter TargetName="_Part_MessageBorder"
                                                             Property="HorizontalAlignment"
                                                             Value="Center"></Setter>
                                                     <Setter TargetName="_Part_MessageText"
                                                             Property="Foreground"
-                                                            Value="#D2D2D2"></Setter>
+                                                            Value="#FAFAFA"></Setter>
+                                                    <Setter TargetName="_Part_MessageText"
+                                                            Property="FontSize"
+                                                            Value="11"></Setter>
                                                 </DataTrigger>
                                             </DataTemplate.Triggers>
                                         </DataTemplate>

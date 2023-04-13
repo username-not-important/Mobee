@@ -2,9 +2,812 @@
 @model IndexModel
 @{
     ViewData["Title"] = "Home page";
+    Layout = "Shared/_LayoutMinimal";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<style>
+    .headline__main__text {
+        color: #efb61d;
+    }
+
+    .contactdata__icon.big__icon i {
+        font-size: 4rem;
+    }
+</style>
+
+<!-- Main Section Start -->
+    <section id="main" class="main active">
+        <div class="main__content">
+            
+<div class="container-fluid p-0 fullheight">
+    <div class="row g-0 fullheight">
+
+        <!-- Main Section Intro Start -->
+        <div class="col-12 col-xl-8 main__intro">
+
+            <!-- Intro Content Start -->
+            <div class="intro__content">
+
+                <!-- Headline Start -->
+                <div id="headline" class="headline">
+                    <span class="headline__subtitle">Welcome to</span>
+                    <h1 class="animated-headline medium">
+                        <span class="headline__main__text">Mobee</span>
+                        <br>
+                        <span id="typed-strings">
+                            <b>Open-Source</b>
+                            <b>Synced Video Player</b>
+                            <b>For Windows</b>
+                        </span>
+                        <span id="typed"></span>
+                    </h1>
+                    <div class="headline__numblock d-flex align-items-start">
+                        <div class="numblock block-rounded-m d-flex flex-column flex-sm-row align-items-sm-center">
+                            <span class="numblock__number">free</span>
+                            <span class="numblock__descr">and<br>open-source</span>
+                        </div>
+                        <div class="numblock block-rounded-m d-flex flex-column flex-sm-row align-items-sm-center">
+                            <span class="numblock__number">
+                                <i class="fa fa-comments-o"></i>
+                            </span>
+                            <span class="numblock__descr">in-app<br>chat capability</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Headline End -->
+
+            </div>
+            <!-- Intro Content End -->
+            <!-- Bottom Button Start -->
+            <div class="intro__button">
+                <a href="https://github.com/username-not-important/Mobee/releases" class="btn-bottom">
+                    <span class="circle">
+                        <em></em>
+                        <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px">
+                            <rect fill="none" height="24" width="24" />
+                            <path d="M14.29,5.71L14.29,5.71c-0.39,0.39-0.39,1.02,0,1.41L18.17,11H3c-0.55,0-1,0.45-1,1v0c0,0.55,0.45,1,1,1h15.18l-3.88,3.88 c-0.39,0.39-0.39,1.02,0,1.41l0,0c0.39,
+                      0.39,1.02,0.39,1.41,0l5.59-5.59c0.39-0.39,0.39-1.02,0-1.41L15.7,5.71 C15.32,5.32,14.68,5.32,14.29,5.71z" />
+                        </svg>
+                    </span>
+                    <span class="caption">Download from Github</span>
+                </a>
+            </div>
+            <!-- Bottom Button End -->
+
+        </div>
+        <!-- Main Section Intro End -->
+        <!-- Main Section Media Start -->
+        <div class="col-12 col-xl-4 main__media">
+
+            <!-- Main Section Image Background Start -->
+            <div class="media__image media-image-1"></div>
+            <!-- Main Section Image Background End -->
+            <!-- Main Section Swiper Slider Start -->
+            <!-- slider main container -->
+            <div class="swiper">
+                <!-- additional required wrapper -->
+                <div class="swiper-wrapper">
+                    <!-- slides -->
+                    <div class="swiper-slide">
+                        <div class="slide-image slide-image-1"></div>
+                        <div class="slide-caption text-end" data-swiper-parallax="-250" data-swiper-parallax-opacity="0">
+                            <p>
+                                <a href="#0" id="project-trigger-1">
+                                    Generated with Lexica.art
+                                </a>
+                                        <span>lexica.art</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="slide-image slide-image-2"></div>
+                        <div class="slide-caption text-end" data-swiper-parallax="-250" data-swiper-parallax-opacity="0">
+                            <p>
+                                <a href="#0" id="project-trigger-2">
+                                    Generated with Lexica.art
+                                </a>
+                                <span>lexica.art</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="slide-image slide-image-3"></div>
+                        <div class="slide-caption text-end" data-swiper-parallax="-250" data-swiper-parallax-opacity="0">
+                            <p>
+                                <a href="#0" id="project-trigger-3">
+                                            Generated with Lexica.art
+                                        </a>
+                                        <span>lexica.art</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- pagination -->
+                <div class="swiper-pagination marvio-pagination"></div>
+                <!-- navigation buttons -->
+                <div class="swiper-button-prev marvio-navigation marvio-prev"><i class="fa-solid fa-angle-left"></i></div>
+                <div class="swiper-button-next marvio-navigation marvio-next"><i class="fa-solid fa-angle-right"></i></div>
+            </div>
+            <!-- Main Section Swiper Slider Start -->
+
+        </div>
+        <!-- Main Section Media End -->
+        <!-- Sosials Mobile Start -->
+        <div class="col-12 socials-mobile">
+            <ul>
+                <li>
+                    <a href="https://www.facebook.com/" target="_blank">
+                        <i class="fa-brands fa-facebook"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.instagram.com/" target="_blank">
+                        <i class="fa-brands fa-instagram"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.pinterest.com/" target="_blank">
+                        <i class="fa-brands fa-pinterest"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.behance.net/" target="_blank">
+                        <i class="fa-brands fa-behance"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="https://twitter.com/" target="_blank">
+                        <i class="fa-brands fa-twitter"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="https://dribbble.com/" target="_blank">
+                        <i class="fa-brands fa-dribbble"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <!-- Sosials Mobile End -->
+
+    </div>
 </div>
+        </div>
+    </section>
+    <!-- Main Section End -->
+    <!-- About Section Start -->
+    <section id="about" class="inner about">
+        <div class="container-fluid p-0 fullheight">
+            <div class="row g-0 fullheight">
+
+                <!-- About Section Content Start -->
+                <div class="col-12 col-xl-8 inner__content">
+                    <!-- desktop shadow -->
+                    <div class="desktop-shadow"></div>
+                    <!-- inner section blocks -->
+                    <div class="inner__blocks">
+
+                        <!-- Section Container - Section Title Start -->
+                        <div class="inner__container">
+                            <div class="content-block">
+                                <span class="section__subtitle">About Mobee</span>
+                                <h2>Sync movie playback when watching movies with your friends!</h2>
+                                <p class="section__text">
+                                    Mobee is a great app that enables different users to Play/Pause/Seek video playback at the same time. Virtualy, watch your favorite
+                                    movie with your friends as if you're in the same room.<br/> The current version of Mobee does not stream videos from the internet, meaning
+                                    that each user has to download the video for themselves beforehand.
+                                </p>
+                            </div>
+                        </div>
+                        <!-- Section Container - Section Title End -->
+                        <!-- Section Container - Features Start -->
+                        <div class="inner__container">
+                            <div class="content-block grid-block">
+                                <div class="container-fluid px-4">
+                                    <div class="row gx-5 align-items-stretch">
+                                        <!-- feature single item -->
+                                        <div class="col-12 col-md-4 feature">
+                                            <div class="feature__item block-rounded-l">
+                                                <div class="feature__image block-rounded-m">
+                                                    <img src="/img/minimal/banners/Icon-OpenSource.jpg" alt="Mobees Feature Background">
+                                                </div>
+                                                <div class="feature__descr">
+                                                    <span class="feature__subtitle">Open-Source</span>
+                                                    <h4 class="feature__title">Free Global Server</h4>
+                                                    <p class="feature__text">You can use the server provided by Mobee, or host and compile your own server and client.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- feature single item -->
+                                        <div class="col-12 col-md-4 feature">
+                                            <div class="feature__item block-rounded-l">
+                                                <div class="feature__image block-rounded-m">
+                                                    <img src="/img/minimal/banners/Icon-Chat.jpg" alt="Mobees Feature Background">
+                                                </div>
+                                                <div class="feature__descr">
+                                                    <span class="feature__subtitle">Watch Together</span>
+                                                    <h4 class="feature__title">Chat and React</h4>
+                                                    <p class="feature__text">No matter how many of you there are, you can chat together as you watch the movie in the same app.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- feature single item -->
+                                        <div class="col-12 col-md-4 feature">
+                                            <div class="feature__item block-rounded-l">
+                                                <div class="feature__image block-rounded-m">
+                                                    <img src="/img/minimal/banners/Icon-LocalFile.jpg" alt="Mobees Feature Background">
+                                                </div>
+                                                <div class="feature__descr">
+                                                    <span class="feature__subtitle">Local Video File</span>
+                                                    <h4 class="feature__title">No need to Buffer</h4>
+                                                    <p class="feature__text">You can play local files at high quality without the need to wait for everyone to buffer.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Section Container - Features End -->
+                        
+                        <!-- Section Container - Showreel Start -->
+                        @*<div class="inner__container">
+                            <div class="content-block">
+                                <div class="fullwidth-container">
+                                    <div class="showreel showreel-image-1 block-rounded-l">
+                                        <div class="showreel__button">
+                                            <!-- video trigger -->
+                                            <a href="#" id="inner-video-trigger" class="inner-video-trigger">
+                                                <em></em>
+                                                <i class="fa-solid fa-play"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>*@
+                        <!-- Section Container - Showreel End -->
+
+                    </div>
+                </div>
+                <!-- About Section Content End -->
+                <!-- About Section Media Start -->
+                <div class="col-12 col-xl-4 inner__media">
+
+                    <!-- About Section Image Background Start -->
+                    <div class="image media-image-about"></div>
+                    <!-- About Section Image Background End -->
+
+                </div>
+                <!-- About Section Media End -->
+
+            </div>
+        </div>
+    </section>
+    <!-- About Section End -->
+    <!-- Contact Section Start -->
+    <section id="contact" class="inner contact">
+        <div class="container-fluid p-0 fullheight">
+            <div class="row g-0 fullheight">
+
+                <!-- Contact Section Content Start -->
+                <div class="col-12 col-xl-8 inner__content">
+                    <!-- desktop shadow -->
+                    <div class="desktop-shadow"></div>
+                    <!-- inner section blocks -->
+                    <div class="inner__blocks">
+
+                        <!-- Section Container - Section Title Start -->
+                        <div class="inner__container">
+                            <div class="content-block">
+                                <span class="section__subtitle">Contact the Creator</span>
+                                <h2>Let’s get in touch.</h2>
+                                <p class="section__text">
+                                    This project is still a Work In Progress. <br/>
+                                    That means that you can send your questions, problems, and requests through Email, Telegram, or Github Issues.
+                                </p>
+                            </div>
+                        </div>
+                        <!-- Section Container - Section Title End -->
+                        <!-- Section Container - Contact Data Start -->
+                        <div class="inner__container">
+                            <div class="content-block grid-block">
+                                <div class="container-fluid px-4">
+                                    <div class="row gx-5 align-items-stretch">
+                                        <!-- contact data single item -->
+                                        <div class="col-12 col-md-6 col-lg-4 contactdata">
+                                            <div class="contactdata__item contactdata-item-1 block-rounded-l">
+                                                <div class="contactdata__icon big__icon">
+                                                    <i class="fa fa-contact-card"></i>
+                                                </div>
+                                                <h5 class="contactdata__title">Mail</h5>
+                                                <div class="contactdata__descr d-flex align-items-start">
+                                                    <div class="contactdata__icon">
+                                                        <i class="fa-solid fa-mail-bulk"></i>
+                                                    </div>
+                                                    <div class="contactdata__text">
+                                                    <p><a class="contact-link" href="mailto:joonbakhshalireza@gmail.com?subject=Message%20from%20Mobee" target="_blank">joonbakhshalireza@gmail.com</a></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- contact data single item -->
+                                        <div class="col-12 col-md-6 col-lg-4 contactdata">
+                                            <div class="contactdata__item contactdata-item-2 block-rounded-l">
+                                                <div class="contactdata__icon big__icon">
+                                                    <i class="fa fa-address-book"></i>
+                                                </div>
+                                                <h5 class="contactdata__title">Social</h5>
+                                                <div class="contactdata__descr d-flex align-items-start">
+                                                    <ul class="contactdata__socials">
+                                                        <li>
+                                                            <i class="fa-brands fa-telegram"></i>
+                                                            <a class="contact-link" href="https://t.me/mralijey" target="_blank">Telegram @@mralijey</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- contact data single item -->
+                                        <div class="col-12 col-md-6 col-lg-4 contactdata">
+                                            <div class="contactdata__item contactdata-item-3 block-rounded-l">
+                                            <div class="contactdata__icon big__icon">
+                                                    <i class="fa-brands fa-github"></i>
+                                                </div>
+                                                <h5 class="contactdata__title">Github</h5>
+                                                <div class="contactdata__descr d-flex align-items-start">
+                                                    <div class="contactdata__icon">
+                                                        <i class="fa-solid fa-link"></i>
+                                                    </div>
+                                                    <div class="contactdata__text">
+                                                        <p>
+                                                        <a class="contact-link" href="https://github.com/username-not-important/Mobee">Mobee Github</a>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Section Container - Contact Data End -->
+                        <!-- Section Container - Contact Form Start -->
+                        @*<div class="inner__container">
+                            <div class="content-block">
+                                <h3>Just say hello!</h3>
+                                <p class="block__text">
+                                    Want to know more about us, tell us about your project or just to say hello?
+                                    Drop me a line and I'll get back as soon as possible.
+                                </p>
+                            </div>
+                            <div class="content-block grid-block">
+                                <div class="form-container">
+
+                                    <!-- Contact Form Reply Group Start -->
+                                    <div class="reply-group">
+                                        <i class="fa-solid fa-circle-check reply-group__icon"></i>
+                                        <p class="reply-group__title light">Done!</p>
+                                        <span class="reply-group__text light">Thanks for your message. I'll get back as soon as possible.</span>
+                                    </div>
+                                    <!-- Contact Form Reply Group End -->
+                                    <!-- Contact Form Start -->
+                                    <form class="form form-light contact-form" id="contact-form">
+                                        <!-- Hidden Required Fields -->
+                                        <input type="hidden" name="project_name" value="Mobees - Synced Video Player">
+                                        <input type="hidden" name="admin_email" value="support@mobee">
+                                        <input type="hidden" name="form_subject" value="Contact Form Message">
+                                        <!-- END Hidden Required Fields-->
+                                        <div class="container-fluid px-4">
+                                            <div class="row gx-5">
+                                                <div class="col-12 col-md-6">
+                                                    <input class="block-rounded-s" type="text" name="Name" placeholder="Your Name*" required>
+                                                </div>
+                                                <div class="col-12 col-md-6">
+                                                    <input class="block-rounded-s" type="text" name="Company" placeholder="Company Name">
+                                                </div>
+                                                <div class="col-12 col-md-6">
+                                                    <input class="block-rounded-s" type="email" name="E-mail" placeholder="Email Adress*" required>
+                                                </div>
+                                                <div class="col-12 col-md-6">
+                                                    <input class="block-rounded-s" type="tel" name="Phone" placeholder="Phone Number*" required>
+                                                </div>
+                                                <div class="col-12">
+                                                    <textarea class="block-rounded-s margin-s" name="Message" placeholder="A Few Words*" required></textarea>
+                                                </div>
+                                                <div class="col-12">
+                                                    <span class="inputs-description">*Required fields</span>
+                                                    <button class="btn btn-l btn-light hover-gradient hover-gradient-l" type="submit">
+                                                        <em></em>
+                                                        <span class="btn-caption">Submit</span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <!-- Contact Form End  -->
+
+                                </div>
+                            </div>
+                        </div>*@
+                        <!-- Section Container - Contact Form End -->
+
+                    </div>
+                </div>
+                <!-- Contact Section Content End -->
+                <!-- Contact Section Media Start -->
+                <div class="col-12 col-xl-4 inner__media">
+
+                    <!-- Contact Section Image Background Start -->
+                    <div class="image media-image-contact"></div>
+                    <!-- Contact Section Image Background End -->
+
+                </div>
+                <!-- Contact Section Media End -->
+
+            </div>
+        </div>
+    </section>
+    <!-- Contact Section End -->
+    <!-- Notify Popup Start -->
+    <div id="notify" class="popup notify">
+        <div class="popup__container">
+
+            <!-- Popup Controls Start -->
+            <div class="popup__controls d-flex justify-content-end">
+                <a href="#0" id="notify-close" class="popup-close hover-gradient hover-gradient-s">
+                    <em></em>
+                    <span></span>
+                </a>
+            </div>
+            <!-- Popup Controls End -->
+            <!-- Popup Content Start -->
+            <div class="popup__content block-rounded-l">
+
+                <!-- Notify Popup Title Start -->
+                <div class="popup-title">
+                    <p class="popup-title__title">Donate to this Project</p>
+                    <p class="popup-title__text">The money you provide will be used to keep this Project Free and add Awesome Features!</p>
+                    <br/>
+
+                <p class="popup-title__text">To disscuss payment methods, send an E-mail to: <strong>joonbakhshalireza@gmail.com</strong></p>
+                </div>
+                <!-- Notify Popup Title End -->
+
+            </div>
+            <!-- Popup Content End -->
+
+        </div>
+    </div>
+    <!-- Notify Popup End -->
+    <!-- Project Popup #1 Start -->
+    <div id="project-1" class="popup popup-l project">
+        <div class="popup__container">
+
+            <!-- Popup Controls Start -->
+            <div class="popup__controls d-flex justify-content-end">
+                <a href="#0" id="project-close-1" class="popup-close hover-gradient hover-gradient-s">
+                    <em></em>
+                    <span></span>
+                </a>
+            </div>
+            <!-- Popup Controls End -->
+            <!-- Popup Content Start -->
+            <div class="popup__content block-rounded-l">
+
+                <!-- Project Popup Title Start -->
+                <div class="project__title block-rounded-m project-main-image-1">
+                    <h3>
+                        Sleep in clouds
+                        <small>3D Render</small>
+                    </h3>
+                </div>
+                <!-- Project Popup Title End -->
+                <!-- Project Popup Data Start -->
+                <div class="project__data">
+                    <div class="container-fluid px-0">
+                        <div class="row gx-5">
+                            <div class="col-12 col-md-6 col-xl-3 data__item">
+                                <p class="data__title">Project</p>
+                                <p class="data__descr">Sleep in clouds</p>
+                            </div>
+                            <div class="col-12 col-md-6 col-xl-3 data__item">
+                                <p class="data__title">Type</p>
+                                <p class="data__descr">3D Render</p>
+                            </div>
+                            <div class="col-12 col-md-6 col-xl-3 data__item">
+                                <p class="data__title">Date</p>
+                                <p class="data__descr">26 May 2022</p>
+                            </div>
+                            <div class="col-12 col-md-6 col-xl-3 data__item">
+                                <p class="data__title">Client</p>
+                                <p class="data__descr">Editorial</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Project Popup Data End -->
+                <!-- Project Popup Description Start -->
+                <div class="project__descr">
+                    <div class="container-fluid px-0">
+                        <div class="row gx-5">
+                            <div class="col-12 col-md-6">
+                                <p>
+                                    Be what you would seem to be – or, if you’d like it put more simply –
+                                    never imagine yourself not to be otherwise than what it might appear to others that
+                                    what you were or might have been was not otherwise than what you had been would have appeared to them to be otherwise.
+                                </p>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <p>
+                                    I wonder if I've been changed in the night? Let me think. Was I the same when I got up this morning?
+                                    I almost think I can remember feeling a little different.
+                                    But if I'm not the same, the next question is 'Who in the world am I?' Ah, that's the great puzzle!
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Project Popup Description End -->
+                <!-- Project Popup Images Start -->
+                <div class="projects__images">
+                    <div class="container-fluid px-0">
+                        <div class="row gx-5">
+                            <div class="col-12 images__item">
+                                <div class="project-image block-rounded-m">
+                                    <img src="https://dummyimage.com/1000x1000/636363/ffffff" alt="Mobees Project Image">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Project Popup Images End -->
+
+            </div>
+            <!-- Popup Content End -->
+
+        </div>
+    </div>
+    <!-- Project Popup #1 End -->
+    <!-- Project Popup #2 Start -->
+    <div id="project-2" class="popup popup-l project">
+        <div class="popup__container">
+
+            <!-- Popup Controls Start -->
+            <div class="popup__controls d-flex justify-content-end">
+                <a href="#0" id="project-close-2" class="popup-close hover-gradient hover-gradient-s">
+                    <em></em>
+                    <span></span>
+                </a>
+            </div>
+            <!-- Popup Controls End -->
+            <!-- Popup Content Start -->
+            <div class="popup__content block-rounded-l">
+
+                <!-- Project Popup Title Start -->
+                <div class="project__title block-rounded-m project-main-image-2">
+                    <h3>
+                        Shadow project
+                        <small>Photography</small>
+                    </h3>
+                </div>
+                <!-- Project Popup Title End -->
+                <!-- Project Popup Data Start -->
+                <div class="project__data">
+                    <div class="container-fluid px-0">
+                        <div class="row gx-5">
+                            <div class="col-12 col-md-6 col-xl-3 data__item">
+                                <p class="data__title">Project</p>
+                                <p class="data__descr">Shadow project</p>
+                            </div>
+                            <div class="col-12 col-md-6 col-xl-3 data__item">
+                                <p class="data__title">Type</p>
+                                <p class="data__descr">Photography</p>
+                            </div>
+                            <div class="col-12 col-md-6 col-xl-3 data__item">
+                                <p class="data__title">Date</p>
+                                <p class="data__descr">14 May 2022</p>
+                            </div>
+                            <div class="col-12 col-md-6 col-xl-3 data__item">
+                                <p class="data__title">Client</p>
+                                <p class="data__descr">Editorial</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Project Popup Data End -->
+                <!-- Project Popup Description Start -->
+                <div class="project__descr">
+                    <div class="container-fluid px-0">
+                        <div class="row gx-5">
+                            <div class="col-12 col-md-6">
+                                <p>
+                                    Be what you would seem to be – or, if you’d like it put more simply –
+                                    never imagine yourself not to be otherwise than what it might appear to others that
+                                    what you were or might have been was not otherwise than what you had been would have appeared to them to be otherwise.
+                                </p>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <p>
+                                    I wonder if I've been changed in the night? Let me think. Was I the same when I got up this morning?
+                                    I almost think I can remember feeling a little different.
+                                    But if I'm not the same, the next question is 'Who in the world am I?' Ah, that's the great puzzle!
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Project Popup Description End -->
+                <!-- Project Popup Images Start -->
+                <div class="projects__images">
+                    <div class="container-fluid px-0">
+                        <div class="row gx-5">
+                            <div class="col-12 images__item">
+                                <div class="project-image block-rounded-m">
+                                    <img src="https://dummyimage.com/1200x600/636363/ffffff" alt="Mobees Project Image">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Project Popup Images End -->
+
+            </div>
+            <!-- Popup Content End -->
+
+        </div>
+    </div>
+    <!-- Project Popup #2 End -->
+    <!-- Project Popup #3 Start -->
+    <div id="project-3" class="popup popup-l project">
+        <div class="popup__container">
+
+            <!-- Popup Controls Start -->
+            <div class="popup__controls d-flex justify-content-end">
+                <a href="#0" id="project-close-3" class="popup-close hover-gradient hover-gradient-s">
+                    <em></em>
+                    <span></span>
+                </a>
+            </div>
+            <!-- Popup Controls End -->
+            <!-- Popup Content Start -->
+            <div class="popup__content block-rounded-l">
+
+                <!-- Project Popup Title Start -->
+                <div class="project__title block-rounded-m project-main-image-3">
+                    <h3>
+                        Circle objects
+                        <small>3D Render</small>
+                    </h3>
+                </div>
+                <!-- Project Popup Title End -->
+                <!-- Project Popup Data Start -->
+                <div class="project__data">
+                    <div class="container-fluid px-0">
+                        <div class="row gx-5">
+                            <div class="col-12 col-md-6 col-xl-3 data__item">
+                                <p class="data__title">Project</p>
+                                <p class="data__descr">Circle objects</p>
+                            </div>
+                            <div class="col-12 col-md-6 col-xl-3 data__item">
+                                <p class="data__title">Type</p>
+                                <p class="data__descr">3D Render</p>
+                            </div>
+                            <div class="col-12 col-md-6 col-xl-3 data__item">
+                                <p class="data__title">Date</p>
+                                <p class="data__descr">12 May 2022</p>
+                            </div>
+                            <div class="col-12 col-md-6 col-xl-3 data__item">
+                                <p class="data__title">Client</p>
+                                <p class="data__descr">Editorial</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Project Popup Data End -->
+                <!-- Project Popup Description Start -->
+                <div class="project__descr">
+                    <div class="container-fluid px-0">
+                        <div class="row gx-5">
+                            <div class="col-12 col-md-6">
+                                <p>
+                                    Be what you would seem to be – or, if you’d like it put more simply –
+                                    never imagine yourself not to be otherwise than what it might appear to others that
+                                    what you were or might have been was not otherwise than what you had been would have appeared to them to be otherwise.
+                                </p>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <p>
+                                    I wonder if I've been changed in the night? Let me think. Was I the same when I got up this morning?
+                                    I almost think I can remember feeling a little different.
+                                    But if I'm not the same, the next question is 'Who in the world am I?' Ah, that's the great puzzle!
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Project Popup Description End -->
+                <!-- Project Popup Images Start -->
+                <div class="projects__images">
+                    <div class="container-fluid px-0">
+                        <div class="row gx-5">
+                            <div class="col-12 images__item">
+                                <div class="project-image block-rounded-m">
+                                    <img src="https://dummyimage.com/1000x1200/636363/ffffff" alt="Mobees Project Image">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Project Popup Images End -->
+
+            </div>
+            <!-- Popup Content End -->
+
+        </div>
+    </div>
+    <!-- Project Popup #3 End -->
+    <!-- Root element of PhotoSwipe. Must have class pswp. -->
+    <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+        <!-- Background of PhotoSwipe.
+        It's a separate element, as animating opacity is faster than rgba(). -->
+        <div class="pswp__bg"></div>
+
+        <!-- Slides wrapper with overflow:hidden. -->
+        <div class="pswp__scroll-wrap">
+
+            <!-- Container that holds slides. PhotoSwipe keeps only 3 slides in DOM to save memory. -->
+            <!-- don't modify these 3 pswp__item elements, data is added later on. -->
+            <div class="pswp__container">
+                <div class="pswp__item"></div>
+                <div class="pswp__item"></div>
+                <div class="pswp__item"></div>
+            </div>
+
+            <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+            <div class="pswp__ui pswp__ui--hidden">
+
+                <div class="pswp__top-bar">
+
+                    <!--  Controls are self-explanatory. Order can be changed. -->
+
+                    <div class="pswp__counter"></div>
+
+                    <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                    <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                    <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                    <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                    <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                    <!-- element will get class pswp__preloader-active when preloader is running -->
+                    <div class="pswp__preloader">
+                        <div class="pswp__preloader__icn">
+                            <div class="pswp__preloader__cut">
+                                <div class="pswp__preloader__donut"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                    <div class="pswp__share-tooltip"></div>
+                </div>
+
+                <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+                </button>
+
+                <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+                </button>
+
+                <div class="pswp__caption">
+                    <div class="pswp__caption__center"></div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>

@@ -23,8 +23,10 @@ namespace Mobee.Client.WPF.ViewModels
         {
             ServersList = new()
             {
-                new ServerItem() { Name = "Global Mobee Server (free)", Address = "mobee.ir"},
-                new ServerItem() {Name = "Test Mobee Server (local)", Address = "https://localhost:7016"}
+                new ServerItem() { Name = "Global Mobee Server (free)", Address = "https://mobees.ir"},
+                new ServerItem() { Name = "Global Joyn Server (free)", Address = "https://joyn.ir"},
+                new ServerItem() {Name = "Test Mobee Server (local)", Address = "https://localhost:7016"},
+                new ServerItem() {Name = "Test Joyn Server (local)", Address = "https://localhost:44321"}
             };
 
             serverAddress = ServersList.Last().Address;

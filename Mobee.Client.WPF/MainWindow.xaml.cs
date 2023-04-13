@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics.Metrics;
 using System.Linq;
@@ -45,16 +46,40 @@ namespace Mobee.Client.WPF
         public MainWindow(IAbstractFactory<MainWindowViewModel> viewModelFactory)
         {
             ViewModel = viewModelFactory.Create();
-
+            ViewModel.ChatViewModel.Messages.CollectionChanged += MessagesOnCollectionChanged;
+            
             InitializeComponent();
             InitializeHub();
             
             Loaded += OnLoaded;
         }
 
-        private void OnLoaded(object sender, RoutedEventArgs e)
+        private void MessagesOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
-            Connect();
+            if (e.Action == NotifyCollectionChangedAction.Add)
+            {
+                _MessagesScrollviewer.ScrollToEnd();
+            }
+        }
+
+        private void CleanupMessages()
+        {
+            var collection = ViewModel.ChatViewModel.Messages;
+
+            if (collection.Count > 10)
+            {
+                var removeList = collection.Take(5).Where(chatMessage => chatMessage.IsBroadcast).ToList();
+
+                foreach (var chatMessage in removeList)
+                {
+                    collection.Remove(chatMessage);
+                }
+            }
+        }
+
+        private async void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            await Connect();
         }
 
         private void InitializeHub()
@@ -107,9 +132,11 @@ namespace Mobee.Client.WPF
 
             if (e.PropertyName == "CurTime")
             {
-                if (Math.Abs(_last - ViewModel.Player.CurTime) > 50000 * 1000)
+                if (Math.Abs(_last - ViewModel.Player.CurTime) >= 40000 * 1000)
                 {
                     ViewModel.ChatViewModel.Messages.Add(new ChatMessage("Seeked", false, true));
+
+                    CleanupMessages();
 
                     await onSeeked();
                 }
@@ -181,22 +208,31 @@ namespace Mobee.Client.WPF
                 var toggleTask = Hub.TogglePlayback($"Player {Id}", Status, position);
 
                 await toggleTask;
-
-                ReleaseSyncLock();
             }
             catch (Exception e)
             {
                 ViewModel.ConnectionViewModel.IsConnected = false;
-
+            }
+            finally
+            {
                 ReleaseSyncLock();
+            }
+        }
+        
+        private void _MessageTextbox_OnPreviewKeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                _SendButton_OnClick(_SendButton, new RoutedEventArgs());
             }
         }
 
         private async void _SendButton_OnClick(object sender, RoutedEventArgs e)
         {
-            var message = _MessageTextbox.Text;
-            if (string.IsNullOrWhiteSpace(message))
+            if (!ViewModel.ChatViewModel.CanSendMessage)
                 return;
+
+            var message = ViewModel.ChatViewModel.MessageInput;
 
             try
             {
@@ -205,9 +241,11 @@ namespace Mobee.Client.WPF
                 this.Dispatcher.Invoke(() =>
                 {
                     ViewModel.ChatViewModel.Messages.Add(new ChatMessage($"me: {message}", true));
+
+                    CleanupMessages();
                 });
 
-                _MessageTextbox.Text = "";
+                ViewModel.ChatViewModel.MessageInput = "";
             }
             catch (Exception ex)
             {
@@ -231,12 +269,14 @@ namespace Mobee.Client.WPF
 
             await this.Dispatcher.InvokeAsync(() =>
             {
-                string action = isPlaying ? "Resumed" : "Paused";
+                string action = isPlaying ? "▶️" : "⏸️";
                 
-                ViewModel.ChatViewModel.Messages.Add(new ChatMessage($"Playback {action} at {TimeSpan.FromMilliseconds(position/10000):g}", false, true));
+                ViewModel.ChatViewModel.Messages.Add(new ChatMessage($"{action} at {TimeSpan.FromMilliseconds(position/10000):hh\\:mm\\:ss}", false, true));
                 
                 ViewModel.Player.CurTime = position;
                 
+                CleanupMessages();
+
                 if (isPlaying)
                     ViewModel.Player.Play();
                 else
@@ -251,10 +291,12 @@ namespace Mobee.Client.WPF
             await this.Dispatcher.InvokeAsync(() =>
             {
                 ViewModel.ChatViewModel.Messages.Add(new ChatMessage($"{from}: {message}"));
+                
+                CleanupMessages();
             });
         }
 
         #endregion
-        
+
     }
 }

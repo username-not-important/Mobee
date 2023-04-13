@@ -1,4 +1,4 @@
-using Mobee.Server.Aspnet.Hubs;
+using Mobee.Common.Hubs;
 
 namespace Mobee.Server.Aspnet
 {

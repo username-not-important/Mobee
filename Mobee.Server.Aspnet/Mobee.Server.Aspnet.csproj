@@ -10,4 +10,8 @@
     <ProjectReference Include="..\Mobee.Common\Mobee.Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Hubs\" />
+  </ItemGroup>
+
 </Project>
