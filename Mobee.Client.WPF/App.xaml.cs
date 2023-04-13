@@ -28,7 +28,7 @@ namespace Mobee.Client.WPF
                 {
                     services.AddSingleton<MainWindow>();
                     services.AddSingleton<ConfigureWindow>();
-                    services.AddAbstractFactory<MainWindowViewModel>();
+                    //services.AddAbstractFactory<MainWindowViewModel>();
                     services.AddAbstractFactory<ConfigurationViewModel>();
                 }).Build();
         }
@@ -91,5 +91,18 @@ namespace Mobee.Client.WPF
                     true, // Whether to notify UI for CurTime only when it's second changed or by UIRefreshInterval
             });
         }
+        
+        public static T VMLocator<T>()
+        {
+            string type = typeof(T).Name;
+
+            return (T)Current.Resources[type];
+        }
+
+        public static T FindResource<T>(string v)
+        {
+            return (T)Current.Resources[v];
+        }
+
     }
 }

@@ -18,95 +18,21 @@
         FontFamily="{DynamicResource MaterialDesignFont}"
         mc:Ignorable="d"
         Name="Window"
+        MinHeight="640" MinWidth="640"
         Title="MainWindow" Height="640" Width="1200">
+
+    <Window.Resources>
+        <ResourceDictionary Source="Controls/PlayerOverlayResources.xaml"></ResourceDictionary>
+    </Window.Resources>
     <Grid DataContext="{Binding ElementName=Window, Path=ViewModel}">
-        <materialDesign:Card Padding="0" Margin="16">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="240"/>
-                </Grid.ColumnDefinitions>
-                <DockPanel Margin="8">
-                    <Button  DockPanel.Dock="Top" Click="_Connect_Click" Visibility="{Binding ConnectionViewModel.IsConnected, Converter={StaticResource InverseBoolToVisConverter}}" Margin="0,5,0,5" Name="_Connect_Button">Connect</Button>
+        <Button  DockPanel.Dock="Top" Click="_Connect_Click" Visibility="{Binding ConnectionViewModel.IsConnected, Converter={StaticResource InverseBoolToVisConverter}}" Margin="0,5,0,5" Name="_Connect_Button">Connect</Button>
 
-                    <wpf1:FlyleafME Player="{Binding Player}" IsEnabled="{Binding ConnectionViewModel.IsConnected}">
+        <Grid>
+            <wpf1:FlyleafME Style="{StaticResource CustomizedFlyleafStyle}" 
+                            Player="{Binding Player}"
+                            IsEnabled="{Binding ConnectionViewModel.IsConnected}" Name="FlyleafMe">
+            </wpf1:FlyleafME>
 
-                    </wpf1:FlyleafME>
-                </DockPanel>
-                <materialDesign:Card Background="{StaticResource PrimaryHueDarkBrush}" Grid.Column="1" VerticalAlignment="Stretch"
-                                     IsEnabled="{Binding ConnectionViewModel.IsConnected}">
-                    <materialDesign:ColorZone Mode="PrimaryDark" VerticalAlignment="Stretch">
-                        <DockPanel Margin="8">
-                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="16"
-                                       DockPanel.Dock="Top">Chat</TextBlock>
-                            <Grid DockPanel.Dock="Bottom">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="20*"/>
-                                    <ColumnDefinition Width="24"/>
-                                </Grid.ColumnDefinitions>
-                                <TextBox Text="{Binding ChatViewModel.MessageInput, UpdateSourceTrigger=PropertyChanged}"
-                                         PreviewKeyUp="_MessageTextbox_OnPreviewKeyUp"
-                                    Background="White" Foreground="{StaticResource MaterialDesignLightForeground}" Name="_MessageTextbox">
-                                </TextBox>
-                                <Button Grid.Column="1" Padding="0,0,0,0" IsEnabled="{Binding ChatViewModel.CanSendMessage}" Name="_SendButton" Click="_SendButton_OnClick">
-                                    <materialDesign:PackIcon Kind="Send"></materialDesign:PackIcon>
-                                </Button>
-                            </Grid>
-                            <ScrollViewer Margin="0,8,0,2" VerticalScrollBarVisibility="Auto" Name="_MessagesScrollviewer">
-                                <ItemsControl Margin="0,0,8,0"
-                                              ItemsSource="{Binding ChatViewModel.Messages}">
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate DataType="{x:Type data:ChatMessage}">
-                                            <Border Name="_Part_MessageBorder"
-                                            Padding="8" Background="{StaticResource SecondaryHueMidBrush}"
-                                                CornerRadius="8,8,0,8" Margin="24,4,0,0">
-                                                <TextBlock Text="{Binding Message}" Name="_Part_MessageText"
-                                                       TextWrapping="Wrap"
-                                                       Foreground="{StaticResource MaterialDesignLightForeground}">
-                                                </TextBlock>
-                                            </Border>
-                                            <DataTemplate.Triggers>
-                                                <DataTrigger Binding="{Binding IsSelf}" Value="True">
-                                                    <Setter TargetName="_Part_MessageBorder"
-                                                            Property="Background"
-                                                            Value="White"></Setter>
-                                                    <Setter TargetName="_Part_MessageBorder"
-                                                            Property="Margin"
-                                                            Value="0,4,24,0"></Setter>
-                                                    <Setter TargetName="_Part_MessageBorder"
-                                                            Property="CornerRadius"
-                                                            Value="8,8,8,0"></Setter>
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding IsBroadcast}" Value="True">
-                                                    <Setter TargetName="_Part_MessageBorder"
-                                                            Property="Background"
-                                                            Value="Transparent"></Setter>
-                                                    <Setter TargetName="_Part_MessageBorder"
-                                                            Property="Padding"
-                                                            Value="2"></Setter>
-                                                    <Setter TargetName="_Part_MessageBorder"
-                                                            Property="Margin"
-                                                            Value="0,3,0,3"></Setter>
-                                                    <Setter TargetName="_Part_MessageBorder"
-                                                            Property="HorizontalAlignment"
-                                                            Value="Center"></Setter>
-                                                    <Setter TargetName="_Part_MessageText"
-                                                            Property="Foreground"
-                                                            Value="#FAFAFA"></Setter>
-                                                    <Setter TargetName="_Part_MessageText"
-                                                            Property="FontSize"
-                                                            Value="11"></Setter>
-                                                </DataTrigger>
-                                            </DataTemplate.Triggers>
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                </ItemsControl>
-                            </ScrollViewer>
-
-                        </DockPanel>
-                    </materialDesign:ColorZone>
-                </materialDesign:Card>
-            </Grid>
-        </materialDesign:Card>
+        </Grid>
     </Grid>
 </Window>

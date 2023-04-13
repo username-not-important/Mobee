@@ -42,29 +42,28 @@ namespace Mobee.Client.WPF
         private bool SyncLock = false;
 
         public MainWindowViewModel ViewModel { get; set; }
+        public ChatViewModel ChatViewModel { get; private set; }
 
-        public MainWindow(IAbstractFactory<MainWindowViewModel> viewModelFactory)
+        public MainWindow()
         {
-            ViewModel = viewModelFactory.Create();
-            ViewModel.ChatViewModel.Messages.CollectionChanged += MessagesOnCollectionChanged;
+            ViewModel = App.VMLocator<MainWindowViewModel>();
+            ChatViewModel = App.VMLocator<ChatViewModel>();
             
             InitializeComponent();
+            InitializeChat();
             InitializeHub();
             
             Loaded += OnLoaded;
         }
 
-        private void MessagesOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        private void InitializeChat()
         {
-            if (e.Action == NotifyCollectionChangedAction.Add)
-            {
-                _MessagesScrollviewer.ScrollToEnd();
-            }
+            ChatViewModel.SendMessageInvoked += OnSendMessage;
         }
 
         private void CleanupMessages()
         {
-            var collection = ViewModel.ChatViewModel.Messages;
+            var collection = ChatViewModel.Messages;
 
             if (collection.Count > 10)
             {
@@ -80,6 +79,8 @@ namespace Mobee.Client.WPF
         private async void OnLoaded(object sender, RoutedEventArgs e)
         {
             await Connect();
+
+            FlyleafMe.SelectedTheme = FlyleafMe.UIConfig.Themes.FirstOrDefault(x => x.Name == "Orange");
         }
 
         private void InitializeHub()
@@ -134,7 +135,7 @@ namespace Mobee.Client.WPF
             {
                 if (Math.Abs(_last - ViewModel.Player.CurTime) >= 40000 * 1000)
                 {
-                    ViewModel.ChatViewModel.Messages.Add(new ChatMessage("Seeked", false, true));
+                    ChatViewModel.Messages.Add(new ChatMessage("Seeked", false, true));
 
                     CleanupMessages();
 
@@ -218,21 +219,13 @@ namespace Mobee.Client.WPF
                 ReleaseSyncLock();
             }
         }
-        
-        private void _MessageTextbox_OnPreviewKeyUp(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
-                _SendButton_OnClick(_SendButton, new RoutedEventArgs());
-            }
-        }
 
-        private async void _SendButton_OnClick(object sender, RoutedEventArgs e)
+        private async void OnSendMessage(object? sender, EventArgs e)
         {
-            if (!ViewModel.ChatViewModel.CanSendMessage)
+            if (!ChatViewModel.CanSendMessage)
                 return;
 
-            var message = ViewModel.ChatViewModel.MessageInput;
+            var message = ChatViewModel.MessageInput;
 
             try
             {
@@ -240,19 +233,19 @@ namespace Mobee.Client.WPF
 
                 this.Dispatcher.Invoke(() =>
                 {
-                    ViewModel.ChatViewModel.Messages.Add(new ChatMessage($"me: {message}", true));
+                    ChatViewModel.Messages.Add(new ChatMessage($"me: {message}", true));
 
                     CleanupMessages();
                 });
 
-                ViewModel.ChatViewModel.MessageInput = "";
+                ChatViewModel.MessageInput = "";
             }
             catch (Exception ex)
             {
                 
             }
         }
-
+        
         #region IPlaybackClient (Receiving)
 
         public async Task PlaybackToggled(string user, bool isPlaying, long position)
@@ -271,7 +264,7 @@ namespace Mobee.Client.WPF
             {
                 string action = isPlaying ? "▶️" : "⏸️";
                 
-                ViewModel.ChatViewModel.Messages.Add(new ChatMessage($"{action} at {TimeSpan.FromMilliseconds(position/10000):hh\\:mm\\:ss}", false, true));
+                ChatViewModel.Messages.Add(new ChatMessage($"{action} at {TimeSpan.FromMilliseconds(position/10000):hh\\:mm\\:ss}", false, true));
                 
                 ViewModel.Player.CurTime = position;
                 
@@ -290,7 +283,7 @@ namespace Mobee.Client.WPF
         {
             await this.Dispatcher.InvokeAsync(() =>
             {
-                ViewModel.ChatViewModel.Messages.Add(new ChatMessage($"{from}: {message}"));
+                ChatViewModel.Messages.Add(new ChatMessage($"{from}: {message}"));
                 
                 CleanupMessages();
             });

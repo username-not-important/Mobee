@@ -1,7 +1,8 @@
 ﻿<Application x:Class="Mobee.Client.WPF.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:Mobee.Client.WPF">
+             xmlns:local="clr-namespace:Mobee.Client.WPF"
+             xmlns:viewModels="clr-namespace:Mobee.Client.WPF.ViewModels">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -11,6 +12,8 @@
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Lime.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
+            <viewModels:ChatViewModel x:Key="ChatViewModel"/>
+            <viewModels:MainWindowViewModel x:Key="MainWindowViewModel"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

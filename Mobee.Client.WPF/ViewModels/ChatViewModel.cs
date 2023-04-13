@@ -12,11 +12,19 @@ namespace Mobee.Client.WPF.ViewModels
 {
     public partial class ChatViewModel : ObservableObject
     {
+        public event EventHandler? SendMessageInvoked;
+
         [ObservableProperty]
         [NotifyPropertyChangedFor("CanSendMessage")]
         private string messageInput = "";
-
+        
         public bool CanSendMessage => !string.IsNullOrWhiteSpace(MessageInput);
+        
+        [RelayCommand]
+        public void SendMessage()
+        {
+            SendMessageInvoked?.Invoke(this, EventArgs.Empty);
+        }
 
         public ObservableCollection<ChatMessage> Messages { get; set; } = new();
         
