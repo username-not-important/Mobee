@@ -9,6 +9,7 @@ using FlyleafLib;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Mobee.Client.WPF.IoC;
+using Mobee.Client.WPF.Stores;
 using Mobee.Client.WPF.ViewModels;
 using Logger = Mobee.Client.WPF.Logs.Logger;
 
@@ -28,7 +29,7 @@ namespace Mobee.Client.WPF
                 {
                     services.AddSingleton<MainWindow>();
                     services.AddSingleton<ConfigureWindow>();
-                    //services.AddAbstractFactory<MainWindowViewModel>();
+                    services.AddSingleton<ConfigurationStore>();
                     services.AddAbstractFactory<ConfigurationViewModel>();
                 }).Build();
         }

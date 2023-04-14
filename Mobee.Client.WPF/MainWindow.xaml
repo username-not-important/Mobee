@@ -25,8 +25,6 @@
         <ResourceDictionary Source="Controls/PlayerOverlayResources.xaml"></ResourceDictionary>
     </Window.Resources>
     <Grid DataContext="{Binding ElementName=Window, Path=ViewModel}">
-        <Button  DockPanel.Dock="Top" Click="_Connect_Click" Visibility="{Binding ConnectionViewModel.IsConnected, Converter={StaticResource InverseBoolToVisConverter}}" Margin="0,5,0,5" Name="_Connect_Button">Connect</Button>
-
         <Grid>
             <wpf1:FlyleafME Style="{StaticResource CustomizedFlyleafStyle}" 
                             Player="{Binding Player}"

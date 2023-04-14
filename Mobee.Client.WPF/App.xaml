@@ -14,6 +14,7 @@
 
             <viewModels:ChatViewModel x:Key="ChatViewModel"/>
             <viewModels:MainWindowViewModel x:Key="MainWindowViewModel"/>
+            <viewModels:ConnectionViewModel x:Key="ConnectionViewModel"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

@@ -22,6 +22,7 @@ using FlyleafLib;
 using Microsoft.AspNetCore.SignalR.Client;
 using Mobee.Client.WPF.Data;
 using Mobee.Client.WPF.IoC;
+using Mobee.Client.WPF.Stores;
 using Mobee.Client.WPF.ViewModels;
 using Mobee.Common;
 using TypedSignalR.Client;
@@ -33,32 +34,31 @@ namespace Mobee.Client.WPF
     /// </summary>
     public partial class MainWindow : Window, IPlayerClient
     {
-        private IPlayerHub Hub { get; set; }
+        private IPlayerHub Hub { get; set; } = null!;
 
-        private HubConnection connection;
-        private string Id = new Random().Next(1, 1000).ToString("D4");
+        private HubConnection connection = null!;
 
         private bool Status = false;
         private bool SyncLock = false;
 
         public MainWindowViewModel ViewModel { get; set; }
-        public ChatViewModel ChatViewModel { get; private set; }
+        public ChatViewModel ChatViewModel { get; }
+        public ConnectionViewModel ConnectionViewModel { get; }
+        public ConfigurationStore ConfigurationStore { get; set; }
 
-        public MainWindow()
+        public MainWindow(ConfigurationStore configurationStore)
         {
             ViewModel = App.VMLocator<MainWindowViewModel>();
             ChatViewModel = App.VMLocator<ChatViewModel>();
+            ConnectionViewModel = App.VMLocator<ConnectionViewModel>();
             
+            ConfigurationStore = configurationStore;
+
             InitializeComponent();
             InitializeChat();
             InitializeHub();
             
             Loaded += OnLoaded;
-        }
-
-        private void InitializeChat()
-        {
-            ChatViewModel.SendMessageInvoked += OnSendMessage;
         }
 
         private void CleanupMessages()
@@ -83,15 +83,19 @@ namespace Mobee.Client.WPF
             FlyleafMe.SelectedTheme = FlyleafMe.UIConfig.Themes.FirstOrDefault(x => x.Name == "Orange");
         }
 
+        private void InitializeChat()
+        {
+            ChatViewModel.SendMessageInvoked += OnSendMessage;
+        }
+
         private void InitializeHub()
         {
-            var baseUri = Properties.Settings.Default.SERVER_BASEURI;
+            var baseUri = ConfigurationStore.ServerAddress;
 
             if (string.IsNullOrWhiteSpace(baseUri) || !baseUri.StartsWith("https://"))
                 return;
             
             baseUri = baseUri.TrimEnd('/');
-            //https://localhost:7016
 
             connection = new HubConnectionBuilder()
                 .WithUrl($"{baseUri}/PlayersHub")
@@ -100,7 +104,7 @@ namespace Mobee.Client.WPF
             connection.Closed += async (error) =>
             {
                 //TODO: test for dispatcher issues
-                ViewModel.ConnectionViewModel.IsConnected = false;
+                ConnectionViewModel.IsConnected = false;
 
                 await Task.Delay(new Random().Next(0,5) * 1000);
                 await connection.StartAsync();
@@ -108,7 +112,7 @@ namespace Mobee.Client.WPF
 
             Hub = connection.CreateHubProxy<IPlayerHub>();
             var subscription = connection.Register<IPlayerClient>(this);
-
+            
             ViewModel.Player.PropertyChanged += PlayerOnPropertyChanged;
         }
 
@@ -148,24 +152,21 @@ namespace Mobee.Client.WPF
             }
         }
 
-        private async void _Connect_Click(object sender, RoutedEventArgs e)
-        {
-            await Connect();
-        }
-
         private async Task Connect()
         {
             try
             {
                 await connection.StartAsync();
 
-                ViewModel.ConnectionViewModel.IsConnected = true;
-                ViewModel.Player.Open(Properties.Settings.Default.LAST_MEDIA_FILE);
+                ConnectionViewModel.IsConnected = true;
+                ViewModel.Player.Open(ConfigurationStore.FilePath);
                 ViewModel.Player.Pause();
+
+                await Hub.JoinGroup(ConfigurationStore.GroupName);
             }
             catch (Exception ex)
             {
-                ViewModel.ConnectionViewModel.IsConnected = false;
+                ConnectionViewModel.IsConnected = false;
             }
         }
 
@@ -180,7 +181,7 @@ namespace Mobee.Client.WPF
                 Status = newStatus;
 
                 var position = ViewModel.Player.CurTime;
-                var toggleTask = Hub.TogglePlayback($"Player {Id}", Status, position);
+                var toggleTask = Hub.TogglePlayback(ConfigurationStore.GroupName, ConfigurationStore.UserName, Status, position);
 
                 if (Status)
                 {
@@ -195,7 +196,7 @@ namespace Mobee.Client.WPF
             }
             catch (Exception ex)
             {
-                ViewModel.ConnectionViewModel.IsConnected = false;
+                ConnectionViewModel.IsConnected = false;
             }
         }
 
@@ -206,13 +207,13 @@ namespace Mobee.Client.WPF
                 SyncLock = true;
 
                 var position = ViewModel.Player.CurTime;
-                var toggleTask = Hub.TogglePlayback($"Player {Id}", Status, position);
+                var toggleTask = Hub.TogglePlayback(ConfigurationStore.GroupName, ConfigurationStore.UserName, Status, position);
 
                 await toggleTask;
             }
             catch (Exception e)
             {
-                ViewModel.ConnectionViewModel.IsConnected = false;
+                ConnectionViewModel.IsConnected = false;
             }
             finally
             {
@@ -229,7 +230,7 @@ namespace Mobee.Client.WPF
 
             try
             {
-                await Hub.SendMessage(Id, message);
+                await Hub.SendMessage(ConfigurationStore.GroupName, ConfigurationStore.UserName, message);
 
                 this.Dispatcher.Invoke(() =>
                 {

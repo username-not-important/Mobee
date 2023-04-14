@@ -14,7 +14,7 @@
         FontFamily="{DynamicResource MaterialDesignFont}"
         mc:Ignorable="d"
         Name="Window"
-        Title="Configure" Height="540" Width="800">
+        Title="Configure" Height="540" Width="1024">
     <Grid DataContext="{Binding ElementName=Window, Path=ViewModel}">
         <Grid.RowDefinitions>
             <RowDefinition Height="180"/>
@@ -43,34 +43,71 @@
         </Grid>
 
         <StackPanel Grid.Row="1">
-            <materialDesign:Card Margin="16" Padding="16">
-                <Grid VerticalAlignment="Stretch">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="50" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
+            <Grid >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <materialDesign:Card Margin="16,16,8,16" Padding="16">
+                    <Grid VerticalAlignment="Stretch">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="50" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
 
-                    <materialDesign:PackIcon Height="50"
+                        <materialDesign:PackIcon Height="50"
                   Kind="Server" HorizontalAlignment="Left" VerticalAlignment="Top" Width="50" />
 
-                    <StackPanel Grid.Column="1" Margin="8,0,0,0">
-                        <TextBlock Style="{StaticResource MaterialDesignHeadline5TextBlock}"
+                        <StackPanel Grid.Column="1" Margin="8,0,0,0">
+                            <TextBlock Style="{StaticResource MaterialDesignHeadline5TextBlock}"
                          Text="Server" />
 
-                        <TextBlock Margin="0,0,0,8"
+                            <TextBlock Margin="0,0,0,8"
                          VerticalAlignment="Top"
                          Foreground="{DynamicResource MaterialDesignBodyLight}"
                          Text="Connect to your partner through:"
                          TextWrapping="Wrap" />
 
-                        <Grid>
-                            <ComboBox ItemsSource="{Binding ServersList}" SelectedValue="{Binding ServerAddress}"
-                                      SelectedValuePath="Address" DisplayMemberPath="Name">
-                            </ComboBox>
-                        </Grid>
-                    </StackPanel>
-                </Grid>
-            </materialDesign:Card>
+                            <Grid>
+                                <ComboBox ItemsSource="{Binding ServersList}" SelectedValue="{Binding ServerAddress}"
+                                      SelectedValuePath="Address" DisplayMemberPath="Name"/>
+                            </Grid>
+                        </StackPanel>
+                    </Grid>
+                </materialDesign:Card>
+                <materialDesign:Card Margin="8,16,16,16" Padding="16" Grid.Column="1">
+                    <Grid VerticalAlignment="Stretch">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="50" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <materialDesign:PackIcon Height="50"
+                            Kind="User" HorizontalAlignment="Left" VerticalAlignment="Top" Width="50" />
+
+                        <StackPanel Margin="8,0,0,0" Grid.Column="1">
+                            <TextBlock Style="{StaticResource MaterialDesignHeadline5TextBlock}"
+                                Text="User" />
+
+                            <TextBlock Margin="0,0,0,8"
+                                VerticalAlignment="Top"
+                                Foreground="{DynamicResource MaterialDesignBodyLight}"
+                                Text="Your username and the group name:"
+                                TextWrapping="Wrap" />
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox TextWrapping="Wrap" Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,2,0" materialDesign:HintAssist.Hint="Your Alias" ToolTip="(Required)"/>
+                                <TextBox TextWrapping="Wrap" Text="{Binding GroupName, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Margin="2,0,0,0" materialDesign:HintAssist.Hint="Group Name" ToolTip="(Required) Same with your Partner's"/>
+
+                            </Grid>
+                        </StackPanel>
+                    </Grid>
+                </materialDesign:Card>
+            </Grid>
 
             <materialDesign:Card Margin="16,0,16,16" Padding="16">
                 <Grid VerticalAlignment="Stretch">
@@ -97,14 +134,14 @@
                                 <ColumnDefinition Width="563*"/>
                                 <ColumnDefinition Width="110"/>
                             </Grid.ColumnDefinitions>
-                            <TextBox Text="{Binding FilePath, UpdateSourceTrigger=PropertyChanged}"></TextBox>
-                            <Button Grid.Column="1" Click="Browse_Click">Browse</Button>
+                            <TextBox Text="{Binding FilePath, UpdateSourceTrigger=PropertyChanged}"/>
+                            <Button Grid.Column="1" Click="Browse_Click" Content="Browse"/>
                         </Grid>
                     </StackPanel>
                 </Grid>
             </materialDesign:Card>
 
-            <Button IsEnabled="{Binding CanLaunch}" Click="Launch_Click" Margin="16,0,16,0">Let's Go</Button>
+            <Button IsEnabled="{Binding CanLaunch}" Click="Launch_Click" Margin="16,0,16,0" Content="Let's Go"/>
         </StackPanel>
     </Grid>
 </Window>

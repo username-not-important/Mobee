@@ -82,5 +82,29 @@ namespace Mobee.Client.WPF.Properties {
                 this["LAST_MEDIA_FILE"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string LAST_USERNAME {
+            get {
+                return ((string)(this["LAST_USERNAME"]));
+            }
+            set {
+                this["LAST_USERNAME"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string LAST_GROUPNAME {
+            get {
+                return ((string)(this["LAST_GROUPNAME"]));
+            }
+            set {
+                this["LAST_GROUPNAME"] = value;
+            }
+        }
     }
 }

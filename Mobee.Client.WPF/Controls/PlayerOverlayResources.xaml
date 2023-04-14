@@ -103,6 +103,9 @@
                                         </Style>
                                     </controls:ChatSidebar.Style>
                                 </controls:ChatSidebar>
+
+                                <ProgressBar VerticalAlignment="Top" HorizontalAlignment="Stretch" IsIndeterminate="True"
+                                             Visibility="{Binding Source={StaticResource ConnectionViewModel}, Path=IsConnected, Converter={StaticResource InverseBoolToVisConverter}}"/>
                                 <!--Flyleaf Bar-->
                                 <wpf:FlyleafBar Player="{Binding Player}" x:Name="FlyleafBar"/>
                             </Grid>

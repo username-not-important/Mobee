@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,7 @@ using Microsoft.VisualBasic.ApplicationServices;
 
 namespace Mobee.Client.WPF.ViewModels
 {
-    public partial class ConfigurationViewModel: ObservableObject
+    public partial class ConfigurationViewModel: ObservableValidator
     {
         public class ServerItem
         {
@@ -36,23 +37,50 @@ namespace Mobee.Client.WPF.ViewModels
 
         [ObservableProperty]
         private string serverAddress;
-
+        
+        [Required]
+        [MinLength(3)]
         [ObservableProperty]
+        [NotifyPropertyChangedFor("CanLaunch")]
+        private string userName;
+        
+        [Required]
+        [MinLength(3)]
+        [ObservableProperty]
+        [NotifyPropertyChangedFor("CanLaunch")]
+        private string groupName;
+        
+        [Required]
+        [ObservableProperty]
+        [CustomValidation(typeof(ConfigurationViewModel), nameof(ValidateFilePath))]
         [NotifyPropertyChangedFor("CanLaunch")]
         private string filePath;
         
+        public static ValidationResult ValidateFilePath(string filePath, ValidationContext context)
+        {
+            ConfigurationViewModel instance = (ConfigurationViewModel)context.ObjectInstance;
+            
+            try
+            {
+                var exists = File.Exists(filePath);
+                if (exists)
+                    return ValidationResult.Success;
+                else
+                    return new("File does not exist!");
+            }
+            catch (Exception e)
+            {
+                return new("File read error!");
+            }
+        }
+
         public bool CanLaunch
         {
             get
             {
-                try
-                {
-                    return File.Exists(filePath);
-                }
-                catch (Exception e)
-                {
-                    return false;
-                }
+                ValidateAllProperties();
+
+                return !HasErrors;
             }
         }
     }

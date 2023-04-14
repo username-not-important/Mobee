@@ -4,14 +4,33 @@ namespace Mobee.Common.Hubs
 {
     public class PlayersHub : Hub<IPlayerClient>, IPlayerHub
     {
-        public async Task TogglePlayback(string user, bool isPlaying, long position)
+        public async Task JoinGroup(string group)
         {
-            await Clients.Others.PlaybackToggled(user, isPlaying, position);
+            await Groups.AddToGroupAsync(Context.ConnectionId, group);
         }
 
-        public async Task SendMessage(string from, string message)
+        public async Task TogglePlayback(string group, string user, bool isPlaying, long position)
         {
-            await Clients.Others.ReceiveMessage(from, message);
+            await Clients.OthersInGroup(group).PlaybackToggled(user, isPlaying, position);
         }
+
+        public async Task SendMessage(string group, string user, string message)
+        {
+            await Clients.OthersInGroup(group).ReceiveMessage(user, message);
+        }
+        
+        #region Overrides
+
+        public override Task OnConnectedAsync()
+        {
+            return base.OnConnectedAsync();
+        }
+
+        public override Task OnDisconnectedAsync(Exception exception)
+        {
+            return base.OnDisconnectedAsync(exception);
+        }
+
+        #endregion
     }
 }

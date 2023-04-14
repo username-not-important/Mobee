@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Microsoft.Win32;
 using Mobee.Client.WPF.IoC;
+using Mobee.Client.WPF.Stores;
 using Mobee.Client.WPF.ViewModels;
 
 namespace Mobee.Client.WPF
@@ -23,10 +24,12 @@ namespace Mobee.Client.WPF
     public partial class ConfigureWindow : Window
     {
         public ConfigurationViewModel ViewModel { get; set; }
+        public ConfigurationStore ConfigurationStore { get; set; }
 
-        public ConfigureWindow(IAbstractFactory<ConfigurationViewModel> viewModelFactory)
+        public ConfigureWindow(IAbstractFactory<ConfigurationViewModel> viewModelFactory, ConfigurationStore configurationStore)
         {
             ViewModel = viewModelFactory.Create();
+            ConfigurationStore = configurationStore;
 
             loadConfiguration();
 
@@ -57,8 +60,10 @@ namespace Mobee.Client.WPF
 
         private void saveConfiguration()
         {
-            Properties.Settings.Default.SERVER_BASEURI = ViewModel.ServerAddress;
-            Properties.Settings.Default.LAST_MEDIA_FILE = ViewModel.FilePath;
+            Properties.Settings.Default.SERVER_BASEURI = ConfigurationStore.ServerAddress = ViewModel.ServerAddress;
+            Properties.Settings.Default.LAST_MEDIA_FILE = ConfigurationStore.FilePath = ViewModel.FilePath;
+            Properties.Settings.Default.LAST_USERNAME = ConfigurationStore.UserName = ViewModel.UserName;
+            Properties.Settings.Default.LAST_GROUPNAME = ConfigurationStore.GroupName = ViewModel.GroupName;
 
             Properties.Settings.Default.Save();
         }
@@ -70,6 +75,12 @@ namespace Mobee.Client.WPF
 
             if (!string.IsNullOrWhiteSpace(Properties.Settings.Default.LAST_MEDIA_FILE))
                 ViewModel.FilePath = Properties.Settings.Default.LAST_MEDIA_FILE;
+            
+            if (!string.IsNullOrWhiteSpace(Properties.Settings.Default.LAST_USERNAME))
+                ViewModel.UserName = Properties.Settings.Default.LAST_USERNAME;
+
+            if (!string.IsNullOrWhiteSpace(Properties.Settings.Default.LAST_GROUPNAME))
+                ViewModel.GroupName = Properties.Settings.Default.LAST_GROUPNAME;
         }
     }
 }
