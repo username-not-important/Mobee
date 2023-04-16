@@ -27,8 +27,7 @@
     <Grid DataContext="{Binding ElementName=Window, Path=ViewModel}">
         <Grid>
             <wpf1:FlyleafME Style="{StaticResource CustomizedFlyleafStyle}" 
-                            Player="{Binding Player}"
-                            IsEnabled="{Binding ConnectionViewModel.IsConnected}" Name="FlyleafMe">
+                            Player="{Binding Player}" Name="FlyleafMe">
             </wpf1:FlyleafME>
 
         </Grid>

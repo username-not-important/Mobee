@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using MaterialDesignThemes.Wpf;
 using Mobee.Client.WPF.Data;
 
 namespace Mobee.Client.WPF.ViewModels
@@ -33,6 +34,6 @@ namespace Mobee.Client.WPF.ViewModels
         }
 
         public ObservableCollection<ChatMessage> Messages { get; set; } = new();
-
+        public ISnackbarMessageQueue Notifications { get; set; } = new SnackbarMessageQueue(TimeSpan.FromSeconds(3.0));
     }
 }

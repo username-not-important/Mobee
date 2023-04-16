@@ -38,7 +38,7 @@
                     <ItemsControl.ItemTemplate>
                         <DataTemplate DataType="{x:Type data:ChatMessage}">
                             <Border Name="_Part_MessageBorder"
-                                            Padding="8" Background="{StaticResource SecondaryHueMidBrush}"
+                                            Padding="8" Background="{StaticResource PrimaryHueMidBrush}"
                                                 CornerRadius="8,8,0,8" Margin="24,4,0,0">
                                 <TextBlock Text="{Binding Message}" Name="_Part_MessageText"
                                                        TextWrapping="Wrap"

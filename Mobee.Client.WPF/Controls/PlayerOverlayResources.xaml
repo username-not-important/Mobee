@@ -106,6 +106,18 @@
 
                                 <ProgressBar VerticalAlignment="Top" HorizontalAlignment="Stretch" IsIndeterminate="True"
                                              Visibility="{Binding Source={StaticResource ConnectionViewModel}, Path=IsConnected, Converter={StaticResource InverseBoolToVisConverter}}"/>
+
+                                <materialDesign:Snackbar VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="75,0,75,0" MaxWidth="300"
+                                                         Background="{StaticResource PrimaryHueMidBrush}"
+                                                         Foreground="{StaticResource MaterialDesignLightForeground}"
+                                                         MessageQueue="{Binding Source={StaticResource ChatViewModel}, Path=Notifications}">
+                                    <materialDesign:Snackbar.Resources>
+                                        <Style TargetType="materialDesign:SnackbarMessage">
+
+                                        </Style>
+                                    </materialDesign:Snackbar.Resources>
+                                </materialDesign:Snackbar>
+
                                 <!--Flyleaf Bar-->
                                 <wpf:FlyleafBar Player="{Binding Player}" x:Name="FlyleafBar"/>
                             </Grid>

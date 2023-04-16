@@ -297,7 +297,10 @@ namespace Mobee.Client.WPF
         {
             await this.Dispatcher.InvokeAsync(() =>
             {
-                ChatViewModel.Messages.Add(new ChatMessage($"{from}: {message}"));
+                var messageText = $"{from}: {message}";
+
+                ChatViewModel.Messages.Add(new ChatMessage(messageText));
+                ChatViewModel.Notifications.Enqueue(messageText);
                 
                 CleanupMessages();
             });
@@ -307,7 +310,10 @@ namespace Mobee.Client.WPF
         {
             await this.Dispatcher.InvokeAsync(() =>
             {
-                ChatViewModel.Messages.Add(new ChatMessage($"{user} joined", false, true));
+                var messageText = $"{user} joined";
+
+                ChatViewModel.Messages.Add(new ChatMessage(messageText, false, true));
+                ChatViewModel.Notifications.Enqueue(messageText);
                 
                 CleanupMessages();
             });
