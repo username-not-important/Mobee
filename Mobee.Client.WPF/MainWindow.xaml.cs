@@ -19,6 +19,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using FlyleafLib.MediaPlayer;
 using FlyleafLib;
+using FlyleafLib.Controls.WPF;
 using Microsoft.AspNetCore.SignalR.Client;
 using Mobee.Client.WPF.Data;
 using Mobee.Client.WPF.IoC;
@@ -89,6 +90,7 @@ namespace Mobee.Client.WPF
         private void InitializeChat()
         {
             ChatViewModel.SendMessageInvoked += OnSendMessage;
+            ChatViewModel.ToggleKeyBindingsInvoked += OnToggleKeyBindings;
         }
 
         private void InitializeHub()
@@ -165,7 +167,7 @@ namespace Mobee.Client.WPF
                 ViewModel.Player.Open(ConfigurationStore.FilePath);
                 ViewModel.Player.Pause();
 
-                await Hub.JoinGroup(ConfigurationStore.GroupName);
+                await Hub.JoinGroup(ConfigurationStore.GroupName, ConfigurationStore.UserName);
             }
             catch (Exception ex)
             {
@@ -250,6 +252,11 @@ namespace Mobee.Client.WPF
             }
         }
         
+        private void OnToggleKeyBindings(object? sender, bool isEnabled)
+        {
+            FlyleafMe.KeyBindings = isEnabled ? AvailableWindows.Surface : AvailableWindows.None;
+        }
+
         #region IPlaybackClient (Receiving)
 
         public async Task PlaybackToggled(string user, bool isPlaying, long position)
@@ -291,6 +298,16 @@ namespace Mobee.Client.WPF
             await this.Dispatcher.InvokeAsync(() =>
             {
                 ChatViewModel.Messages.Add(new ChatMessage($"{from}: {message}"));
+                
+                CleanupMessages();
+            });
+        }
+
+        public async Task MemberJoined(string user)
+        {
+            await this.Dispatcher.InvokeAsync(() =>
+            {
+                ChatViewModel.Messages.Add(new ChatMessage($"{user} joined", false, true));
                 
                 CleanupMessages();
             });

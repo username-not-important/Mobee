@@ -59,5 +59,25 @@ namespace Mobee.Client.WPF.Controls
                 viewModel.SendMessage();
             }
         }
+
+        private void ChatSidebar_OnMouseEnter(object sender, MouseEventArgs e)
+        {
+            if (DataContext == null && !(DataContext is ChatViewModel))
+                return;
+
+            var viewModel = DataContext as ChatViewModel;
+
+            viewModel.ToggleKeyBindings(false);
+        }
+
+        private void ChatSidebar_OnMouseLeave(object sender, MouseEventArgs e)
+        {
+            if (DataContext == null && !(DataContext is ChatViewModel))
+                return;
+
+            var viewModel = DataContext as ChatViewModel;
+
+            viewModel.ToggleKeyBindings(true);
+        }
     }
 }

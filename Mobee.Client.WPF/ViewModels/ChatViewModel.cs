@@ -13,6 +13,7 @@ namespace Mobee.Client.WPF.ViewModels
     public partial class ChatViewModel : ObservableObject
     {
         public event EventHandler? SendMessageInvoked;
+        public event EventHandler<bool>? ToggleKeyBindingsInvoked; 
 
         [ObservableProperty]
         [NotifyPropertyChangedFor("CanSendMessage")]
@@ -25,8 +26,13 @@ namespace Mobee.Client.WPF.ViewModels
         {
             SendMessageInvoked?.Invoke(this, EventArgs.Empty);
         }
+        
+        public void ToggleKeyBindings(bool isEnabled)
+        {
+            ToggleKeyBindingsInvoked?.Invoke(this, isEnabled);
+        }
 
         public ObservableCollection<ChatMessage> Messages { get; set; } = new();
-        
+
     }
 }

@@ -8,6 +8,8 @@
              xmlns:data="clr-namespace:Mobee.Client.WPF.Data"
              mc:Ignorable="d" 
              DataContext="{StaticResource ChatViewModel}"
+             MouseEnter="ChatSidebar_OnMouseEnter"
+             MouseLeave="ChatSidebar_OnMouseLeave"
              d:DesignHeight="450" d:DesignWidth="800">
 
     <Border CornerRadius="8" Padding="4" Background="#4C000000" BorderBrush="{StaticResource PrimaryHueMidBrush}">
