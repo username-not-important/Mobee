@@ -79,6 +79,9 @@ namespace Mobee.Client.WPF
         private async void OnLoaded(object sender, RoutedEventArgs e)
         {
             await Connect();
+            
+            var ratio = ViewModel.Player.Video.AspectRatio;
+            Height = ActualWidth / ratio.Value + 30;
 
             FlyleafMe.SelectedTheme = FlyleafMe.UIConfig.Themes.FirstOrDefault(x => x.Name == "Orange");
         }
@@ -266,16 +269,19 @@ namespace Mobee.Client.WPF
                 string action = isPlaying ? "▶️" : "⏸️";
                 
                 ChatViewModel.Messages.Add(new ChatMessage($"{action} at {TimeSpan.FromMilliseconds(position/10000):hh\\:mm\\:ss}", false, true));
-                
-                ViewModel.Player.CurTime = position;
-                
-                CleanupMessages();
 
-                if (isPlaying)
-                    ViewModel.Player.Play();
-                else
-                    ViewModel.Player.Pause();
+                if (user != ConfigurationStore.UserName)
+                {
+                    ViewModel.Player.CurTime = position;
                 
+                    CleanupMessages();
+
+                    if (isPlaying)
+                        ViewModel.Player.Play();
+                    else
+                        ViewModel.Player.Pause();
+                }
+
                 ReleaseSyncLock();
             });
         }

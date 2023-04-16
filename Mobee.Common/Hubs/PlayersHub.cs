@@ -11,7 +11,7 @@ namespace Mobee.Common.Hubs
 
         public async Task TogglePlayback(string group, string user, bool isPlaying, long position)
         {
-            await Clients.OthersInGroup(group).PlaybackToggled(user, isPlaying, position);
+            await Clients.Group(group).PlaybackToggled(user, isPlaying, position);
         }
 
         public async Task SendMessage(string group, string user, string message)

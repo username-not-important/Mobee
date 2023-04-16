@@ -63,7 +63,7 @@
                                     </TextBlock.Effect>
                                 </TextBlock>
 
-                                <controls:ChatSidebar x:Name="ChatSidebar" Margin="0,4,4,70" Padding="4" HorizontalAlignment="Right" MinWidth="240">
+                                <controls:ChatSidebar x:Name="ChatSidebar" Margin="0,0,0,60" Padding="4" HorizontalAlignment="Right" MinWidth="240">
                                     <controls:ChatSidebar.Style>
                                         <Style TargetType="controls:ChatSidebar">
                                             <Style.Triggers>
