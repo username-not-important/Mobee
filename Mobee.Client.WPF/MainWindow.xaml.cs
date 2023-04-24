@@ -27,6 +27,7 @@ using Mobee.Client.WPF.Stores;
 using Mobee.Client.WPF.ViewModels;
 using Mobee.Common;
 using TypedSignalR.Client;
+using Mobee.Client.WPF.Utilities;
 
 namespace Mobee.Client.WPF
 {
@@ -103,17 +104,18 @@ namespace Mobee.Client.WPF
             baseUri = baseUri.TrimEnd('/');
 
             connection = new HubConnectionBuilder()
-                .WithUrl($"{baseUri}/PlayersHub")
+                .WithUrl($"{baseUri}/PlayersHub").WithAutomaticReconnect()
                 .Build();
 
             connection.Closed += async (error) =>
             {
-                //TODO: test for dispatcher issues
                 ConnectionViewModel.IsConnected = false;
 
                 await Task.Delay(new Random().Next(0,5) * 1000);
                 await connection.StartAsync();
             };
+
+            connection.ServerTimeout = TimeSpan.FromHours(1.5);
 
             Hub = connection.CreateHubProxy<IPlayerHub>();
             var subscription = connection.Register<IPlayerClient>(this);
@@ -142,9 +144,11 @@ namespace Mobee.Client.WPF
 
             if (e.PropertyName == "CurTime")
             {
-                if (Math.Abs(_last - ViewModel.Player.CurTime) >= 40000 * 1000)
+                if (Math.Abs(_last - _lastCurTime) >= 40000 * 1000)
                 {
-                    ChatViewModel.Messages.Add(new ChatMessage("Seeked", false, true));
+                    var direction = _last < _lastCurTime ? "⏩" : "⏪";
+
+                    ChatViewModel.Messages.Add(new ChatMessage($"{direction} to {_last.TickToMovieString()}", false, true));
 
                     CleanupMessages();
 
@@ -231,7 +235,7 @@ namespace Mobee.Client.WPF
             if (!ChatViewModel.CanSendMessage)
                 return;
 
-            var message = ChatViewModel.MessageInput;
+            var message = ChatViewModel.MessageInput.Trim();
 
             try
             {
@@ -275,7 +279,7 @@ namespace Mobee.Client.WPF
             {
                 string action = isPlaying ? "▶️" : "⏸️";
                 
-                ChatViewModel.Messages.Add(new ChatMessage($"{action} at {TimeSpan.FromMilliseconds(position/10000):hh\\:mm\\:ss}", false, true));
+                ChatViewModel.Messages.Add(new ChatMessage($"{action} at {position.TickToMovieString()}", false, true));
 
                 if (user != ConfigurationStore.UserName)
                 {

@@ -17,6 +17,21 @@ public class ChatMessage
 
     public string Message { get; set; }
 
+    public string DisplayedMessage
+    {
+        get
+        {
+            if (string.IsNullOrWhiteSpace(Message))
+                return "";
+
+            if (!IsSelf)
+                return Message;
+
+            var colonIndex = Message.IndexOf(':');
+            return colonIndex == -1 ? Message : Message.Substring(colonIndex + 1).Trim();
+        }
+    }
+
     public string PureMessage
     {
         get
@@ -31,6 +46,14 @@ public class ChatMessage
             return Message.Substring(colonIndex + 1).Trim();
         }
     }
+    
+    public bool IsAllEmoji
+    {
+        get
+        {
+            return !string.IsNullOrWhiteSpace(Message) && PureMessage.IsAllEmoji();
+        }
+    }
 
     public bool IsXLEmoji
     {
@@ -40,6 +63,28 @@ public class ChatMessage
             var length = stringInfo.LengthInTextElements;
 
             return !string.IsNullOrWhiteSpace(Message) && length == 1 && PureMessage.HasEmoji();
+        }
+    }
+
+    public bool IsLEmoji
+    {
+        get
+        {
+            var stringInfo = new System.Globalization.StringInfo(PureMessage);
+            var length = stringInfo.LengthInTextElements;
+
+            return !string.IsNullOrWhiteSpace(Message) && length == 2 && PureMessage.HasEmoji();
+        }
+    }
+
+    public bool IsMEmoji
+    {
+        get
+        {
+            var stringInfo = new System.Globalization.StringInfo(PureMessage);
+            var length = stringInfo.LengthInTextElements;
+
+            return !string.IsNullOrWhiteSpace(Message) && length > 2 && length < 5 && PureMessage.IsAllEmoji();
         }
     }
 }
