@@ -15,14 +15,14 @@
  - ✔️ Integrate functionalities in client app
  - ✔️ First Release
  - Collapsable Chat Sidebar
- - Join into Groups
+ - ✔️ Join into Groups
  - Reactions
  - Fullscreen overlays (Play/Pause/Seek)
  - Emojies in Chat
  - RTL chat capabilities
  - Online users Overlay
  - Member Joined/Left notifications
- - Keep Media Aspect-Ratio
+ - ✔️ Keep Media Aspect-Ratio
  
 ## Thanks To:
  - [Flyleaf](https://github.com/SuRGeoNix/Flyleaf)
