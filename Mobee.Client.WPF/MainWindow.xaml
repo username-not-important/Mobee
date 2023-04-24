@@ -19,7 +19,7 @@
         mc:Ignorable="d"
         Name="Window"
         MinHeight="640" MinWidth="640"
-        Title="MainWindow" Height="640" Width="1200">
+        Title="Mobee Player" Height="640" Width="1200" WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
         <ResourceDictionary Source="Controls/PlayerOverlayResources.xaml"></ResourceDictionary>

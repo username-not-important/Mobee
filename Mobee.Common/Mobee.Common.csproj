@@ -7,7 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Hubs\" />
     <Folder Include="Models\" />
+    <Folder Include="Utilities\" />
   </ItemGroup>
 
   <ItemGroup>

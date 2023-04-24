@@ -5,7 +5,8 @@
                     xmlns:data="clr-namespace:Mobee.Client.WPF.Data"
                     xmlns:wpf1="clr-namespace:FlyleafLib.Controls.WPF;assembly=FlyleafLib"
                     xmlns:controls="clr-namespace:Mobee.Client.WPF.Controls"
-                    xmlns:mediaPlayer="clr-namespace:FlyleafLib.MediaPlayer;assembly=FlyleafLib">
+                    xmlns:mediaPlayer="clr-namespace:FlyleafLib.MediaPlayer;assembly=FlyleafLib"
+                    xmlns:b="http://schemas.microsoft.com/xaml/behaviors">
 
     <Style x:Key="CustomizedFlyleafStyle" TargetType="{x:Type wpf:FlyleafME}" BasedOn="{StaticResource {x:Type wpf1:FlyleafHost}}">
         <Setter Property="ActivityTimeout" Value="6000"/>
@@ -108,14 +109,48 @@
                                              Visibility="{Binding Source={StaticResource ConnectionViewModel}, Path=IsConnected, Converter={StaticResource InverseBoolToVisConverter}}"/>
 
                                 <materialDesign:Snackbar VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="75,0,75,0" MaxWidth="300"
-                                                         Background="{StaticResource PrimaryHueMidBrush}"
-                                                         Foreground="{StaticResource MaterialDesignLightForeground}"
+                                                         x:Name="Snackbar"
+                                                         Background="{StaticResource MaterialDesignLightForeground}"
+                                                         Foreground="{StaticResource PrimaryHueMidBrush}"
                                                          MessageQueue="{Binding Source={StaticResource ChatViewModel}, Path=Notifications}">
-                                    <materialDesign:Snackbar.Resources>
-                                        <Style TargetType="materialDesign:SnackbarMessage">
-
+                                    <materialDesign:Snackbar.Style>
+                                        <Style TargetType="materialDesign:Snackbar">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Source={StaticResource MainWindowViewModel}, Path=Player.Activity.Mode}" Value="Active">
+                                                    <DataTrigger.EnterActions>
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <DoubleAnimation Storyboard.TargetProperty="Opacity" To="0.0" Duration="0:0:1"></DoubleAnimation>
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </DataTrigger.EnterActions>
+                                                    <DataTrigger.ExitActions>
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <DoubleAnimation Storyboard.TargetProperty="Opacity" To="1.0" Duration="0:0:1"></DoubleAnimation>
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </DataTrigger.ExitActions>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Source={StaticResource MainWindowViewModel}, Path=Player.Activity.Mode}" Value="Idle">
+                                                    <DataTrigger.EnterActions>
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <DoubleAnimation Storyboard.TargetProperty="Opacity" To="1.0" Duration="0:0:1"></DoubleAnimation>
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </DataTrigger.EnterActions>
+                                                    <DataTrigger.ExitActions>
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <DoubleAnimation Storyboard.TargetProperty="Opacity" To="0.0" Duration="0:0:1"></DoubleAnimation>
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </DataTrigger.ExitActions>
+                                                </DataTrigger>
+                                            </Style.Triggers>
                                         </Style>
-                                    </materialDesign:Snackbar.Resources>
+                                    </materialDesign:Snackbar.Style>
                                 </materialDesign:Snackbar>
 
                                 <!--Flyleaf Bar-->

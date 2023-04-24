@@ -21,8 +21,7 @@ namespace Mobee.Client.WPF.ViewModels
                 Player =
                 {
                     SeekAccurate = true,
-                    AutoPlay = false,
-                    
+                    AutoPlay = false
                 }
             };
 

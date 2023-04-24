@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:Mobee.Client.WPF.Controls"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:data="clr-namespace:Mobee.Client.WPF.Data"
+             xmlns:emoji="clr-namespace:Emoji.Wpf;assembly=Emoji.Wpf"
              mc:Ignorable="d" 
              DataContext="{StaticResource ChatViewModel}"
              MouseEnter="ChatSidebar_OnMouseEnter"
@@ -23,11 +24,21 @@
                     <ColumnDefinition Width="20*"/>
                     <ColumnDefinition Width="28"/>
                 </Grid.ColumnDefinitions>
-                <TextBox Text="{Binding MessageInput, UpdateSourceTrigger=PropertyChanged}" Padding="4"
-                         PreviewKeyUp="_MessageTextbox_OnPreviewKeyUp"
+                <emoji:TextBox Text="{Binding MessageInput, UpdateSourceTrigger=PropertyChanged}" Padding="4"
+                               PreviewKeyUp="_MessageTextbox_OnPreviewKeyUp"
                          materialDesign:TextFieldAssist.DecorationVisibility="Collapsed"
+                               MaxWidth="240"
+                               HorizontalAlignment="Right"
                          Background="#4C000000" Foreground="{StaticResource MaterialDesignDarkForeground}" Name="_MessageTextbox">
-                </TextBox>
+                    <emoji:TextBox.Resources>
+                        <Style TargetType="emoji:RichTextBox" BasedOn="{StaticResource MaterialDesignRichTextBox}">
+                            <Setter Property="Background" Value="#4C000000"></Setter>
+                            <Setter Property="HorizontalAlignment" Value="Right"></Setter>
+                            <Setter Property="MaxWidth" Value="240"></Setter>
+                            <EventSetter Event="TextChanged" Handler="TextInput_TextChanged"></EventSetter>
+                        </Style>
+                    </emoji:TextBox.Resources>
+                </emoji:TextBox>
                 <Button Grid.Column="1" Padding="0,0,0,0" Margin="4,0,0,0" IsEnabled="{Binding CanSendMessage}" Command="{Binding SendMessageCommand}" Name="_SendButton" Style="{StaticResource MaterialDesignFlatButton}">
                     <materialDesign:PackIcon Kind="Send"></materialDesign:PackIcon>
                 </Button>
@@ -40,10 +51,10 @@
                             <Border Name="_Part_MessageBorder"
                                             Padding="8" Background="{StaticResource PrimaryHueMidBrush}"
                                                 CornerRadius="8,8,0,8" Margin="24,4,0,0">
-                                <TextBlock Text="{Binding Message}" Name="_Part_MessageText"
-                                                       TextWrapping="Wrap"
-                                                       Foreground="{StaticResource MaterialDesignLightForeground}">
-                                </TextBlock>
+                                <emoji:TextBlock Text="{Binding Message}" x:Name="_Part_MessageText"
+                                                 TextWrapping="Wrap"
+                                                 Foreground="{StaticResource MaterialDesignLightForeground}">
+                                </emoji:TextBlock>
                             </Border>
                             <DataTemplate.Triggers>
                                 <DataTrigger Binding="{Binding IsSelf}" Value="True">
@@ -56,6 +67,21 @@
                                     <Setter TargetName="_Part_MessageBorder"
                                                             Property="CornerRadius"
                                                             Value="8,8,8,0"></Setter>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding IsXLEmoji}" Value="True">
+                                    <Setter TargetName="_Part_MessageText" Property="FontSize" Value="32"></Setter>
+                                    <Setter TargetName="_Part_MessageBorder"
+                                            Property="Background"
+                                            Value="Transparent"></Setter>
+                                    <Setter TargetName="_Part_MessageBorder"
+                                            Property="Padding"
+                                            Value="2"></Setter>
+                                    <Setter TargetName="_Part_MessageBorder"
+                                            Property="Margin"
+                                            Value="0,3,0,3"></Setter>
+                                    <Setter TargetName="_Part_MessageText"
+                                            Property="Foreground"
+                                            Value="#FAFAFA"></Setter>
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding IsBroadcast}" Value="True">
                                     <Setter TargetName="_Part_MessageBorder"

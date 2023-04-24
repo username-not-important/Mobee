@@ -5,18 +5,26 @@
     <TargetFramework>net7.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="Assets\MobeeLogoDark.png" />
+    <None Remove="Icon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Icon.ico" />
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="Assets\MobeeLogoDark.png" />
+    <Resource Include="Icon.png" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.0.0" />
+    <PackageReference Include="Emoji.Wpf" Version="0.3.4" />
     <PackageReference Include="Flurl.Http" Version="3.2.4" />
     <PackageReference Include="FlyleafLib" Version="3.6.6" />
     <PackageReference Include="FlyleafLib.Controls.WPF" Version="1.2.4" />
@@ -49,10 +57,6 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Utilities\" />
   </ItemGroup>
 
 </Project>

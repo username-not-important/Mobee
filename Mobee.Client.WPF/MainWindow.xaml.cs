@@ -237,7 +237,7 @@ namespace Mobee.Client.WPF
             {
                 await Hub.SendMessage(ConfigurationStore.GroupName, ConfigurationStore.UserName, message);
 
-                this.Dispatcher.Invoke(() =>
+                Dispatcher.Invoke(() =>
                 {
                     ChatViewModel.Messages.Add(new ChatMessage($"me: {message}", true));
 
@@ -271,7 +271,7 @@ namespace Mobee.Client.WPF
 
             Status = isPlaying;
 
-            await this.Dispatcher.InvokeAsync(() =>
+            await Dispatcher.InvokeAsync(() =>
             {
                 string action = isPlaying ? "▶️" : "⏸️";
                 
@@ -295,7 +295,7 @@ namespace Mobee.Client.WPF
 
         public async Task ReceiveMessage(string from, string message)
         {
-            await this.Dispatcher.InvokeAsync(() =>
+            await Dispatcher.InvokeAsync(() =>
             {
                 var messageText = $"{from}: {message}";
 
@@ -308,7 +308,7 @@ namespace Mobee.Client.WPF
 
         public async Task MemberJoined(string user)
         {
-            await this.Dispatcher.InvokeAsync(() =>
+            await Dispatcher.InvokeAsync(() =>
             {
                 var messageText = $"{user} joined";
 

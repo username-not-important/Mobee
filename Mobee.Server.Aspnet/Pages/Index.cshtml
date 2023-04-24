@@ -1,4 +1,5 @@
 ﻿@page
+@using Mobee.Common
 @model IndexModel
 @{
     ViewData["Title"] = "Home page";
@@ -41,6 +42,8 @@
                         </span>
                         <span id="typed"></span>
                     </h1>
+                    <br/>
+                    <span class="text-muted mt-2">Currently running api version @IPlayerHub.__API_Version</span>
                     <div class="headline__numblock d-flex align-items-start">
                         <div class="numblock block-rounded-m d-flex flex-column flex-sm-row align-items-sm-center">
                             <span class="numblock__number">free</span>
@@ -135,36 +138,7 @@
         <!-- Sosials Mobile Start -->
         <div class="col-12 socials-mobile">
             <ul>
-                <li>
-                    <a href="https://www.facebook.com/" target="_blank">
-                        <i class="fa-brands fa-facebook"></i>
-                    </a>
-                </li>
-                <li>
-                    <a href="https://www.instagram.com/" target="_blank">
-                        <i class="fa-brands fa-instagram"></i>
-                    </a>
-                </li>
-                <li>
-                    <a href="https://www.pinterest.com/" target="_blank">
-                        <i class="fa-brands fa-pinterest"></i>
-                    </a>
-                </li>
-                <li>
-                    <a href="https://www.behance.net/" target="_blank">
-                        <i class="fa-brands fa-behance"></i>
-                    </a>
-                </li>
-                <li>
-                    <a href="https://twitter.com/" target="_blank">
-                        <i class="fa-brands fa-twitter"></i>
-                    </a>
-                </li>
-                <li>
-                    <a href="https://dribbble.com/" target="_blank">
-                        <i class="fa-brands fa-dribbble"></i>
-                    </a>
-                </li>
+                
             </ul>
         </div>
         <!-- Sosials Mobile End -->

@@ -14,7 +14,7 @@
         FontFamily="{DynamicResource MaterialDesignFont}"
         mc:Ignorable="d"
         Name="Window"
-        Title="Configure" Height="540" Width="1024">
+        Title="Configure Mobee" Height="540" Width="1024" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen">
     <Grid DataContext="{Binding ElementName=Window, Path=ViewModel}">
         <Grid.RowDefinitions>
             <RowDefinition Height="180"/>

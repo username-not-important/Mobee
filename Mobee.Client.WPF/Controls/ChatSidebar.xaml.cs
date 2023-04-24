@@ -79,5 +79,20 @@ namespace Mobee.Client.WPF.Controls
 
             viewModel.ToggleKeyBindings(true);
         }
+
+        private void TextInput_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (DataContext == null && !(DataContext is ChatViewModel))
+                return;
+
+            var textbox = (sender as RichTextBox);
+            if (textbox == null)
+                return;
+
+            string text = new TextRange(textbox.Document.ContentStart, textbox.Document.ContentEnd).Text;
+            
+            var viewModel = DataContext as ChatViewModel;
+            viewModel.MessageInput = text;
+        }
     }
 }
