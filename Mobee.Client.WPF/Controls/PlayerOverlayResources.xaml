@@ -70,11 +70,54 @@
                                         <ColumnDefinition Width="200" MinWidth="150"></ColumnDefinition>
                                     </Grid.ColumnDefinitions>
                                     
-                                <controls:ChatSidebar x:Name="ChatSidebar" Margin="0,0,0,60" Padding="4" HorizontalAlignment="Right"
+                                    <controls:ChatSidebar x:Name="ChatSidebar" Margin="0,0,0,60" Padding="4" HorizontalAlignment="Right"
                                                       Grid.Column="1">
-                                    <controls:ChatSidebar.Style>
-                                        <Style TargetType="controls:ChatSidebar">
-                                            <Style.Triggers>
+                                        <controls:ChatSidebar.Style>
+                                            <Style TargetType="controls:ChatSidebar">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Source={StaticResource MainWindowViewModel}, Path=Player.Activity.Mode}" Value="Active">
+                                                        <DataTrigger.EnterActions>
+                                                            <BeginStoryboard>
+                                                                <Storyboard>
+                                                                    <DoubleAnimation Storyboard.TargetProperty="Opacity" To="1.0" Duration="0:0:1"></DoubleAnimation>
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                        </DataTrigger.EnterActions>
+                                                        <DataTrigger.ExitActions>
+                                                            <BeginStoryboard>
+                                                                <Storyboard>
+                                                                    <DoubleAnimation Storyboard.TargetProperty="Opacity" To="0.0" Duration="0:0:1"></DoubleAnimation>
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                        </DataTrigger.ExitActions>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Source={StaticResource MainWindowViewModel}, Path=Player.Activity.Mode}" Value="Idle">
+                                                        <DataTrigger.EnterActions>
+                                                            <BeginStoryboard>
+                                                                <Storyboard>
+                                                                    <DoubleAnimation Storyboard.TargetProperty="Opacity" To="0.0" Duration="0:0:1"></DoubleAnimation>
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                        </DataTrigger.EnterActions>
+                                                        <DataTrigger.ExitActions>
+                                                            <BeginStoryboard>
+                                                                <Storyboard>
+                                                                    <DoubleAnimation Storyboard.TargetProperty="Opacity" To="1.0" Duration="0:0:1"></DoubleAnimation>
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                        </DataTrigger.ExitActions>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </controls:ChatSidebar.Style>
+                                    </controls:ChatSidebar>
+                                    
+                                    <GridSplitter Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Stretch"
+                                                  Margin="0,0,0,68" x:Name="GridSplitter"
+                                                  Background="{StaticResource MaterialDesignDivider}" Width="2">
+                                        <GridSplitter.Style>
+                                            <Style TargetType="GridSplitter">
+                                                <Style.Triggers>
                                                 <DataTrigger Binding="{Binding Source={StaticResource MainWindowViewModel}, Path=Player.Activity.Mode}" Value="Active">
                                                     <DataTrigger.EnterActions>
                                                         <BeginStoryboard>
@@ -108,13 +151,9 @@
                                                     </DataTrigger.ExitActions>
                                                 </DataTrigger>
                                             </Style.Triggers>
-                                        </Style>
-                                    </controls:ChatSidebar.Style>
-                                </controls:ChatSidebar>
-                                    
-                                    <GridSplitter Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Stretch"
-                                                  Margin="4,0,0,0"
-                                                  Background="{StaticResource MaterialDesignDivider}" Width="2"></GridSplitter>
+                                            </Style>
+                                        </GridSplitter.Style>
+                                    </GridSplitter>
                                 </Grid>
 
                                 <ProgressBar VerticalAlignment="Top" HorizontalAlignment="Stretch" IsIndeterminate="True"

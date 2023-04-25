@@ -84,7 +84,7 @@ public class ChatMessage
             var stringInfo = new System.Globalization.StringInfo(PureMessage);
             var length = stringInfo.LengthInTextElements;
 
-            return !string.IsNullOrWhiteSpace(Message) && length > 2 && length < 5 && PureMessage.IsAllEmoji();
+            return !string.IsNullOrWhiteSpace(Message) && length is > 2 and < 5 && PureMessage.IsAllEmoji();
         }
     }
 }

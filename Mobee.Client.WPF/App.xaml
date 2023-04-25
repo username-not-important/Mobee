@@ -14,6 +14,7 @@
             </ResourceDictionary.MergedDictionaries>
 
             <converters:MessageTextToDirectionConverter x:Key="MessageTextToDirectionConverter"></converters:MessageTextToDirectionConverter>
+            <converters:MessageTextToFontSizeConverter x:Key="MessageTextToFontSizeConverter"></converters:MessageTextToFontSizeConverter>
 
             <viewModels:ChatViewModel x:Key="ChatViewModel"/>
             <viewModels:MainWindowViewModel x:Key="MainWindowViewModel"/>

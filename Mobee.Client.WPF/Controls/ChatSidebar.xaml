@@ -50,6 +50,7 @@
                                             Padding="8" Background="{StaticResource PrimaryHueMidBrush}"
                                                 CornerRadius="8,8,0,8" Margin="24,4,0,0">
                                 <emoji:TextBlock Text="{Binding DisplayedMessage}" x:Name="_Part_MessageText"
+                                                 FontSize="{Binding DisplayedMessage, Converter={StaticResource MessageTextToFontSizeConverter}}"
                                                  TextWrapping="Wrap"
                                                  FlowDirection="{Binding DisplayedMessage, Converter={StaticResource MessageTextToDirectionConverter}}"
                                                  Foreground="{StaticResource MaterialDesignLightForeground}">
