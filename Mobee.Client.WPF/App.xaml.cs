@@ -11,6 +11,7 @@ using Microsoft.Extensions.Hosting;
 using Mobee.Client.WPF.IoC;
 using Mobee.Client.WPF.Stores;
 using Mobee.Client.WPF.ViewModels;
+using Mobee.Common.Hubs;
 using Logger = Mobee.Client.WPF.Logs.Logger;
 
 namespace Mobee.Client.WPF
@@ -20,6 +21,8 @@ namespace Mobee.Client.WPF
     /// </summary>
     public partial class App : Application
     {
+        public static string __API_Version => HubMeta.__API_Version;
+
         public IHost? AppHost { get; }
 
         public App()

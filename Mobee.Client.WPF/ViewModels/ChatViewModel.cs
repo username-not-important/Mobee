@@ -14,6 +14,7 @@ namespace Mobee.Client.WPF.ViewModels
     public partial class ChatViewModel : ObservableObject
     {
         public event EventHandler? SendMessageInvoked;
+        public event EventHandler? PreventIdleInvoked;
         public event EventHandler<bool>? ToggleKeyBindingsInvoked; 
 
         [ObservableProperty]
@@ -28,6 +29,11 @@ namespace Mobee.Client.WPF.ViewModels
             SendMessageInvoked?.Invoke(this, EventArgs.Empty);
         }
         
+        public void PrevevntIdle()
+        {
+            PreventIdleInvoked?.Invoke(this, EventArgs.Empty);
+        }
+
         public void ToggleKeyBindings(bool isEnabled)
         {
             ToggleKeyBindingsInvoked?.Invoke(this, isEnabled);
@@ -35,5 +41,6 @@ namespace Mobee.Client.WPF.ViewModels
 
         public ObservableCollection<ChatMessage> Messages { get; set; } = new();
         public ISnackbarMessageQueue Notifications { get; set; } = new SnackbarMessageQueue(TimeSpan.FromSeconds(3.0));
+
     }
 }

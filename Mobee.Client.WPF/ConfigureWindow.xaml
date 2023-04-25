@@ -39,6 +39,10 @@
                            TextWrapping="Wrap" FontSize="38" FontWeight="Bold" />
 
                 <TextBlock Style="{StaticResource MaterialDesignBody1TextBlock}" Text="Synced Video and Movie Player"></TextBlock>
+                <TextBlock Style="{StaticResource MaterialDesignCaptionTextBlock}">
+                    <Run>Currently running api version</Run>
+                    <Run Text="{Binding Source={x:Static local:App.__API_Version}, Mode=OneTime}"></Run>
+                </TextBlock>
             </StackPanel>
         </Grid>
 

@@ -49,15 +49,17 @@ namespace Mobee.Client.WPF.Controls
 
         private void _MessageTextbox_OnPreviewKeyUp(object sender, KeyEventArgs e)
         {
+            if (DataContext == null && !(DataContext is ChatViewModel))
+                return;
+
+            var viewModel = DataContext as ChatViewModel;
+
             if (e.Key == Key.Enter)
             {
-                if (DataContext == null && !(DataContext is ChatViewModel))
-                    return;
-
-                var viewModel = DataContext as ChatViewModel;
-                
                 viewModel.SendMessage();
             }
+
+            viewModel.PrevevntIdle();
         }
 
         private void ChatSidebar_OnMouseEnter(object sender, MouseEventArgs e)

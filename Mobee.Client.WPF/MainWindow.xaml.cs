@@ -91,7 +91,15 @@ namespace Mobee.Client.WPF
         private void InitializeChat()
         {
             ChatViewModel.SendMessageInvoked += OnSendMessage;
+            ChatViewModel.PreventIdleInvoked += OnPreventIdle;
             ChatViewModel.ToggleKeyBindingsInvoked += OnToggleKeyBindings;
+        }
+
+        private void OnPreventIdle(object? sender, EventArgs e)
+        {
+            //if (FlyleafMe.Player.Activity.)
+
+            FlyleafMe.Player.Activity.RefreshActive();
         }
 
         private void InitializeHub()
