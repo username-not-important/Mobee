@@ -27,6 +27,7 @@
                 <emoji:TextBox Text="{Binding MessageInput, UpdateSourceTrigger=PropertyChanged}" Padding="4"
                                PreviewKeyUp="_MessageTextbox_OnPreviewKeyUp"
                                 materialDesign:TextFieldAssist.DecorationVisibility="Collapsed"
+                               FlowDirection="{Binding MessageInput, Converter={StaticResource MessageTextToDirectionConverter}, UpdateSourceTrigger=PropertyChanged}"
                                Grid.Column="0"
                          Background="#4C000000" Foreground="{StaticResource MaterialDesignDarkForeground}" Name="_MessageTextbox">
                     <emoji:TextBox.Resources>
@@ -50,6 +51,7 @@
                                                 CornerRadius="8,8,0,8" Margin="24,4,0,0">
                                 <emoji:TextBlock Text="{Binding DisplayedMessage}" x:Name="_Part_MessageText"
                                                  TextWrapping="Wrap"
+                                                 FlowDirection="{Binding DisplayedMessage, Converter={StaticResource MessageTextToDirectionConverter}}"
                                                  Foreground="{StaticResource MaterialDesignLightForeground}">
                                 </emoji:TextBlock>
                                 <Border.RenderTransform>
