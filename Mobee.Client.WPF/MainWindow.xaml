@@ -22,11 +22,29 @@
         Title="Mobee Player" Height="640" Width="1200" WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
-        <ResourceDictionary Source="Controls/PlayerOverlayResources.xaml"></ResourceDictionary>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Controls/PlayerOverlayResources.xaml"></ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+            
+            <Storyboard x:Key="ConnectedStoryboard">
+                <DoubleAnimation Storyboard.TargetName="LoadingCard" Storyboard.TargetProperty="Opacity"
+                                 From="1" To="0" DecelerationRatio="0.3" Duration="0:0:1" SpeedRatio="2"></DoubleAnimation>
+                <DoubleAnimation Storyboard.TargetName="FlyleafMe" Storyboard.TargetProperty="Opacity"
+                                 From="0" To="1" DecelerationRatio="0.3" Duration="0:0:1" SpeedRatio="2"></DoubleAnimation>
+            </Storyboard>
+        </ResourceDictionary>
     </Window.Resources>
     <Grid DataContext="{Binding ElementName=Window, Path=ViewModel}">
         <Grid>
-            <wpf1:FlyleafME Style="{StaticResource CustomizedFlyleafStyle}" 
+            <materialDesign:Card Margin="16" x:Name="LoadingCard">
+                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <ProgressBar x:Name="DeterminateCircularProgress" Style="{StaticResource MaterialDesignCircularProgressBar}" />
+                    <TextBlock Margin="0,4,0,0">Connecting to server...</TextBlock>
+                </StackPanel>
+            </materialDesign:Card>
+
+            <wpf1:FlyleafME Style="{StaticResource CustomizedFlyleafStyle}" Opacity="0" IsEnabled="{Binding Source={StaticResource ConnectionViewModel}, Path=IsConnected}"
                             Player="{Binding Player}" Name="FlyleafMe">
             </wpf1:FlyleafME>
 

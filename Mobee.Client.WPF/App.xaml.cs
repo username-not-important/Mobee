@@ -48,13 +48,18 @@ namespace Mobee.Client.WPF
 
             await AppHost!.StartAsync();
 
-            var mainWindow = AppHost.Services.GetRequiredService<WPF.ConfigureWindow>();
-            mainWindow.Show();
+            StartConfiguration();
 
             Logger.Instance.Log("Starting Up...", true);
 
             base.OnStartup(e);
 
+        }
+
+        public void StartConfiguration()
+        {
+            var window = AppHost.Services.GetRequiredService<ConfigureWindow>();
+            window.Show();
         }
 
         protected override async void OnExit(ExitEventArgs e)

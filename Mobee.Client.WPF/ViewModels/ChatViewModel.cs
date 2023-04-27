@@ -14,6 +14,7 @@ namespace Mobee.Client.WPF.ViewModels
     public partial class ChatViewModel : ObservableObject
     {
         public event EventHandler? SendMessageInvoked;
+        public event EventHandler<string>? SendEmojiInvoked; 
         public event EventHandler? PreventIdleInvoked;
         public event EventHandler<bool>? ToggleKeyBindingsInvoked; 
 
@@ -27,6 +28,15 @@ namespace Mobee.Client.WPF.ViewModels
         public void SendMessage()
         {
             SendMessageInvoked?.Invoke(this, EventArgs.Empty);
+        }
+        
+        [RelayCommand]
+        public void SendEmoji(string? emoji)
+        {
+            if (emoji == null || string.IsNullOrWhiteSpace(emoji))
+                return;
+
+            SendEmojiInvoked?.Invoke(this, emoji);
         }
         
         public void PrevevntIdle()

@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Diagnostics.Metrics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,6 +16,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -81,25 +84,32 @@ namespace Mobee.Client.WPF
         private async void OnLoaded(object sender, RoutedEventArgs e)
         {
             await Connect();
-            
+
+            InitializePlayer();
+        }
+
+        private void InitializePlayer()
+        {
             var ratio = ViewModel.Player.Video.AspectRatio;
             Height = ActualWidth / ratio.Value + 30;
 
             FlyleafMe.SelectedTheme = FlyleafMe.UIConfig.Themes.FirstOrDefault(x => x.Name == "Orange");
+
+            ViewModel.ReconfigureInvoked += OnReconfigureInvoked;
+        }
+
+        private void OnReconfigureInvoked(object? sender, EventArgs e)
+        {
+            System.Windows.Forms.Application.Restart();
+            System.Windows.Application.Current.Shutdown();
         }
 
         private void InitializeChat()
         {
             ChatViewModel.SendMessageInvoked += OnSendMessage;
+            ChatViewModel.SendEmojiInvoked += OnSendEmoji;
             ChatViewModel.PreventIdleInvoked += OnPreventIdle;
             ChatViewModel.ToggleKeyBindingsInvoked += OnToggleKeyBindings;
-        }
-
-        private void OnPreventIdle(object? sender, EventArgs e)
-        {
-            //if (FlyleafMe.Player.Activity.)
-
-            FlyleafMe.Player.Activity.RefreshActive();
         }
 
         private void InitializeHub()
@@ -131,11 +141,18 @@ namespace Mobee.Client.WPF
             ViewModel.Player.PropertyChanged += PlayerOnPropertyChanged;
         }
 
+        private void OnPreventIdle(object? sender, EventArgs e)
+        {
+            //if (FlyleafMe.Player.Activity.)
+
+            FlyleafMe.Player.Activity.RefreshActive();
+        }
+
         private void ReleaseSyncLock()
         {
             Task.Run(() =>
             {
-                Thread.Sleep(500);
+                Thread.Sleep(200);
                 SyncLock = false;
             });
         }
@@ -175,11 +192,18 @@ namespace Mobee.Client.WPF
             {
                 await connection.StartAsync();
 
-                ConnectionViewModel.IsConnected = true;
+                await Hub.JoinGroup(ConfigurationStore.GroupName, ConfigurationStore.UserName);
+                
                 ViewModel.Player.Open(ConfigurationStore.FilePath);
                 ViewModel.Player.Pause();
 
-                await Hub.JoinGroup(ConfigurationStore.GroupName, ConfigurationStore.UserName);
+                ConnectionViewModel.IsConnected = true;
+
+                await Dispatcher.InvokeAsync(() =>
+                {
+                    var storyboard = Resources["ConnectedStoryboard"] as Storyboard;
+                    storyboard.Begin();
+                });
             }
             catch (Exception ex)
             {
@@ -247,16 +271,18 @@ namespace Mobee.Client.WPF
 
             try
             {
-                await Hub.SendMessage(ConfigurationStore.GroupName, ConfigurationStore.UserName, message);
+                ChatViewModel.MessageInput = "";
 
-                Dispatcher.Invoke(() =>
+                var sendTask = Hub.SendMessage(ConfigurationStore.GroupName, ConfigurationStore.UserName, message);
+                var addTask = Dispatcher.InvokeAsync(() =>
                 {
-                    ChatViewModel.Messages.Add(new ChatMessage($"me: {message}", true));
+                    ChatViewModel.Messages.Add(new ChatMessage($"{message}", true));
 
                     CleanupMessages();
                 });
-
-                ChatViewModel.MessageInput = "";
+                
+                await addTask;
+                await sendTask;
             }
             catch (Exception ex)
             {
@@ -264,6 +290,29 @@ namespace Mobee.Client.WPF
             }
         }
         
+        private async void OnSendEmoji(object? sender, string emoji)
+        {
+            var message = EmojiExtensions.GetEmojiChar(emoji);
+            
+            try
+            {
+                var sendTask = Hub.SendMessage(ConfigurationStore.GroupName, ConfigurationStore.UserName, message);
+                var addTask = Dispatcher.InvokeAsync(() =>
+                {
+                    ChatViewModel.Messages.Add(new ChatMessage($"{message}", true));
+
+                    CleanupMessages();
+                });
+
+                await addTask;
+                await sendTask;
+            }
+            catch (Exception ex)
+            {
+                
+            }
+        }
+
         private void OnToggleKeyBindings(object? sender, bool isEnabled)
         {
             FlyleafMe.KeyBindings = isEnabled ? AvailableWindows.Surface : AvailableWindows.None;
@@ -309,10 +358,10 @@ namespace Mobee.Client.WPF
         {
             await Dispatcher.InvokeAsync(() =>
             {
-                var messageText = $"{from}: {message}";
+                var messageText = $"{message}";
 
-                ChatViewModel.Messages.Add(new ChatMessage(messageText));
-                ChatViewModel.Notifications.Enqueue(messageText);
+                ChatViewModel.Messages.Add(new ChatMessage(from, messageText));
+                ChatViewModel.Notifications.Enqueue($"{from}: {messageText}");
                 
                 CleanupMessages();
             });

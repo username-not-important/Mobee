@@ -4,8 +4,13 @@ namespace Mobee.Client.WPF.Data;
 
 public class ChatMessage
 {
-    public ChatMessage(string message, bool isSelf = false, bool isBroadcast = false)
+    public ChatMessage(string message, bool isSelf = false, bool isBroadcast = false) : this("", message, isSelf, isBroadcast)
     {
+    }
+    
+    public ChatMessage(string sender, string message, bool isSelf = false, bool isBroadcast = false)
+    {
+        Sender = sender;
         Message = message;
         IsSelf = isSelf;
         IsBroadcast = isBroadcast;
@@ -14,6 +19,8 @@ public class ChatMessage
     public bool IsBroadcast { get; set; }
 
     public bool IsSelf { get; set; }
+
+    public string Sender { get; set; }
 
     public string Message { get; set; }
 
@@ -47,44 +54,5 @@ public class ChatMessage
         }
     }
     
-    public bool IsAllEmoji
-    {
-        get
-        {
-            return !string.IsNullOrWhiteSpace(Message) && PureMessage.IsAllEmoji();
-        }
-    }
-
-    public bool IsXLEmoji
-    {
-        get
-        {
-            var stringInfo = new System.Globalization.StringInfo(PureMessage);
-            var length = stringInfo.LengthInTextElements;
-
-            return !string.IsNullOrWhiteSpace(Message) && length == 1 && PureMessage.HasEmoji();
-        }
-    }
-
-    public bool IsLEmoji
-    {
-        get
-        {
-            var stringInfo = new System.Globalization.StringInfo(PureMessage);
-            var length = stringInfo.LengthInTextElements;
-
-            return !string.IsNullOrWhiteSpace(Message) && length == 2 && PureMessage.HasEmoji();
-        }
-    }
-
-    public bool IsMEmoji
-    {
-        get
-        {
-            var stringInfo = new System.Globalization.StringInfo(PureMessage);
-            var length = stringInfo.LengthInTextElements;
-
-            return !string.IsNullOrWhiteSpace(Message) && length is > 2 and < 5 && PureMessage.IsAllEmoji();
-        }
-    }
+    public bool IsAllEmoji => PureMessage.IsAllEmoji();
 }

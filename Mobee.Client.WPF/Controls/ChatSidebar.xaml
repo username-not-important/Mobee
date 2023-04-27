@@ -12,6 +12,13 @@
              MouseEnter="ChatSidebar_OnMouseEnter"
              MouseLeave="ChatSidebar_OnMouseLeave"
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.PopupBox.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
 
     <Border CornerRadius="8" Padding="4" Background="#4C000000" BorderBrush="{StaticResource PrimaryHueMidBrush}">
         <DockPanel>
@@ -22,6 +29,7 @@
             <Grid DockPanel.Dock="Bottom">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="28"/>
                     <ColumnDefinition Width="28"/>
                 </Grid.ColumnDefinitions>
                 <emoji:TextBox Text="{Binding MessageInput, UpdateSourceTrigger=PropertyChanged}" Padding="4"
@@ -37,23 +45,95 @@
                         </Style>
                     </emoji:TextBox.Resources>
                 </emoji:TextBox>
-                <Button Grid.Column="1" Padding="0,0,0,0" Margin="4,0,0,0" IsEnabled="{Binding CanSendMessage}" Command="{Binding SendMessageCommand}" Name="_SendButton" Style="{StaticResource MaterialDesignFlatButton}">
+                <materialDesign:PopupBox Grid.Column="1" PopupMode="Click" Style="{StaticResource MaterialDesignMultiFloatingActionPopupBox}"
+                                         Width="20" Height="20" Background="Transparent" BorderBrush="Transparent"
+                                         PlacementMode="TopAndAlignRightEdges" Foreground="{StaticResource PrimaryHueMidBrush}">
+                    <materialDesign:PopupBox.ToggleContent>
+                        <materialDesign:PackIcon Width="18" Height="18" Kind="Emoji" />
+                    </materialDesign:PopupBox.ToggleContent>
+                    <materialDesign:PopupBox.ToggleCheckedContent>
+                        <materialDesign:PackIcon Width="18" Height="18" Kind="EmojiHappy" />
+                    </materialDesign:PopupBox.ToggleCheckedContent>
+                    <WrapPanel MaxWidth="320" Orientation="Horizontal" DataContext="{StaticResource ChatViewModel}">
+                        <WrapPanel.Resources>
+                            <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignPopupBoxButton}">
+                                <Setter Property="Foreground" Value="{StaticResource PrimaryHueMidBrush}"></Setter>
+                                <Setter Property="Background" Value="{StaticResource MaterialDesignBackground}"></Setter>
+                            </Style>
+                            <Style TargetType="materialDesign:PackIcon">
+                                <Setter Property="Width" Value="22"></Setter>
+                                <Setter Property="Height" Value="22"></Setter>
+                                <Setter Property="Margin" Value="0,4,0,0"></Setter>
+                                <Setter Property="VerticalAlignment" Value="Center"></Setter>
+                            </Style>
+                            <Style TargetType="emoji:TextBlock">
+                                <Setter Property="FontSize" Value="20"></Setter>
+                            </Style>
+                        </WrapPanel.Resources>
+                        <Button Command="{Binding SendEmojiCommand}" CommandParameter="Lol">
+                            <emoji:TextBlock>😂</emoji:TextBlock>
+                        </Button>
+                        <Button Command="{Binding SendEmojiCommand}" CommandParameter="Excited">
+                            <emoji:TextBlock>😍</emoji:TextBlock>
+                        </Button>
+                        <Button Command="{Binding SendEmojiCommand}" CommandParameter="Kiss">
+                            <emoji:TextBlock>😘</emoji:TextBlock>
+                        </Button>
+                        <Button Command="{Binding SendEmojiCommand}" CommandParameter="Pleading">
+                            <emoji:TextBlock>🥺</emoji:TextBlock>
+                        </Button>
+                        <Button Command="{Binding SendEmojiCommand}" CommandParameter="Cry">
+                            <emoji:TextBlock>😭</emoji:TextBlock>
+                        </Button>
+                        <Button Command="{Binding SendEmojiCommand}" CommandParameter="Frown">
+                            <emoji:TextBlock>☹️</emoji:TextBlock>
+                        </Button>
+                        <Button Command="{Binding SendEmojiCommand}" CommandParameter="Neutral">
+                            <emoji:TextBlock>😐</emoji:TextBlock>
+                        </Button>
+                        <Button Command="{Binding SendEmojiCommand}" CommandParameter="HeartSpark">
+                            <emoji:TextBlock>💖</emoji:TextBlock>
+                        </Button>
+                        <Button Command="{Binding SendEmojiCommand}" CommandParameter="Angry">
+                            <emoji:TextBlock>😡</emoji:TextBlock>
+                        </Button>
+                    </WrapPanel>
+                </materialDesign:PopupBox>
+                <Button Grid.Column="2" Padding="0,0,0,0" Margin="0,0,0,0" IsEnabled="{Binding CanSendMessage}" Command="{Binding SendMessageCommand}" Name="_SendButton" Style="{StaticResource MaterialDesignFlatButton}">
                     <materialDesign:PackIcon Kind="Send"></materialDesign:PackIcon>
                 </Button>
             </Grid>
             <ScrollViewer Margin="0,8,0,2" VerticalScrollBarVisibility="Auto" x:Name="_MessagesScrollviewer">
-                <ItemsControl Margin="0,0,8,0"
+                <ItemsControl Margin="0,0,8,0" HorizontalContentAlignment="Left"
                                               ItemsSource="{Binding Messages}">
+                    <ItemsControl.ItemContainerStyle>
+                        <Style TargetType="ContentPresenter">
+                            <Setter Property="HorizontalAlignment" Value="Left"></Setter>
+                            <Setter Property="MinWidth" Value="75"></Setter>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsSelf}" Value="False">
+                                    <Setter Property="HorizontalAlignment" Value="Right"></Setter>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding IsBroadcast}" Value="True">
+                                    <Setter Property="HorizontalAlignment" Value="Center"></Setter>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ItemsControl.ItemContainerStyle>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate DataType="{x:Type data:ChatMessage}">
                             <Border Name="_Part_MessageBorder" Opacity="0" d:IsHidden="false"
-                                            Padding="8" Background="{StaticResource PrimaryHueMidBrush}"
+                                    Padding="8" Background="{StaticResource PrimaryHueMidBrush}"
                                                 CornerRadius="8,8,0,8" Margin="24,4,0,0">
-                                <emoji:TextBlock Text="{Binding DisplayedMessage}" x:Name="_Part_MessageText"
-                                                 FontSize="{Binding DisplayedMessage, Converter={StaticResource MessageTextToFontSizeConverter}}"
+                                <emoji:TextBlock x:Name="_Part_MessageText"
                                                  TextWrapping="Wrap"
                                                  FlowDirection="{Binding DisplayedMessage, Converter={StaticResource MessageTextToDirectionConverter}}"
                                                  Foreground="{StaticResource MaterialDesignLightForeground}">
+                                    <TextBlock.Inlines>
+                                        <Run Text="{Binding Sender, Mode=OneTime}" FontWeight="Bold"></Run>
+                                        <Run Text="{Binding DisplayedMessage, Mode=OneTime}" 
+                                             FontSize="{Binding DisplayedMessage, Mode=OneTime, Converter={StaticResource MessageTextToFontSizeConverter}}"></Run>
+                                    </TextBlock.Inlines>
                                 </emoji:TextBlock>
                                 <Border.RenderTransform>
                                     <TranslateTransform Y="10" x:Name="_Part_MessageBorder_Translate"></TranslateTransform>
@@ -93,15 +173,6 @@
                                     <Setter TargetName="_Part_MessageText"
                                             Property="Foreground"
                                             Value="#FAFAFA"></Setter>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding IsXLEmoji}" Value="True">
-                                    <Setter TargetName="_Part_MessageText" Property="FontSize" Value="32"></Setter>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding IsLEmoji}" Value="True">
-                                    <Setter TargetName="_Part_MessageText" Property="FontSize" Value="24"></Setter>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding IsMEmoji}" Value="True">
-                                    <Setter TargetName="_Part_MessageText" Property="FontSize" Value="22"></Setter>
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding IsBroadcast}" Value="True">
                                     <Setter TargetName="_Part_MessageBorder"
