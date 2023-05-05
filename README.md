@@ -2,6 +2,9 @@
 
 # Mobee
 ## WIP
+⚠️ This project is a work-in-progress ⚠️
+
+Mobee is an Open-Source Synced-Video-Player for Windows based on Client-Server architecture which works by utilizing SignalR. This repository contains the source code for the Windows Client and ASP.net server. a free Web Server is deployed on [Mobees.ir](https://mobees.ir/) and Clients are configured to use that server by default.
 
 ### Configuration Screen
 ![Configuration Screen](https://user-images.githubusercontent.com/30866718/231969260-3bcc84a7-5b87-4e8d-8d70-dc5f7d451de3.png)
@@ -16,12 +19,12 @@
  - ✔️ First Release
  - Collapsable Chat Sidebar
  - ✔️ Join into Groups
- - Reactions
+ - ✔️ Reactions
  - Fullscreen overlays (Play/Pause/Seek)
- - Emojies in Chat
- - RTL chat capabilities
+ - ✔️ Emojies in Chat
+ - ✔️ RTL chat capabilities
  - Online users Overlay
- - Member Joined/Left notifications
+ - ✔️ Member Joined/Left notifications
  - ✔️ Keep Media Aspect-Ratio
  
 ## Thanks To:
