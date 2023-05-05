@@ -292,7 +292,7 @@ namespace Mobee.Client.WPF
         
         private async void OnSendEmoji(object? sender, string emoji)
         {
-            var message = EmojiExtensions.GetEmojiChar(emoji);
+            var message = emoji;// EmojiExtensions.GetEmojiChar(emoji);
             
             try
             {

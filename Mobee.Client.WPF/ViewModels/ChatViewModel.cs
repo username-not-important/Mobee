@@ -13,15 +13,29 @@ namespace Mobee.Client.WPF.ViewModels
 {
     public partial class ChatViewModel : ObservableObject
     {
+        public ChatViewModel()
+        {
+            EmojiList = new List<string>()
+            {
+                "😂", "😍", "😘", "🥺", "😭", "☹️", "😐", "💖", "😡"
+            };
+        }
+
+        #region Events
+
         public event EventHandler? SendMessageInvoked;
         public event EventHandler<string>? SendEmojiInvoked; 
         public event EventHandler? PreventIdleInvoked;
         public event EventHandler<bool>? ToggleKeyBindingsInvoked; 
 
+        #endregion
+
         [ObservableProperty]
         [NotifyPropertyChangedFor("CanSendMessage")]
         private string messageInput = "";
-        
+
+        #region Commands
+
         public bool CanSendMessage => !string.IsNullOrWhiteSpace(MessageInput);
         
         [RelayCommand]
@@ -48,6 +62,10 @@ namespace Mobee.Client.WPF.ViewModels
         {
             ToggleKeyBindingsInvoked?.Invoke(this, isEnabled);
         }
+
+        #endregion
+
+        public List<string> EmojiList { get; }
 
         public ObservableCollection<ChatMessage> Messages { get; set; } = new();
         public ISnackbarMessageQueue Notifications { get; set; } = new SnackbarMessageQueue(TimeSpan.FromSeconds(3.0));

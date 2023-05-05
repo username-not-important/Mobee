@@ -54,50 +54,22 @@
                     <materialDesign:PopupBox.ToggleCheckedContent>
                         <materialDesign:PackIcon Width="18" Height="18" Kind="EmojiHappy" />
                     </materialDesign:PopupBox.ToggleCheckedContent>
-                    <WrapPanel MaxWidth="320" Orientation="Horizontal" DataContext="{StaticResource ChatViewModel}">
-                        <WrapPanel.Resources>
-                            <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignPopupBoxButton}">
-                                <Setter Property="Foreground" Value="{StaticResource PrimaryHueMidBrush}"></Setter>
-                                <Setter Property="Background" Value="{StaticResource MaterialDesignBackground}"></Setter>
-                            </Style>
-                            <Style TargetType="materialDesign:PackIcon">
-                                <Setter Property="Width" Value="22"></Setter>
-                                <Setter Property="Height" Value="22"></Setter>
-                                <Setter Property="Margin" Value="0,4,0,0"></Setter>
-                                <Setter Property="VerticalAlignment" Value="Center"></Setter>
-                            </Style>
-                            <Style TargetType="emoji:TextBlock">
-                                <Setter Property="FontSize" Value="20"></Setter>
-                            </Style>
-                        </WrapPanel.Resources>
-                        <Button Command="{Binding SendEmojiCommand}" CommandParameter="Lol">
-                            <emoji:TextBlock>😂</emoji:TextBlock>
-                        </Button>
-                        <Button Command="{Binding SendEmojiCommand}" CommandParameter="Excited">
-                            <emoji:TextBlock>😍</emoji:TextBlock>
-                        </Button>
-                        <Button Command="{Binding SendEmojiCommand}" CommandParameter="Kiss">
-                            <emoji:TextBlock>😘</emoji:TextBlock>
-                        </Button>
-                        <Button Command="{Binding SendEmojiCommand}" CommandParameter="Pleading">
-                            <emoji:TextBlock>🥺</emoji:TextBlock>
-                        </Button>
-                        <Button Command="{Binding SendEmojiCommand}" CommandParameter="Cry">
-                            <emoji:TextBlock>😭</emoji:TextBlock>
-                        </Button>
-                        <Button Command="{Binding SendEmojiCommand}" CommandParameter="Frown">
-                            <emoji:TextBlock>☹️</emoji:TextBlock>
-                        </Button>
-                        <Button Command="{Binding SendEmojiCommand}" CommandParameter="Neutral">
-                            <emoji:TextBlock>😐</emoji:TextBlock>
-                        </Button>
-                        <Button Command="{Binding SendEmojiCommand}" CommandParameter="HeartSpark">
-                            <emoji:TextBlock>💖</emoji:TextBlock>
-                        </Button>
-                        <Button Command="{Binding SendEmojiCommand}" CommandParameter="Angry">
-                            <emoji:TextBlock>😡</emoji:TextBlock>
-                        </Button>
-                    </WrapPanel>
+                    <ItemsControl DataContext="{StaticResource ChatViewModel}" ItemsSource="{Binding EmojiList}" MaxWidth="320" >
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel Orientation="Horizontal">
+                                </WrapPanel>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button Command="{Binding SendEmojiCommand, Source={StaticResource ChatViewModel}}" CommandParameter="{Binding}"
+                                        Foreground="{StaticResource PrimaryHueMidBrush}" Background="{StaticResource MaterialDesignBackground}">
+                                    <emoji:TextBlock FontSize="20" Text="{Binding}"></emoji:TextBlock>
+                                </Button>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
                 </materialDesign:PopupBox>
                 <Button Grid.Column="2" Padding="0,0,0,0" Margin="0,0,0,0" IsEnabled="{Binding CanSendMessage}" Command="{Binding SendMessageCommand}" Name="_SendButton" Style="{StaticResource MaterialDesignFlatButton}">
                     <materialDesign:PackIcon Kind="Send"></materialDesign:PackIcon>
