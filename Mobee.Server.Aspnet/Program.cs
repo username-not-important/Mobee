@@ -9,6 +9,7 @@ namespace Mobee.Server.Aspnet
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            builder.Services.AddSingleton(typeof(UsersRepository));
             builder.Services.AddRazorPages();
             builder.Services.AddSignalR();
 

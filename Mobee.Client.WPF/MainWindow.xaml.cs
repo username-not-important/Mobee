@@ -10,6 +10,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -20,6 +21,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using FlyleafLib.MediaPlayer;
 using FlyleafLib;
 using FlyleafLib.Controls.WPF;
@@ -31,6 +33,7 @@ using Mobee.Client.WPF.ViewModels;
 using Mobee.Common;
 using TypedSignalR.Client;
 using Mobee.Client.WPF.Utilities;
+using Timer = System.Timers.Timer;
 
 namespace Mobee.Client.WPF
 {
@@ -199,6 +202,10 @@ namespace Mobee.Client.WPF
 
                 ConnectionViewModel.IsConnected = true;
 
+                Timer queryTimer = new Timer(TimeSpan.FromSeconds(5));
+                queryTimer.Elapsed += QueryTimerOnElapsed;
+                queryTimer.Start();
+
                 await Dispatcher.InvokeAsync(() =>
                 {
                     var storyboard = Resources["ConnectedStoryboard"] as Storyboard;
@@ -209,6 +216,20 @@ namespace Mobee.Client.WPF
             {
                 ConnectionViewModel.IsConnected = false;
             }
+        }
+
+        private async void QueryTimerOnElapsed(object? sender, ElapsedEventArgs e)
+        {
+            var users = await Hub.QueryGroupUsers(ConfigurationStore.GroupName, ConfigurationStore.UserName);
+
+            await Dispatcher.InvokeAsync(() =>
+            {
+                ChatViewModel.OnlineUsers.Clear();
+                foreach (var user in users)
+                {
+                    ChatViewModel.OnlineUsers.Add(user);
+                }
+            });
         }
 
         private async Task onPlaybackStatusChanged()
@@ -320,7 +341,7 @@ namespace Mobee.Client.WPF
 
         #region IPlaybackClient (Receiving)
 
-        public async Task PlaybackToggled(string user, bool isPlaying, long position)
+        public async Task PlaybackToggled(string? user, bool isPlaying, long position)
         {
             if (SyncLock)
                 return;
@@ -354,7 +375,7 @@ namespace Mobee.Client.WPF
             });
         }
 
-        public async Task ReceiveMessage(string from, string message)
+        public async Task ReceiveMessage(string? from, string message)
         {
             await Dispatcher.InvokeAsync(() =>
             {
@@ -367,11 +388,24 @@ namespace Mobee.Client.WPF
             });
         }
 
-        public async Task MemberJoined(string user)
+        public async Task MemberJoined(string? user)
         {
             await Dispatcher.InvokeAsync(() =>
             {
                 var messageText = $"{user} joined";
+
+                ChatViewModel.Messages.Add(new ChatMessage(messageText, false, true));
+                ChatViewModel.Notifications.Enqueue(messageText);
+                
+                CleanupMessages();
+            });
+        }
+
+        public async Task MemberLeft(string user)
+        {
+            await Dispatcher.InvokeAsync(() =>
+            {
+                var messageText = $"{user} left";
 
                 ChatViewModel.Messages.Add(new ChatMessage(messageText, false, true));
                 ChatViewModel.Notifications.Enqueue(messageText);

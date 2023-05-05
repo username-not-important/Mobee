@@ -22,10 +22,27 @@
 
     <Border CornerRadius="8" Padding="4" Background="#4C000000" BorderBrush="{StaticResource PrimaryHueMidBrush}">
         <DockPanel>
-            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="16"
-                                       Margin="0,5,0,0"
-                                       Foreground="{StaticResource MaterialDesignBody}"
-                                       DockPanel.Dock="Top">Chat</TextBlock>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,5,0,0" DockPanel.Dock="Top">
+                <TextBlock VerticalAlignment="Center" FontWeight="Bold" FontSize="16" Foreground="{StaticResource MaterialDesignBody}" Text="Chat"></TextBlock>
+                <materialDesign:Chip ToolTip="{Binding OnlineUsersNames}" VerticalAlignment="Center"
+                                     Margin="8,0,0,0"
+                                     Foreground="{StaticResource MaterialDesignDarkForeground}"
+                                     IconBackground="{StaticResource PrimaryHueDarkBrush}"
+                                     IconForeground="{StaticResource PrimaryHueDarkForegroundBrush}">
+                    <materialDesign:Chip.Icon>
+                        <materialDesign:PackIcon Kind="User"></materialDesign:PackIcon>
+                    </materialDesign:Chip.Icon>
+                    <materialDesign:Chip.Content>
+                        <TextBlock FontSize="12">
+                            <TextBlock.Inlines>
+                                <Run Text="{Binding OnlineUsers.Count, Mode=OneWay}"></Run>
+                                <Run Text="online"></Run>
+                            </TextBlock.Inlines>
+                        </TextBlock>
+                    </materialDesign:Chip.Content>
+                </materialDesign:Chip>
+                
+            </StackPanel>
             <Grid DockPanel.Dock="Bottom">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>

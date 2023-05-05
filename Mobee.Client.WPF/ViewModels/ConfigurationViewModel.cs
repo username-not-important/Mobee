@@ -42,13 +42,13 @@ namespace Mobee.Client.WPF.ViewModels
         [MinLength(3)]
         [ObservableProperty]
         [NotifyPropertyChangedFor("CanLaunch")]
-        private string userName;
+        private string? userName;
         
         [Required]
         [MinLength(3)]
         [ObservableProperty]
         [NotifyPropertyChangedFor("CanLaunch")]
-        private string groupName;
+        private string? groupName;
         
         [Required]
         [ObservableProperty]

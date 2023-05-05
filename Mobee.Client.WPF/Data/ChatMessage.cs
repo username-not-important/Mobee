@@ -8,7 +8,7 @@ public class ChatMessage
     {
     }
     
-    public ChatMessage(string sender, string message, bool isSelf = false, bool isBroadcast = false)
+    public ChatMessage(string? sender, string message, bool isSelf = false, bool isBroadcast = false)
     {
         Sender = sender;
         Message = message;
@@ -20,7 +20,7 @@ public class ChatMessage
 
     public bool IsSelf { get; set; }
 
-    public string Sender { get; set; }
+    public string? Sender { get; set; }
 
     public string Message { get; set; }
 

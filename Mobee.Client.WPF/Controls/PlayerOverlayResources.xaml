@@ -48,56 +48,82 @@
                                     </TextBlock.Effect>
                                 </TextBlock>
 
-                                <Grid>
+                                <Grid Opacity="1" IsHitTestVisible="True" Margin="0,0,0,60" HorizontalAlignment="Right" VerticalAlignment="Stretch" Background="#01FFFFFF" x:Name="_Part_ChatGrid">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"></ColumnDefinition>
                                         <ColumnDefinition Width="200" MinWidth="150"></ColumnDefinition>
                                     </Grid.ColumnDefinitions>
+                                    <Grid.Triggers>
+                                        <EventTrigger RoutedEvent="Grid.MouseEnter">
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <DoubleAnimation Storyboard.TargetProperty="Opacity" Storyboard.TargetName="_Part_ChatWrapper"
+                                                                     To="1" Duration="0:0:1" SpeedRatio="3" DecelerationRatio="0.2"></DoubleAnimation>
+                                                    <DoubleAnimation Storyboard.TargetProperty="Opacity" Storyboard.TargetName="GridSplitter"
+                                                                     To="1" Duration="0:0:1" SpeedRatio="3" DecelerationRatio="0.2"></DoubleAnimation>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </EventTrigger>
+                                        <EventTrigger RoutedEvent="Grid.MouseLeave">
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <DoubleAnimation Storyboard.TargetProperty="Opacity" Storyboard.TargetName="_Part_ChatWrapper"
+                                                                     BeginTime="0:0:0.5"
+                                                                     To="0" Duration="0:0:1" SpeedRatio="3" DecelerationRatio="0.2"></DoubleAnimation>
+                                                    <DoubleAnimation Storyboard.TargetProperty="Opacity" Storyboard.TargetName="GridSplitter"
+                                                                     BeginTime="0:0:0.5"
+                                                                     To="0" Duration="0:0:1" SpeedRatio="3" DecelerationRatio="0.2"></DoubleAnimation>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </EventTrigger>
+                                    </Grid.Triggers>
 
-                                    <controls:ChatSidebar x:Name="ChatSidebar" Margin="0,0,0,60" Padding="4" HorizontalAlignment="Right"
-                                                      Grid.Column="1">
-                                        <controls:ChatSidebar.Style>
-                                            <Style TargetType="controls:ChatSidebar">
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding Source={StaticResource MainWindowViewModel}, Path=Player.Activity.Mode}" Value="Active">
-                                                        <DataTrigger.EnterActions>
-                                                            <BeginStoryboard>
-                                                                <Storyboard>
-                                                                    <DoubleAnimation Storyboard.TargetProperty="Opacity" To="1.0" Duration="0:0:1"></DoubleAnimation>
-                                                                </Storyboard>
-                                                            </BeginStoryboard>
-                                                        </DataTrigger.EnterActions>
-                                                        <DataTrigger.ExitActions>
-                                                            <BeginStoryboard>
-                                                                <Storyboard>
-                                                                    <DoubleAnimation Storyboard.TargetProperty="Opacity" To="0.0" Duration="0:0:1"></DoubleAnimation>
-                                                                </Storyboard>
-                                                            </BeginStoryboard>
-                                                        </DataTrigger.ExitActions>
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding Source={StaticResource MainWindowViewModel}, Path=Player.Activity.Mode}" Value="Idle">
-                                                        <DataTrigger.EnterActions>
-                                                            <BeginStoryboard>
-                                                                <Storyboard>
-                                                                    <DoubleAnimation Storyboard.TargetProperty="Opacity" To="0.0" Duration="0:0:1"></DoubleAnimation>
-                                                                </Storyboard>
-                                                            </BeginStoryboard>
-                                                        </DataTrigger.EnterActions>
-                                                        <DataTrigger.ExitActions>
-                                                            <BeginStoryboard>
-                                                                <Storyboard>
-                                                                    <DoubleAnimation Storyboard.TargetProperty="Opacity" To="1.0" Duration="0:0:1"></DoubleAnimation>
-                                                                </Storyboard>
-                                                            </BeginStoryboard>
-                                                        </DataTrigger.ExitActions>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </controls:ChatSidebar.Style>
-                                    </controls:ChatSidebar>
+                                    <Grid x:Name="_Part_ChatWrapper" Opacity="0" HorizontalAlignment="Stretch" Grid.Column="1">
 
+                                        <controls:ChatSidebar x:Name="ChatSidebar" Padding="4">
+                                            <controls:ChatSidebar.Style>
+                                                <Style TargetType="controls:ChatSidebar">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Source={StaticResource MainWindowViewModel}, Path=Player.Activity.Mode}" Value="Active">
+                                                            <DataTrigger.EnterActions>
+                                                                <BeginStoryboard>
+                                                                    <Storyboard>
+                                                                        <DoubleAnimation Storyboard.TargetProperty="Opacity" To="1.0" Duration="0:0:1"></DoubleAnimation>
+                                                                    </Storyboard>
+                                                                </BeginStoryboard>
+                                                            </DataTrigger.EnterActions>
+                                                            <DataTrigger.ExitActions>
+                                                                <BeginStoryboard>
+                                                                    <Storyboard>
+                                                                        <DoubleAnimation Storyboard.TargetProperty="Opacity" To="0.0" Duration="0:0:1"></DoubleAnimation>
+                                                                    </Storyboard>
+                                                                </BeginStoryboard>
+                                                            </DataTrigger.ExitActions>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Source={StaticResource MainWindowViewModel}, Path=Player.Activity.Mode}" Value="Idle">
+                                                            <DataTrigger.EnterActions>
+                                                                <BeginStoryboard>
+                                                                    <Storyboard>
+                                                                        <DoubleAnimation Storyboard.TargetProperty="Opacity" To="0.0" Duration="0:0:1"></DoubleAnimation>
+                                                                    </Storyboard>
+                                                                </BeginStoryboard>
+                                                            </DataTrigger.EnterActions>
+                                                            <DataTrigger.ExitActions>
+                                                                <BeginStoryboard>
+                                                                    <Storyboard>
+                                                                        <DoubleAnimation Storyboard.TargetProperty="Opacity" To="1.0" Duration="0:0:1"></DoubleAnimation>
+                                                                    </Storyboard>
+                                                                </BeginStoryboard>
+                                                            </DataTrigger.ExitActions>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </controls:ChatSidebar.Style>
+                                        </controls:ChatSidebar>
+
+                                    </Grid>
                                     <GridSplitter Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Stretch"
-                                                  Margin="0,0,0,68" x:Name="GridSplitter"
+                                                  Margin="0,0,0,8" x:Name="GridSplitter"
                                                   Background="{StaticResource MaterialDesignDivider}" Width="2">
                                         <GridSplitter.Style>
                                             <Style TargetType="GridSplitter">
@@ -209,7 +235,31 @@
                                 <materialDesign:DialogHost x:Name="PART_DialogSettings" OverlayBackground="#AA000000"/>
 
                                 <!--Flyleaf Bar-->
-                                <flwpf:FlyleafBar Player="{Binding Player}" x:Name="FlyleafBar"/>
+                                <Border Opacity="1" IsHitTestVisible="True" Padding="0,25,0,0" VerticalAlignment="Bottom" Background="#01FFFFFF" BorderBrush="Transparent" x:Name="_Part_BarBorder">
+                                    <Border.Triggers>
+                                        <EventTrigger RoutedEvent="Border.MouseEnter">
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <DoubleAnimation Storyboard.TargetProperty="Opacity" Storyboard.TargetName="_Part_BarWrapper"
+                                                                     To="1" Duration="0:0:1" SpeedRatio="3" DecelerationRatio="0.2"></DoubleAnimation>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </EventTrigger>
+                                        <EventTrigger RoutedEvent="Border.MouseLeave">
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <DoubleAnimation Storyboard.TargetProperty="Opacity" Storyboard.TargetName="_Part_BarWrapper"
+                                                                     BeginTime="0:0:0.5"
+                                                                     To="0" Duration="0:0:1" SpeedRatio="3" DecelerationRatio="0.2"></DoubleAnimation>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </EventTrigger>
+                                    </Border.Triggers>
+                                    <Grid Name="_Part_BarWrapper" Opacity="0">
+                                        <flwpf:FlyleafBar Player="{Binding Player}" x:Name="FlyleafBar"/>
+                                    </Grid>
+                                </Border>
+
                             </Grid>
                         </Border>
                     </Border>

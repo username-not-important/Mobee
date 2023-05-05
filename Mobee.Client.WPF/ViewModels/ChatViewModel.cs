@@ -19,6 +19,8 @@ namespace Mobee.Client.WPF.ViewModels
             {
                 "😂", "😍", "😘", "🥺", "😭", "☹️", "😐", "💖", "😡"
             };
+
+            OnlineUsers.CollectionChanged += (s,e) => OnPropertyChanged(nameof(OnlineUsersNames));
         }
 
         #region Events
@@ -67,7 +69,10 @@ namespace Mobee.Client.WPF.ViewModels
 
         public List<string> EmojiList { get; }
 
-        public ObservableCollection<ChatMessage> Messages { get; set; } = new();
+        public string OnlineUsersNames => string.Join(", ", OnlineUsers);
+
+        public ObservableCollection<string> OnlineUsers { get; } = new();
+        public ObservableCollection<ChatMessage> Messages { get; } = new();
         public ISnackbarMessageQueue Notifications { get; set; } = new SnackbarMessageQueue(TimeSpan.FromSeconds(3.0));
 
     }

@@ -8,10 +8,12 @@ namespace Mobee.Common
 {
     public interface IPlayerHub
     {
-        Task JoinGroup(string group, string user);
+        Task JoinGroup(string? group, string? user);
 
-        Task TogglePlayback(string group, string user, bool isPlaying, long position);
+        Task<List<string>> QueryGroupUsers(string group, string user);
 
-        Task SendMessage(string group, string user, string message);
+        Task TogglePlayback(string? group, string? user, bool isPlaying, long position);
+
+        Task SendMessage(string? group, string? user, string message);
     }
 }
