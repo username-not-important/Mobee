@@ -17,13 +17,13 @@ Mobee is an Open-Source Synced-Video-Player for Windows based on Client-Server a
  - ✔️ Create server
  - ✔️ Integrate functionalities in client app
  - ✔️ First Release
- - Collapsable Chat Sidebar
+ - ✔️ Collapsable Chat Sidebar
  - ✔️ Join into Groups
  - ✔️ Reactions
  - Fullscreen overlays (Play/Pause/Seek)
  - ✔️ Emojies in Chat
  - ✔️ RTL chat capabilities
- - Online users Overlay
+ - ✔️ Online users Overlay
  - ✔️ Member Joined/Left notifications
  - ✔️ Keep Media Aspect-Ratio
  
