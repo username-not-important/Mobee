@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,6 +23,23 @@ namespace Mobee.Client.WPF.ViewModels
 
             OnlineUsers.CollectionChanged += (s,e) => OnPropertyChanged(nameof(OnlineUsersNames));
         }
+        
+        [ObservableProperty]
+        [NotifyPropertyChangedFor("CanSendMessage")]
+        private string messageInput = "";
+
+        private void TidyUp()
+        {
+            if (Messages.Count <= 10) 
+                return;
+
+            var removeList = Messages.Take(5).Where(chatMessage => chatMessage.IsBroadcast).ToList();
+
+            foreach (var chatMessage in removeList)
+            {
+                Messages.Remove(chatMessage);
+            }
+        }
 
         #region Events
 
@@ -31,11 +49,7 @@ namespace Mobee.Client.WPF.ViewModels
         public event EventHandler<bool>? ToggleKeyBindingsInvoked; 
 
         #endregion
-
-        [ObservableProperty]
-        [NotifyPropertyChangedFor("CanSendMessage")]
-        private string messageInput = "";
-
+        
         #region Commands
 
         public bool CanSendMessage => !string.IsNullOrWhiteSpace(MessageInput);
@@ -67,13 +81,32 @@ namespace Mobee.Client.WPF.ViewModels
 
         #endregion
 
+        #region Properties
+
         public List<string> EmojiList { get; }
 
-        public string OnlineUsersNames => string.Join(", ", OnlineUsers);
+        public string OnlineUsersNames => OnlineUsers.Count == 0 ? "no one else is online..." : string.Join(", ", OnlineUsers);
 
         public ObservableCollection<string> OnlineUsers { get; } = new();
         public ObservableCollection<ChatMessage> Messages { get; } = new();
         public ISnackbarMessageQueue Notifications { get; set; } = new SnackbarMessageQueue(TimeSpan.FromSeconds(3.0));
 
+        #endregion
+
+        public void UpdateOnlineUsers(List<string> users)
+        {
+            OnlineUsers.Clear();
+            foreach (var user in users)
+            {
+                OnlineUsers.Add(user);
+            }
+        }
+
+        public void AddMessage(ChatMessage chatMessage)
+        {
+            Messages.Add(chatMessage);
+
+            TidyUp();
+        }
     }
 }

@@ -30,7 +30,7 @@ namespace Mobee.Client.WPF
         {
             ViewModel = viewModelFactory.Create();
             ConfigurationStore = configurationStore;
-
+            
             loadConfiguration();
 
             InitializeComponent();
@@ -48,7 +48,7 @@ namespace Mobee.Client.WPF
             }
         }
 
-        private void Launch_Click(object sender, RoutedEventArgs e)
+        private async void Launch_Click(object sender, RoutedEventArgs e)
         {
             saveConfiguration();
 

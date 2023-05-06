@@ -33,6 +33,8 @@ using Mobee.Client.WPF.ViewModels;
 using Mobee.Common;
 using TypedSignalR.Client;
 using Mobee.Client.WPF.Utilities;
+using Mobee.Client.WPF.Utilities.Validators;
+using Logger = Mobee.Client.WPF.Logs.Logger;
 using Timer = System.Timers.Timer;
 
 namespace Mobee.Client.WPF
@@ -59,52 +61,53 @@ namespace Mobee.Client.WPF
             ViewModel = App.VMLocator<MainWindowViewModel>();
             ChatViewModel = App.VMLocator<ChatViewModel>();
             ConnectionViewModel = App.VMLocator<ConnectionViewModel>();
-            
+
             ConfigurationStore = configurationStore;
 
             InitializeComponent();
             InitializeChat();
             InitializeHub();
-            
+
             Loaded += OnLoaded;
-        }
-
-        private void CleanupMessages()
-        {
-            var collection = ChatViewModel.Messages;
-
-            if (collection.Count > 10)
-            {
-                var removeList = collection.Take(5).Where(chatMessage => chatMessage.IsBroadcast).ToList();
-
-                foreach (var chatMessage in removeList)
-                {
-                    collection.Remove(chatMessage);
-                }
-            }
         }
 
         private async void OnLoaded(object sender, RoutedEventArgs e)
         {
-            await Connect();
+            var connectionResult = await Connect();
+            if (!connectionResult)
+            {
+                MessageBox.Show("Failed to Connect to Server... Please Reconfigure the Application.");
 
-            InitializePlayer();
+                App.Reconfigure();
+            }
+            else
+            {
+                await onConnect();
+            }
+
+            await InitializePlayer();
         }
-
-        private void InitializePlayer()
+        
+        private async Task InitializePlayer()
         {
-            var ratio = ViewModel.Player.Video.AspectRatio;
-            Height = ActualWidth / ratio.Value + 30;
+            var uiResize = Dispatcher.InvokeAsync(() =>
+            {
+                var ratio = ViewModel.Player.Video.AspectRatio;
+                Height = ActualWidth / ratio.Value + 30;
 
-            FlyleafMe.SelectedTheme = FlyleafMe.UIConfig.Themes.FirstOrDefault(x => x.Name == "Orange");
+                FlyleafMe.SelectedTheme = FlyleafMe.UIConfig.Themes.FirstOrDefault(x => x.Name == "Orange");
+            });
+            
+            var uiReady = Dispatcher.InvokeAsync(() =>
+            {
+                var storyboard = Resources["ConnectedStoryboard"] as Storyboard;
+                storyboard!.Begin();
+            });
 
-            ViewModel.ReconfigureInvoked += OnReconfigureInvoked;
-        }
+            ViewModel.ReconfigureInvoked += (sender, args) => App.Reconfigure();
 
-        private void OnReconfigureInvoked(object? sender, EventArgs e)
-        {
-            System.Windows.Forms.Application.Restart();
-            System.Windows.Application.Current.Shutdown();
+            await uiResize;
+            await uiReady;
         }
 
         private void InitializeChat()
@@ -117,50 +120,109 @@ namespace Mobee.Client.WPF
 
         private void InitializeHub()
         {
-            var baseUri = ConfigurationStore.ServerAddress;
+            var baseUrl = ConfigurationStore.ServerAddress;
 
-            if (string.IsNullOrWhiteSpace(baseUri) || !baseUri.StartsWith("https://"))
-                return;
-            
-            baseUri = baseUri.TrimEnd('/');
+            Logger.Instance.Log($"Initializing Hub: {baseUrl}", Logger.CH_COMMS);
 
-            connection = new HubConnectionBuilder()
-                .WithUrl($"{baseUri}/PlayersHub").WithAutomaticReconnect()
-                .Build();
-
-            connection.Closed += async (error) =>
+            if (!UrlValidator.IsHubUrlValid(baseUrl))
             {
-                ConnectionViewModel.IsConnected = false;
+                MessageBox.Show("Selected Server is Invalid!");
+                return;
+            }
 
-                await Task.Delay(new Random().Next(0,5) * 1000);
-                await connection.StartAsync();
-            };
+            baseUrl = baseUrl.TrimEnd('/');
 
-            connection.ServerTimeout = TimeSpan.FromHours(1.5);
+            BuildConnection(baseUrl);
 
-            Hub = connection.CreateHubProxy<IPlayerHub>();
-            var subscription = connection.Register<IPlayerClient>(this);
-            
             ViewModel.Player.PropertyChanged += PlayerOnPropertyChanged;
         }
 
+        #region Connection
+
+        private void BuildConnection(string baseUrl)
+        {
+            connection = new HubConnectionBuilder()
+                .WithUrl($"{baseUrl}/PlayersHub").WithAutomaticReconnect()
+                .Build();
+
+            connection.ServerTimeout = TimeSpan.FromHours(1.5);
+            connection.Closed += OnConnectionClosed;
+            connection.Reconnected += OnReconnected;
+            connection.Reconnecting += OnReconnecting;
+
+            Hub = connection.CreateHubProxy<IPlayerHub>();
+            var subscription = connection.Register<IPlayerClient>(this);
+        }
+
+        private async Task OnConnectionClosed(Exception? ex)
+        {
+            Logger.Instance.Log($"Hub Connection Closed\r\n{ex}", Logger.CH_COMMS);
+
+            ConnectionViewModel.IsConnected = false;
+
+            await Task.Delay(new Random().Next(1, 5) * 1000);
+            await connection.StartAsync();
+        }
+
+        private Task OnReconnected(string? ex)
+        {
+            Logger.Instance.Log($"Hub Reconnected\r\n{ex}", Logger.CH_COMMS);
+
+            ConnectionViewModel.IsConnected = true;
+
+            return Task.CompletedTask;
+        }
+        
+        private Task OnReconnecting(Exception? ex)
+        {
+            Logger.Instance.Log($"Hub Reconnection Initiated\r\n{ex}", Logger.CH_COMMS);
+
+            ConnectionViewModel.IsConnected = false;
+
+            return Task.CompletedTask;
+        }
+        
+        private async Task<bool> Connect()
+        {
+            try
+            {
+                await connection.StartAsync();
+                await Hub.JoinGroup(ConfigurationStore.GroupName, ConfigurationStore.UserName);
+                
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Logger.Instance.Log($"Connect to Hub Failed\r\n{ex}", Logger.CH_COMMS);
+
+                return false;
+            }
+        }
+
+        private Task onConnect()
+        {
+            ViewModel.Player.Open(ConfigurationStore.FilePath);
+            ViewModel.Player.CurTime = 0;
+            ViewModel.Player.Pause();
+
+            ConnectionViewModel.IsConnected = true;
+
+            Timer queryTimer = new Timer(TimeSpan.FromSeconds(5));
+            queryTimer.Elapsed += QueryTimerOnElapsed;
+            queryTimer.Start();
+
+            return Task.CompletedTask;
+        }
+
+        #endregion
+        
+        #region PlayerHandlers
+
         private void OnPreventIdle(object? sender, EventArgs e)
         {
-            //if (FlyleafMe.Player.Activity.)
-
             FlyleafMe.Player.Activity.RefreshActive();
         }
 
-        private void ReleaseSyncLock()
-        {
-            Task.Run(() =>
-            {
-                Thread.Sleep(200);
-                SyncLock = false;
-            });
-        }
-
-        private long _lastCurTime = 0;
         private async void PlayerOnPropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
             if (SyncLock)
@@ -174,65 +236,18 @@ namespace Mobee.Client.WPF
             {
                 if (Math.Abs(_last - _lastCurTime) >= 40000 * 1000)
                 {
-                    var direction = _last < _lastCurTime ? "⏩" : "⏪";
+                    ChatViewModel.AddMessage(ChatMessage.FromSeek(_last, _lastCurTime));
 
-                    ChatViewModel.Messages.Add(new ChatMessage($"{direction} to {_last.TickToMovieString()}", false, true));
-
-                    CleanupMessages();
-
-                    await onSeeked();
+                    await OnSeeked();
                 }
             }
             else if (e.PropertyName == "Status")
             {
-                await onPlaybackStatusChanged();
+                await OnPlaybackStatusChanged();
             }
         }
 
-        private async Task Connect()
-        {
-            try
-            {
-                await connection.StartAsync();
-
-                await Hub.JoinGroup(ConfigurationStore.GroupName, ConfigurationStore.UserName);
-                
-                ViewModel.Player.Open(ConfigurationStore.FilePath);
-                ViewModel.Player.Pause();
-
-                ConnectionViewModel.IsConnected = true;
-
-                Timer queryTimer = new Timer(TimeSpan.FromSeconds(5));
-                queryTimer.Elapsed += QueryTimerOnElapsed;
-                queryTimer.Start();
-
-                await Dispatcher.InvokeAsync(() =>
-                {
-                    var storyboard = Resources["ConnectedStoryboard"] as Storyboard;
-                    storyboard.Begin();
-                });
-            }
-            catch (Exception ex)
-            {
-                ConnectionViewModel.IsConnected = false;
-            }
-        }
-
-        private async void QueryTimerOnElapsed(object? sender, ElapsedEventArgs e)
-        {
-            var users = await Hub.QueryGroupUsers(ConfigurationStore.GroupName, ConfigurationStore.UserName);
-
-            await Dispatcher.InvokeAsync(() =>
-            {
-                ChatViewModel.OnlineUsers.Clear();
-                foreach (var user in users)
-                {
-                    ChatViewModel.OnlineUsers.Add(user);
-                }
-            });
-        }
-
-        private async Task onPlaybackStatusChanged()
+        private async Task OnPlaybackStatusChanged()
         {
             try
             {
@@ -258,11 +273,13 @@ namespace Mobee.Client.WPF
             }
             catch (Exception ex)
             {
+                Logger.Instance.Log($"Syncing PlaybackStatus Failed:\r\n{ex}", Logger.CH_COMMS);
+
                 ConnectionViewModel.IsConnected = false;
             }
         }
 
-        private async Task onSeeked()
+        private async Task OnSeeked()
         {
             try
             {
@@ -273,8 +290,10 @@ namespace Mobee.Client.WPF
 
                 await toggleTask;
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
+                Logger.Instance.Log($"Syncing Seek Failed:\r\n{ex}", Logger.CH_COMMS);
+
                 ConnectionViewModel.IsConnected = false;
             }
             finally
@@ -297,32 +316,30 @@ namespace Mobee.Client.WPF
                 var sendTask = Hub.SendMessage(ConfigurationStore.GroupName, ConfigurationStore.UserName, message);
                 var addTask = Dispatcher.InvokeAsync(() =>
                 {
-                    ChatViewModel.Messages.Add(new ChatMessage($"{message}", true));
-
-                    CleanupMessages();
+                    ChatViewModel.AddMessage(new ChatMessage($"{message}", true));
                 });
-                
+
                 await addTask;
                 await sendTask;
             }
             catch (Exception ex)
             {
-                
+                Logger.Instance.Log($"Send Message Failed:\r\n{ex}", Logger.CH_COMMS);
+
+                ConnectionViewModel.IsConnected = false;
             }
         }
-        
+
         private async void OnSendEmoji(object? sender, string emoji)
         {
-            var message = emoji;// EmojiExtensions.GetEmojiChar(emoji);
-            
+            var message = emoji;
+
             try
             {
                 var sendTask = Hub.SendMessage(ConfigurationStore.GroupName, ConfigurationStore.UserName, message);
                 var addTask = Dispatcher.InvokeAsync(() =>
                 {
-                    ChatViewModel.Messages.Add(new ChatMessage($"{message}", true));
-
-                    CleanupMessages();
+                    ChatViewModel.AddMessage(new ChatMessage($"{message}", true));
                 });
 
                 await addTask;
@@ -330,7 +347,9 @@ namespace Mobee.Client.WPF
             }
             catch (Exception ex)
             {
-                
+                Logger.Instance.Log($"Send Emoji Failed:\r\n{ex}", Logger.CH_COMMS);
+
+                ConnectionViewModel.IsConnected = false;
             }
         }
 
@@ -338,6 +357,47 @@ namespace Mobee.Client.WPF
         {
             FlyleafMe.KeyBindings = isEnabled ? AvailableWindows.Surface : AvailableWindows.None;
         }
+
+        #endregion
+        
+        private void ReleaseSyncLock()
+        {
+            Task.Run(() =>
+            {
+                Thread.Sleep(200);
+                SyncLock = false;
+            });
+        }
+
+        private long _lastCurTime = 0;
+
+        private bool _queryInProgress = false;
+        private async void QueryTimerOnElapsed(object? sender, ElapsedEventArgs e)
+        {
+            try
+            {
+                if (_queryInProgress)
+                    return;
+
+                _queryInProgress = true;
+
+                var users = await Hub.QueryGroupUsers(ConfigurationStore.GroupName!, ConfigurationStore.UserName!);
+
+                await Dispatcher.InvokeAsync(() =>
+                {
+                    ChatViewModel.UpdateOnlineUsers(users);
+                });
+            }
+            catch (Exception ex)
+            {
+                Logger.Instance.Log($"Query Group Users Failed:\r\n{ex}", Logger.CH_COMMS);
+            }
+            finally
+            {
+                _queryInProgress = false;
+            }
+        }
+
 
         #region IPlaybackClient (Receiving)
 
@@ -355,15 +415,11 @@ namespace Mobee.Client.WPF
 
             await Dispatcher.InvokeAsync(() =>
             {
-                string action = isPlaying ? "▶️" : "⏸️";
-                
-                ChatViewModel.Messages.Add(new ChatMessage($"{action} at {position.TickToMovieString()}", false, true));
+                ChatViewModel.AddMessage(ChatMessage.FromPlaybackToggle(isPlaying, position));
 
                 if (user != ConfigurationStore.UserName)
                 {
                     ViewModel.Player.CurTime = position;
-                
-                    CleanupMessages();
 
                     if (isPlaying)
                         ViewModel.Player.Play();
@@ -381,10 +437,8 @@ namespace Mobee.Client.WPF
             {
                 var messageText = $"{message}";
 
-                ChatViewModel.Messages.Add(new ChatMessage(from, messageText));
+                ChatViewModel.AddMessage(new ChatMessage(from, messageText));
                 ChatViewModel.Notifications.Enqueue($"{from}: {messageText}");
-                
-                CleanupMessages();
             });
         }
 
@@ -392,12 +446,10 @@ namespace Mobee.Client.WPF
         {
             await Dispatcher.InvokeAsync(() =>
             {
-                var messageText = $"{user} joined";
+                var message = ChatMessage.FromMemberJoined(user!);
 
-                ChatViewModel.Messages.Add(new ChatMessage(messageText, false, true));
-                ChatViewModel.Notifications.Enqueue(messageText);
-                
-                CleanupMessages();
+                ChatViewModel.AddMessage(message);
+                ChatViewModel.Notifications.Enqueue(message.Message);
             });
         }
 
@@ -405,12 +457,10 @@ namespace Mobee.Client.WPF
         {
             await Dispatcher.InvokeAsync(() =>
             {
-                var messageText = $"{user} left";
+                var message = ChatMessage.FromMemberLeft(user);
 
-                ChatViewModel.Messages.Add(new ChatMessage(messageText, false, true));
-                ChatViewModel.Notifications.Enqueue(messageText);
-                
-                CleanupMessages();
+                ChatViewModel.AddMessage(message);
+                ChatViewModel.Notifications.Enqueue(message.Message);
             });
         }
 

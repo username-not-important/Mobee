@@ -23,9 +23,9 @@ namespace Mobee.Client.WPF.Logs
         #endregion
 
         public static string CH_APP = "app";
-        public static string CH_PARSER = "parser";
+        public static string CH_PLAYER = "player";
         public static string CH_UI = "ui";
-        public static string CH_SERVER = "server";
+        public static string CH_COMMS = "comms";
         public static string CH_PERFORMANCE = "performance";
 
         public event LogEventHandler? LogInProgress;

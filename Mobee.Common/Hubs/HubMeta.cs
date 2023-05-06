@@ -8,6 +8,6 @@ namespace Mobee.Common.Hubs
 {
     public static class HubMeta
     {
-        public const string __API_Version = "0.4.0";
+        public const string __API_Version = "0.5.0";
     }
 }

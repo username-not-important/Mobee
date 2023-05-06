@@ -60,7 +60,7 @@
                                                     <DoubleAnimation Storyboard.TargetProperty="Opacity" Storyboard.TargetName="_Part_ChatWrapper"
                                                                      To="1" Duration="0:0:1" SpeedRatio="3" DecelerationRatio="0.2"></DoubleAnimation>
                                                     <DoubleAnimation Storyboard.TargetProperty="Opacity" Storyboard.TargetName="GridSplitter"
-                                                                     To="1" Duration="0:0:1" SpeedRatio="3" DecelerationRatio="0.2"></DoubleAnimation>
+                                                                     To="0.01" Duration="0:0:1" SpeedRatio="3" DecelerationRatio="0.2"></DoubleAnimation>
                                                 </Storyboard>
                                             </BeginStoryboard>
                                         </EventTrigger>
@@ -68,10 +68,10 @@
                                             <BeginStoryboard>
                                                 <Storyboard>
                                                     <DoubleAnimation Storyboard.TargetProperty="Opacity" Storyboard.TargetName="_Part_ChatWrapper"
-                                                                     BeginTime="0:0:0.5"
+                                                                     BeginTime="0:0:1"
                                                                      To="0" Duration="0:0:1" SpeedRatio="3" DecelerationRatio="0.2"></DoubleAnimation>
                                                     <DoubleAnimation Storyboard.TargetProperty="Opacity" Storyboard.TargetName="GridSplitter"
-                                                                     BeginTime="0:0:0.5"
+                                                                     BeginTime="0:0:1"
                                                                      To="0" Duration="0:0:1" SpeedRatio="3" DecelerationRatio="0.2"></DoubleAnimation>
                                                 </Storyboard>
                                             </BeginStoryboard>
@@ -123,7 +123,7 @@
 
                                     </Grid>
                                     <GridSplitter Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Stretch"
-                                                  Margin="0,0,0,8" x:Name="GridSplitter"
+                                                  Margin="0,0,0,8" x:Name="GridSplitter" Opacity="0"
                                                   Background="{StaticResource MaterialDesignDivider}" Width="2">
                                         <GridSplitter.Style>
                                             <Style TargetType="GridSplitter">
@@ -249,7 +249,7 @@
                                             <BeginStoryboard>
                                                 <Storyboard>
                                                     <DoubleAnimation Storyboard.TargetProperty="Opacity" Storyboard.TargetName="_Part_BarWrapper"
-                                                                     BeginTime="0:0:0.5"
+                                                                     BeginTime="0:0:1"
                                                                      To="0" Duration="0:0:1" SpeedRatio="3" DecelerationRatio="0.2"></DoubleAnimation>
                                                 </Storyboard>
                                             </BeginStoryboard>

@@ -1,4 +1,5 @@
-﻿using Mobee.Client.WPF.Utilities;
+﻿using System;
+using Mobee.Client.WPF.Utilities;
 
 namespace Mobee.Client.WPF.Data;
 
@@ -55,4 +56,32 @@ public class ChatMessage
     }
     
     public bool IsAllEmoji => PureMessage.IsAllEmoji();
+    
+    public static ChatMessage FromPlaybackToggle(bool isPlaying, long position)
+    {
+        string action = isPlaying ? "▶️" : "⏸️";
+
+        return new ChatMessage($"{action} at {position.TickToMovieString()}", false, true);
+    }
+
+    public static ChatMessage FromSeek(long from, long to)
+    {
+        string direction = to > from ? "⏩" : "⏪";
+
+        return new ChatMessage($"{direction} to {from.TickToMovieString()}", false, true);
+    }
+
+    public static ChatMessage FromMemberJoined(string user)
+    {
+        string messageText = $"{user} joined";
+
+        return new ChatMessage(messageText, false, true);
+    }
+
+    public static ChatMessage FromMemberLeft(string user)
+    {
+        string messageText = $"{user} left";
+
+        return new ChatMessage(messageText, false, true);
+    }
 }

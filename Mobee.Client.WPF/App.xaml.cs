@@ -5,6 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Threading;
 using FlyleafLib;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -35,6 +36,13 @@ namespace Mobee.Client.WPF
                     services.AddSingleton<ConfigurationStore>();
                     services.AddAbstractFactory<ConfigurationViewModel>();
                 }).Build();
+
+            DispatcherUnhandledException += OnDispatcherUnhandledException;
+        }
+
+        private void OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+        {
+            Logger.Instance.Log($"Unhandled Exception:\r\n{e.Exception}", Logger.CH_APP);
         }
 
         public T GetRequiredService<T>()
@@ -44,22 +52,31 @@ namespace Mobee.Client.WPF
 
         protected override async void OnStartup(StartupEventArgs e)
         {
-            initializeFFmpeg();
+            if (!initializeFFmpeg())
+            {
+                MessageBox.Show("Mobee Startup Failed... Reason: FFMPEG");
+                App.Current.Shutdown(101);
+            };
 
             await AppHost!.StartAsync();
 
             StartConfiguration();
 
-            Logger.Instance.Log("Starting Up...", true);
+            Logger.Instance.Log("Startup Complete...", true);
 
             base.OnStartup(e);
-
         }
 
         public void StartConfiguration()
         {
             var window = AppHost.Services.GetRequiredService<ConfigureWindow>();
             window.Show();
+        }
+        
+        public static void Reconfigure()
+        {
+            System.Windows.Forms.Application.Restart();
+            System.Windows.Application.Current.Shutdown();
         }
 
         protected override async void OnExit(ExitEventArgs e)
@@ -69,36 +86,43 @@ namespace Mobee.Client.WPF
             base.OnExit(e);
         }
 
-        private static void initializeFFmpeg()
+        private static bool initializeFFmpeg()
         {
-            string bits = Environment.Is64BitProcess ? "x64" : "x86";
-
-            Engine.Start(new EngineConfig()
+            try
             {
-                FFmpegPath = Environment.CurrentDirectory + $"\\Libs\\{bits}\\FFmpeg\\",
-                FFmpegDevices =
-                    false, // Prevents loading avdevice/avfilter dll files. Enable it only if you plan to use dshow/gdigrab etc.
-                HighPerformaceTimers = false, // Forces TimeBeginPeriod(1) always active (Use this for multiple players)
+                string bits = Environment.Is64BitProcess ? "x64" : "x86";
+
+                Logger.Instance.Log($"Initializing FFMPEG:{bits}", Logger.CH_PLAYER);
+
+                Engine.Start(new EngineConfig()
+                {
+                    FFmpegPath = Environment.CurrentDirectory + $"\\Libs\\{bits}\\FFmpeg\\",
+                    FFmpegDevices =
+                        false, // Prevents loading avdevice/avfilter dll files. Enable it only if you plan to use dshow/gdigrab etc.
+                    HighPerformaceTimers = false, // Forces TimeBeginPeriod(1) always active (Use this for multiple players)
 
 #if RELEASE
                 FFmpegLogLevel = FFmpegLogLevel.Quiet,
                 LogLevel = LogLevel.Quiet,
-
 #else
-                FFmpegLogLevel = FFmpegLogLevel.Warning,
-                LogLevel = LogLevel.Debug,
-                LogOutput = ":debug",
-                //LogOutput         = ":console",
-                //LogOutput         = @"C:\Flyleaf\Logs\flyleaf.log",                
+                    FFmpegLogLevel = FFmpegLogLevel.Warning,
+                    LogLevel = LogLevel.Debug,
+                    LogOutput = ":debug",   
 #endif
+                
+                    UIRefresh = false, // Required for Activity, BufferedDuration, Stats in combination with Config.Player.Stats = true
+                    UIRefreshInterval = 250, // How often (in ms) to notify the UI
+                    UICurTimePerSecond = true, // Whether to notify UI for CurTime only when it's second changed or by UIRefreshInterval
+                });
 
-                //PluginsPath       = @"C:\Flyleaf\Plugins",
+                return true;
+            }
+            catch (Exception e)
+            {
+                Logger.Instance.Log($"FFMPEG Engine Start Failed\r\n{e}", Logger.CH_PLAYER);
 
-                UIRefresh = false, // Required for Activity, BufferedDuration, Stats in combination with Config.Player.Stats = true
-                UIRefreshInterval = 250, // How often (in ms) to notify the UI
-                UICurTimePerSecond =
-                    true, // Whether to notify UI for CurTime only when it's second changed or by UIRefreshInterval
-            });
+                return false;
+            }
         }
         
         public static T VMLocator<T>()

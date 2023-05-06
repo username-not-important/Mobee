@@ -165,23 +165,23 @@
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding IsBroadcast}" Value="True">
                                     <Setter TargetName="_Part_MessageBorder"
-                                                            Property="Background"
-                                                            Value="Transparent"></Setter>
+                                            Property="Background"
+                                            Value="Transparent"></Setter>
                                     <Setter TargetName="_Part_MessageBorder"
-                                                            Property="Padding"
-                                                            Value="2"></Setter>
+                                            Property="Padding"
+                                            Value="2"></Setter>
                                     <Setter TargetName="_Part_MessageBorder"
-                                                            Property="Margin"
-                                                            Value="0,3,0,3"></Setter>
+                                            Property="Margin"
+                                            Value="0,3,0,3"></Setter>
                                     <Setter TargetName="_Part_MessageBorder"
-                                                            Property="HorizontalAlignment"
-                                                            Value="Center"></Setter>
+                                            Property="HorizontalAlignment"
+                                            Value="Center"></Setter>
                                     <Setter TargetName="_Part_MessageText"
-                                                            Property="Foreground"
-                                                            Value="#FAFAFA"></Setter>
+                                            Property="Foreground"
+                                            Value="#FAFAFA"></Setter>
                                     <Setter TargetName="_Part_MessageText"
-                                                            Property="FontSize"
-                                                            Value="11"></Setter>
+                                            Property="FontSize"
+                                            Value="11"></Setter>
                                 </DataTrigger>
 
                             </DataTemplate.Triggers>
