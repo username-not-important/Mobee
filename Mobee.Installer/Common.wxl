@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WixLocalization Culture="en-us" xmlns="http://schemas.microsoft.com/wix/2006/localization">
+
+  <String Id="Company">Mobee</String>
+
+  <String Id="ProductFolderName">Mobee</String>
+  
+  <String Id="ProductName_x86">Mobee (32bit)</String>
+  <String Id="ProductName_x64">Mobee (64bit)</String>
+
+  <String Id="Description">Mobee is a Synced-Video-Player for Windows</String>
+  <String Id="Comments">Mobee is an Open-Source Synced-Video-Player for Windows</String>
+  <String Id="Keywords">videoplayer,application,installer</String>
+
+  <String Id="DowngradeErrorMessage">A newer version of Mobee is already installed.</String>
+  
+  <String Id="Language">1033</String>
+  
+</WixLocalization>

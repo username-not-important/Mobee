@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+
+  <Fragment>
+    <Directory Id="TARGETDIR" Name="SourceDir">
+
+      <!-- Start Menu -->
+      <Directory Id="ProgramMenuFolder">
+        <Directory Id="InstallProgramMenuFolder" Name="!(loc.ProductFolderName)" />
+      </Directory>
+
+      <?if $(var.Platform)=x64 ?>
+
+        <Directory Id="ProgramFiles64Folder">
+          <Directory Id="INSTALLFOLDER" Name="!(loc.ProductFolderName)" >
+            <Directory Id="LIBSFOLDER" Name="Libs">
+              <Directory Id="LIBSx64" Name="x64">
+                <Directory Id="LIBSx64FFMPEG" Name="FFmpeg"/>
+              </Directory>
+              <Directory Id="LIBSx86" Name="x86">
+                <Directory Id="LIBSx86FFMPEG" Name="FFmpeg"/>
+              </Directory>
+            </Directory>
+          </Directory>
+        </Directory>
+
+      <?else?>
+
+        <Directory Id="ProgramFilesFolder">
+          <Directory Id="INSTALLFOLDER" Name="!(loc.ProductFolderName)">
+            <Directory Id="LIBSFOLDER" Name="Libs">
+              <Directory Id="LIBSx64" Name="x64">
+                <Directory Id="LIBSx64FFMPEG" Name="FFmpeg"/>
+              </Directory>
+              <Directory Id="LIBSx86" Name="x86">
+                <Directory Id="LIBSx86FFMPEG" Name="FFmpeg"/>
+              </Directory>
+            </Directory>
+          </Directory>
+        </Directory>
+
+      <?endif?>
+
+      
+
+    </Directory>
+  </Fragment>
+
+</Wix>

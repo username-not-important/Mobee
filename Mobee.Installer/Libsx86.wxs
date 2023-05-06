@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <Fragment>
+        <DirectoryRef Id="LIBSx86FFMPEG">
+            <Component Id="cmp3D8C1B954DBEFBB661A6F7338E5769EB" Guid="{858AB80D-389A-4C0B-BDCA-5C3E27806FFF}">
+                <File Id="filF1938A4A0E6B1A0698FEFF96F6CE85C0" KeyPath="yes" Source="$(var.Libsx86Path)\avcodec-58.dll" />
+            </Component>
+            <Component Id="cmp7F59B55136936DCA776081814401CAA6" Guid="{2BDAC2C6-FD45-4236-9BB4-0CBF786422A7}">
+                <File Id="fil7581A2512EBAE5B4F879BFC857FEE398" KeyPath="yes" Source="$(var.Libsx86Path)\avdevice-58.dll" />
+            </Component>
+            <Component Id="cmpF2897CB394DDADF9A781D505565780BA" Guid="{6B22F42B-9291-4D81-B3B6-A3FFE45ECA0E}">
+                <File Id="filFC87823E771B46B8035FB0CAD78D00F2" KeyPath="yes" Source="$(var.Libsx86Path)\avformat-58.dll" />
+            </Component>
+            <Component Id="cmp18E3CDBDF68798DFEDB0397D8B69107E" Guid="{E4A0E204-AEA8-4C00-A381-4DFB4827D486}">
+                <File Id="fil58AF98F004689350C0DE1CC5DACEE004" KeyPath="yes" Source="$(var.Libsx86Path)\avutil-56.dll" />
+            </Component>
+            <Component Id="cmp91AFE6CE713C73C06DCCAC1F005E53FF" Guid="{5C2BD05A-555E-4006-8F47-FE87BAB9E26D}">
+                <File Id="fil6C8717189173152FAD3B85ED6C78BBF2" KeyPath="yes" Source="$(var.Libsx86Path)\postproc-55.dll" />
+            </Component>
+            <Component Id="cmpF5E47824A1E5EE2BE43412D1FEDF8687" Guid="{6E47D1C4-C14C-4C9D-99ED-A083D9E7AC75}">
+                <File Id="fil13F7C256644F5351E861935CD4D1724E" KeyPath="yes" Source="$(var.Libsx86Path)\swresample-3.dll" />
+            </Component>
+            <Component Id="cmp422D317F23DB2103AE62DA489916C7E5" Guid="{0A65B8DA-DE27-4F93-8DC4-774B6651F79C}">
+                <File Id="fil3A79EE98D199714712447E3C54A88AE2" KeyPath="yes" Source="$(var.Libsx86Path)\swscale-5.dll" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <ComponentGroup Id="PublishedLibsx86">
+            <ComponentRef Id="cmp3D8C1B954DBEFBB661A6F7338E5769EB" />
+            <ComponentRef Id="cmp7F59B55136936DCA776081814401CAA6" />
+            <ComponentRef Id="cmpF2897CB394DDADF9A781D505565780BA" />
+            <ComponentRef Id="cmp18E3CDBDF68798DFEDB0397D8B69107E" />
+            <ComponentRef Id="cmp91AFE6CE713C73C06DCCAC1F005E53FF" />
+            <ComponentRef Id="cmpF5E47824A1E5EE2BE43412D1FEDF8687" />
+            <ComponentRef Id="cmp422D317F23DB2103AE62DA489916C7E5" />
+        </ComponentGroup>
+    </Fragment>
+</Wix>

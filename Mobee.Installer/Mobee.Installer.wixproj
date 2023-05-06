@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" InitialTargets="EnsureWixToolsetInstalled" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>3.10</ProductVersion>
+    <ProjectGuid>fd4fcab1-c302-4d06-85e8-178b876f243b</ProjectGuid>
+    <SchemaVersion>2.0</SchemaVersion>
+    <OutputName>Mobee $(Configuration)-$(Platform)</OutputName>
+    <OutputType>Package</OutputType>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+    <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
+    <DefineConstants>Debug</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+    <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Components.wxs" />
+    <Compile Include="ComponentsGenerated.wxs" />
+    <Compile Include="Directories.wxs" />
+    <Compile Include="Libsx64.wxs" />
+    <Compile Include="Libsx86.wxs" />
+    <Compile Include="Product.wxs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Common.wxl" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Mobee.Client.WPF\Mobee.Client.WPF.csproj">
+      <Name>Mobee.Client.WPF</Name>
+      <Project>{3fef49b9-5a96-4184-9035-30bed1695aa4}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WixExtension Include="WixUtilExtension">
+      <HintPath>$(WixExtDir)\WixUtilExtension.dll</HintPath>
+      <Name>WixUtilExtension</Name>
+    </WixExtension>
+    <WixExtension Include="WixUIExtension">
+      <HintPath>$(WixExtDir)\WixUIExtension.dll</HintPath>
+      <Name>WixUIExtension</Name>
+    </WixExtension>
+  </ItemGroup>
+  <Import Project="$(WixTargetsPath)" Condition=" '$(WixTargetsPath)' != '' " />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets" Condition=" '$(WixTargetsPath)' == '' AND Exists('$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets') " />
+  <Target Name="EnsureWixToolsetInstalled" Condition=" '$(WixTargetsImported)' != 'true' ">
+    <Error Text="The WiX Toolset v3.11 (or newer) build tools must be installed to build this project. To download the WiX Toolset, see http://wixtoolset.org/releases/" />
+  </Target>
+  <Target Name="BeforeBuild">
+    <Exec Command="rd /s /q ..\Mobee.Client.WPF\bin\$(Configuration)\net7.0-windows\publish" />
+    <Exec Command="dotnet publish ..\Mobee.Client.WPF\Mobee.Client.WPF.csproj -c $(Configuration)" />
+    <!-- Get assembly version -->
+    <GetAssemblyIdentity AssemblyFiles="..\Mobee.Client.WPF\bin\$(Configuration)\net7.0-windows\publish\Mobee.Client.WPF.dll">
+      <Output TaskParameter="Assemblies" ItemName="AssemblyVersion" />
+    </GetAssemblyIdentity>
+    <PropertyGroup>
+      <DefineConstants>BuildVersion=%(AssemblyVersion.Version);BasePath=..\Mobee.Client.WPF\bin\$(Configuration)\net7.0-windows\publish;Libsx64Path=..\.libsx64;Libsx86Path=..\.libsx86</DefineConstants>
+    </PropertyGroup>
+    <HeatDirectory OutputFile="ComponentsGenerated.wxs" DirectoryRefId="INSTALLFOLDER" ComponentGroupName="PublishedComponents" SuppressCom="true" RunAsSeparateProcess="true" Directory="..\Mobee.Client.WPF\bin\$(Configuration)\net7.0-windows\publish" SuppressFragments="true" SuppressRegistry="true" SuppressRootDirectory="true" AutoGenerateGuids="false" GenerateGuidsNow="true" ToolPath="$(WixToolPath)" PreprocessorVariable="var.BasePath" />
+    <HeatDirectory OutputFile="Libsx64.wxs" DirectoryRefId="LIBSx64FFMPEG" ComponentGroupName="PublishedLibsx64" SuppressCom="true" RunAsSeparateProcess="true" Directory="..\.libsx64" SuppressFragments="true" SuppressRegistry="true" SuppressRootDirectory="true" AutoGenerateGuids="false" GenerateGuidsNow="true" ToolPath="$(WixToolPath)" PreprocessorVariable="var.Libsx64Path" />
+    <HeatDirectory OutputFile="Libsx86.wxs" DirectoryRefId="LIBSx86FFMPEG" ComponentGroupName="PublishedLibsx86" SuppressCom="true" RunAsSeparateProcess="true" Directory="..\.libsx86" SuppressFragments="true" SuppressRegistry="true" SuppressRootDirectory="true" AutoGenerateGuids="false" GenerateGuidsNow="true" ToolPath="$(WixToolPath)" PreprocessorVariable="var.Libsx86Path" />
+  </Target>
+  <Target Name="AfterBuild">
+    <!-- Get assembly version -->
+    <GetAssemblyIdentity AssemblyFiles="..\Mobee.Client.WPF\bin\$(Configuration)\net7.0-windows\publish\Mobee.Client.WPF.dll">
+      <Output TaskParameter="Assemblies" ItemName="AssemblyVersion" />
+    </GetAssemblyIdentity>
+    <!-- Rename and move final MSI -->
+    <Exec Command="if not exist ..\.msi mkdir ..\.msi" />
+    <Exec Command="move &quot;bin\$(Configuration)\en-us\$(OutputName).msi&quot; &quot;..\.msi\Mobee-%(AssemblyVersion.Version)-$(Configuration).msi&quot;" />
+  </Target>
+</Project>
