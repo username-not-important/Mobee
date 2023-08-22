@@ -2,7 +2,7 @@
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
 
   <Fragment>
-
+      
       <ComponentGroup Id="ProductComponents">
         <!-- Shortcut -->
         <ComponentRef Id="MainAppShortcut" />
@@ -23,7 +23,7 @@
           />
 
           <!-- Our unique key for this component/shortcut -->
-          <RegistryValue Id="RegShortcutKey" Root="HKCU" Key="SOFTWARE\$(loc.ProductFolderName)" Name="Shortcut" Value="1" Type="integer" KeyPath="yes" />
+          <RegistryValue Id="RegShortcutKey" Root="HKCU" Key="SOFTWARE\!(loc.ProductFolderName)" Name="Shortcut" Value="1" Type="integer" KeyPath="yes" />
 
           <!--Remove start menu items -->
           <RemoveFolder Id="RemoveStartMenu" Directory="InstallProgramMenuFolder" On="uninstall" />

@@ -26,6 +26,7 @@ using FlyleafLib.MediaPlayer;
 using FlyleafLib;
 using FlyleafLib.Controls.WPF;
 using Microsoft.AspNetCore.SignalR.Client;
+using Mobee.Client.WPF.Connection;
 using Mobee.Client.WPF.Data;
 using Mobee.Client.WPF.IoC;
 using Mobee.Client.WPF.Stores;
@@ -34,6 +35,9 @@ using Mobee.Common;
 using TypedSignalR.Client;
 using Mobee.Client.WPF.Utilities;
 using Mobee.Client.WPF.Utilities.Validators;
+using Polly;
+using Polly.Retry;
+using IRetryPolicy = Microsoft.AspNetCore.SignalR.Client.IRetryPolicy;
 using Logger = Mobee.Client.WPF.Logs.Logger;
 using Timer = System.Timers.Timer;
 
@@ -70,6 +74,8 @@ namespace Mobee.Client.WPF
 
             Loaded += OnLoaded;
         }
+
+        #region Initialization
 
         private async void OnLoaded(object sender, RoutedEventArgs e)
         {
@@ -137,12 +143,14 @@ namespace Mobee.Client.WPF
             ViewModel.Player.PropertyChanged += PlayerOnPropertyChanged;
         }
 
-        #region Connection
+        #endregion
 
+        #region Connection
+        
         private void BuildConnection(string baseUrl)
         {
             connection = new HubConnectionBuilder()
-                .WithUrl($"{baseUrl}/PlayersHub").WithAutomaticReconnect()
+                .WithUrl($"{baseUrl}/PlayersHub").WithAutomaticReconnect(new MobeeReconnectPolicy())
                 .Build();
 
             connection.ServerTimeout = TimeSpan.FromHours(1.5);

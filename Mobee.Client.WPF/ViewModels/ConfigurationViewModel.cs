@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Localization;
 using Microsoft.VisualBasic.ApplicationServices;
 
 namespace Mobee.Client.WPF.ViewModels
@@ -24,13 +25,15 @@ namespace Mobee.Client.WPF.ViewModels
         {
             ServersList = new()
             {
-                new ServerItem() { Name = "Global Mobee Server (free)", Address = "https://mobees.ir"},
-                new ServerItem() { Name = "Global Joyn Server (free)", Address = "https://joyn.ir"},
+                new ServerItem() { Name = LocalizationManager.Instance["Config.Server.Option1"], Address = "https://mobees.ir"},
+                new ServerItem() { Name = LocalizationManager.Instance["Config.Server.Option2"], Address = "https://joyn.ir"},
+#if DEBUG
                 new ServerItem() {Name = "Test Mobee Server (local)", Address = "https://localhost:7016"},
                 new ServerItem() {Name = "Test Joyn Server (local)", Address = "https://localhost:44321"}
+#endif
             };
 
-            serverAddress = ServersList.Last().Address;
+            serverAddress = ServersList.First().Address;
         }
 
         public List<ServerItem> ServersList { get; }

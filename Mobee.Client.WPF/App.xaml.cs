@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 using FlyleafLib;
+using Localization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Mobee.Client.WPF.Assets;
 using Mobee.Client.WPF.IoC;
 using Mobee.Client.WPF.Stores;
 using Mobee.Client.WPF.ViewModels;
@@ -28,6 +31,8 @@ namespace Mobee.Client.WPF
 
         public App()
         {
+            LocalizationManager.Init(new DefaultVocabolaryServiceProvider { }, new CultureInfo("fa-IR"));
+            
             AppHost = Host.CreateDefaultBuilder()
                 .ConfigureServices((context, services) =>
                 {

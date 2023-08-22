@@ -9,6 +9,7 @@
         xmlns:wpf1="clr-namespace:FlyleafLib.Controls.WPF;assembly=FlyleafLib.Controls.WPF"
         xmlns:system="clr-namespace:System;assembly=System.Runtime"
         xmlns:data="clr-namespace:Mobee.Client.WPF.Data"
+        xmlns:loc="clr-namespace:Localization.Windows;assembly=Mafe.Localization.Windows"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         TextElement.FontWeight="Regular"
         TextElement.FontSize="13"
@@ -19,7 +20,7 @@
         mc:Ignorable="d"
         Name="Window"
         MinHeight="640" MinWidth="640"
-        Title="Mobee Player" Height="640" Width="1200" WindowStartupLocation="CenterScreen">
+        Title="{loc:Translate MainWindowTitle}" Height="640" Width="1200" WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
         <ResourceDictionary>

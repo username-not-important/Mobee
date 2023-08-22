@@ -41,8 +41,8 @@
                         </TextBlock>
                     </materialDesign:Chip.Content>
                 </materialDesign:Chip>
-                
             </StackPanel>
+
             <Grid DockPanel.Dock="Bottom">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -92,6 +92,7 @@
                     <materialDesign:PackIcon Kind="Send"></materialDesign:PackIcon>
                 </Button>
             </Grid>
+            
             <ScrollViewer Margin="0,8,0,2" VerticalScrollBarVisibility="Auto" x:Name="_MessagesScrollviewer">
                 <ItemsControl Margin="0,0,8,0" HorizontalContentAlignment="Left"
                                               ItemsSource="{Binding Messages}">

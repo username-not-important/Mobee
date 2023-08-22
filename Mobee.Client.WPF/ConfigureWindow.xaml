@@ -3,8 +3,12 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:local="clr-namespace:Mobee.Client.WPF"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:loc="clr-namespace:Localization.Windows;assembly=Mafe.Localization.Windows"
+        xmlns:behaviors1="clr-namespace:Mobee.Client.WPF.Behaviors"
+        xmlns:utilities="clr-namespace:Mobee.Client.WPF.Utilities"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         TextElement.FontWeight="Regular"
         TextElement.FontSize="13"
@@ -14,7 +18,11 @@
         FontFamily="{DynamicResource MaterialDesignFont}"
         mc:Ignorable="d"
         Name="Window"
-        Title="Configure Mobee" Height="540" Width="1024" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen">
+        FlowDirection="{loc:Translate Direction}"
+        Title="Configure Mobee" Height="{loc:Translate ResourceKey=Config.Screen.Size, DefaultValue=570}" Width="1024" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen">
+    <behaviors:Interaction.Behaviors>
+        <behaviors1:FontChangeBehavior></behaviors1:FontChangeBehavior>
+    </behaviors:Interaction.Behaviors>
     <Grid DataContext="{Binding ElementName=Window, Path=ViewModel}">
         <Grid.RowDefinitions>
             <RowDefinition Height="180"/>
@@ -35,12 +43,12 @@
                         Margin="16,0,0,0"
                         VerticalAlignment="Center">
                 <TextBlock Style="{StaticResource MaterialDesignHeadline4TextBlock}"
-                           Text="Welcome to Mobee"
+                           Text="{loc:Translate ResourceKey=Config.Screen.Welcome}"
                            TextWrapping="Wrap" FontSize="38" FontWeight="Bold" />
 
-                <TextBlock Style="{StaticResource MaterialDesignBody1TextBlock}" Text="Synced Video and Movie Player"></TextBlock>
+                <TextBlock Style="{StaticResource MaterialDesignBody1TextBlock}" Text="{loc:Translate ResourceKey=Config.Screen.Subtitle}"></TextBlock>
                 <TextBlock Style="{StaticResource MaterialDesignCaptionTextBlock}">
-                    <Run>Currently running api version</Run>
+                    <Run Text="{utilities:MobeeTranslate ResourceKey=Config.Screen.ApiVersion, IsOneWay=True}"></Run>
                     <Run Text="{Binding Source={x:Static local:App.__API_Version}, Mode=OneTime}"></Run>
                 </TextBlock>
             </StackPanel>
@@ -64,12 +72,12 @@
 
                         <StackPanel Grid.Column="1" Margin="8,0,0,0">
                             <TextBlock Style="{StaticResource MaterialDesignHeadline5TextBlock}"
-                         Text="Server" />
+                         Text="{loc:Translate ResourceKey=Config.Screen.Server}" />
 
                             <TextBlock Margin="0,0,0,8"
                          VerticalAlignment="Top"
                          Foreground="{DynamicResource MaterialDesignBodyLight}"
-                         Text="Connect to your partner through:"
+                         Text="{loc:Translate ResourceKey=Config.Screen.ServerDescription}"
                          TextWrapping="Wrap" />
 
                             <Grid>
@@ -91,12 +99,12 @@
 
                         <StackPanel Margin="8,0,0,0" Grid.Column="1">
                             <TextBlock Style="{StaticResource MaterialDesignHeadline5TextBlock}"
-                                Text="User" />
+                                Text="{loc:Translate ResourceKey=Config.Screen.User}" />
 
                             <TextBlock Margin="0,0,0,8"
                                 VerticalAlignment="Top"
                                 Foreground="{DynamicResource MaterialDesignBodyLight}"
-                                Text="Your username and the group name:"
+                                Text="{loc:Translate ResourceKey=Config.Screen.UserDescription}"
                                 TextWrapping="Wrap" />
 
                             <Grid>
@@ -104,8 +112,8 @@
                                     <ColumnDefinition/>
                                     <ColumnDefinition/>
                                 </Grid.ColumnDefinitions>
-                                <TextBox TextWrapping="Wrap" Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,2,0" materialDesign:HintAssist.Hint="Your Alias" ToolTip="(Required)"/>
-                                <TextBox TextWrapping="Wrap" Text="{Binding GroupName, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Margin="2,0,0,0" materialDesign:HintAssist.Hint="Group Name" ToolTip="(Required) Same with your Partner's"/>
+                                <TextBox TextWrapping="Wrap" Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,2,0" materialDesign:HintAssist.Hint="{loc:Translate ResourceKey=Config.Screen.UserHint}" ToolTip="{loc:Translate ResourceKey=Config.Screen.UserTooltip}"/>
+                                <TextBox TextWrapping="Wrap" Text="{Binding GroupName, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Margin="2,0,0,0" materialDesign:HintAssist.Hint="{loc:Translate ResourceKey=Config.Screen.GroupHint}" ToolTip="{loc:Translate ResourceKey=Config.Screen.GroupTooltip}"/>
 
                             </Grid>
                         </StackPanel>
@@ -125,27 +133,27 @@
 
                     <StackPanel Grid.Column="1" Margin="8,0,0,0">
                         <TextBlock Style="{StaticResource MaterialDesignHeadline5TextBlock}"
-                                   Text="Media File" />
+                                   Text="{loc:Translate ResourceKey=Config.Screen.MediaFile}" />
 
                         <TextBlock Margin="0,0,0,8"
                                    VerticalAlignment="Top"
                                    Foreground="{DynamicResource MaterialDesignBodyLight}"
-                                   Text="File to watch on this computer:"
+                                   Text="{loc:Translate ResourceKey=Config.Screen.MediaFileDescription}"
                                    TextWrapping="Wrap" />
 
-                        <Grid>
+                        <Grid FlowDirection="LeftToRight">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="563*"/>
                                 <ColumnDefinition Width="110"/>
                             </Grid.ColumnDefinitions>
                             <TextBox Text="{Binding FilePath, UpdateSourceTrigger=PropertyChanged}"/>
-                            <Button Grid.Column="1" Click="Browse_Click" Content="Browse"/>
+                            <Button Grid.Column="1" Click="Browse_Click" Content="{loc:Translate ResourceKey=Config.Screen.Browse}"/>
                         </Grid>
                     </StackPanel>
                 </Grid>
             </materialDesign:Card>
 
-            <Button IsEnabled="{Binding CanLaunch}" Click="Launch_Click" Margin="16,0,16,0" Content="Let's Go"/>
+            <Button IsEnabled="{Binding CanLaunch}" Click="Launch_Click" Margin="16,0,16,0" Content="{loc:Translate ResourceKey=Config.Screen.Launch}"/>
         </StackPanel>
     </Grid>
 </Window>

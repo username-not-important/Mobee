@@ -13,8 +13,31 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\Fonts\PelakFA-Bold.ttf" />
+    <None Remove="Assets\Fonts\PelakFA-Medium.ttf" />
+    <None Remove="Assets\Fonts\PelakFA-Regular.ttf" />
+    <None Remove="Assets\Fonts\PelakFA-SemiBold.ttf" />
+    <None Remove="Assets\Fonts\PelakFA-Thin.ttf" />
+    <None Remove="Assets\Fonts\Shabnam-Bold-FD.ttf" />
+    <None Remove="Assets\Fonts\Shabnam-FD.ttf" />
+    <None Remove="Assets\Fonts\Shabnam-Light-FD.ttf" />
+    <None Remove="Assets\Fonts\Shabnam-Medium-FD.ttf" />
+    <None Remove="Assets\Fonts\Shabnam-Thin-FD.ttf" />
     <None Remove="Assets\MobeeLogoDark.png" />
     <None Remove="Icon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\Fonts\PelakFA-Bold.ttf" />
+    <Resource Include="Assets\Fonts\PelakFA-Medium.ttf" />
+    <Resource Include="Assets\Fonts\PelakFA-Regular.ttf" />
+    <Resource Include="Assets\Fonts\PelakFA-SemiBold.ttf" />
+    <Resource Include="Assets\Fonts\PelakFA-Thin.ttf" />
+    <Resource Include="Assets\Fonts\Shabnam-Bold-FD.ttf" />
+    <Resource Include="Assets\Fonts\Shabnam-FD.ttf" />
+    <Resource Include="Assets\Fonts\Shabnam-Light-FD.ttf" />
+    <Resource Include="Assets\Fonts\Shabnam-Medium-FD.ttf" />
+    <Resource Include="Assets\Fonts\Shabnam-Thin-FD.ttf" />
   </ItemGroup>
 
   <ItemGroup>
@@ -32,6 +55,7 @@
     <PackageReference Include="Flurl.Http" Version="3.2.4" />
     <PackageReference Include="FlyleafLib" Version="3.6.6" />
     <PackageReference Include="FlyleafLib.Controls.WPF" Version="1.2.4" />
+    <PackageReference Include="Mafe.Localization.Windows" Version="2.0.2" />
     <PackageReference Include="MaterialDesignColors" Version="2.1.1" />
     <PackageReference Include="MaterialDesignThemes" Version="4.7.1" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="7.0.2" />
@@ -61,6 +85,10 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Localization\" />
   </ItemGroup>
 
 </Project>
