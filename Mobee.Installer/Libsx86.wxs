@@ -2,25 +2,25 @@
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
     <Fragment>
         <DirectoryRef Id="LIBSx86FFMPEG">
-            <Component Id="cmp3D8C1B954DBEFBB661A6F7338E5769EB" Guid="{DAF81C70-DF9A-4457-A681-F070A42C1CD6}">
+            <Component Id="cmp3D8C1B954DBEFBB661A6F7338E5769EB" Guid="{A16B856C-4EB7-4495-8F17-4BB8DEF40AA4}">
                 <File Id="filF1938A4A0E6B1A0698FEFF96F6CE85C0" KeyPath="yes" Source="$(var.Libsx86Path)\avcodec-58.dll" />
             </Component>
-            <Component Id="cmp7F59B55136936DCA776081814401CAA6" Guid="{A4455649-CBDD-4439-85E2-FFBA276C625A}">
+            <Component Id="cmp7F59B55136936DCA776081814401CAA6" Guid="{FD6B9622-DA07-4001-9546-7AD86BC6DBBF}">
                 <File Id="fil7581A2512EBAE5B4F879BFC857FEE398" KeyPath="yes" Source="$(var.Libsx86Path)\avdevice-58.dll" />
             </Component>
-            <Component Id="cmpF2897CB394DDADF9A781D505565780BA" Guid="{B1A84A39-D614-439D-96A1-A6D268A160AD}">
+            <Component Id="cmpF2897CB394DDADF9A781D505565780BA" Guid="{80B6320F-2208-4EE7-A0D0-828A919CCC28}">
                 <File Id="filFC87823E771B46B8035FB0CAD78D00F2" KeyPath="yes" Source="$(var.Libsx86Path)\avformat-58.dll" />
             </Component>
-            <Component Id="cmp18E3CDBDF68798DFEDB0397D8B69107E" Guid="{C2A5CA34-B0EA-4CDC-8B50-2840013D3240}">
+            <Component Id="cmp18E3CDBDF68798DFEDB0397D8B69107E" Guid="{4CAC21D0-AE29-4473-ABEE-A97FC301A986}">
                 <File Id="fil58AF98F004689350C0DE1CC5DACEE004" KeyPath="yes" Source="$(var.Libsx86Path)\avutil-56.dll" />
             </Component>
-            <Component Id="cmp91AFE6CE713C73C06DCCAC1F005E53FF" Guid="{1C856F09-32A6-49AE-A961-0ADE7671997C}">
+            <Component Id="cmp91AFE6CE713C73C06DCCAC1F005E53FF" Guid="{47045216-2FFC-4E08-8C65-3E23FAFA5FC5}">
                 <File Id="fil6C8717189173152FAD3B85ED6C78BBF2" KeyPath="yes" Source="$(var.Libsx86Path)\postproc-55.dll" />
             </Component>
-            <Component Id="cmpF5E47824A1E5EE2BE43412D1FEDF8687" Guid="{E41B4675-8FB3-44F2-B548-1DF30C2F0F20}">
+            <Component Id="cmpF5E47824A1E5EE2BE43412D1FEDF8687" Guid="{6166515E-D1E8-4A86-81EE-D801926AFA7B}">
                 <File Id="fil13F7C256644F5351E861935CD4D1724E" KeyPath="yes" Source="$(var.Libsx86Path)\swresample-3.dll" />
             </Component>
-            <Component Id="cmp422D317F23DB2103AE62DA489916C7E5" Guid="{3C6743BC-DB87-4FA3-A7BA-433FF666168B}">
+            <Component Id="cmp422D317F23DB2103AE62DA489916C7E5" Guid="{33013300-7D25-4B3B-BFC7-88824754195C}">
                 <File Id="fil3A79EE98D199714712447E3C54A88AE2" KeyPath="yes" Source="$(var.Libsx86Path)\swscale-5.dll" />
             </Component>
         </DirectoryRef>
