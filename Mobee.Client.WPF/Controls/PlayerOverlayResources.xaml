@@ -7,6 +7,7 @@
                     xmlns:controls="clr-namespace:Mobee.Client.WPF.Controls"
                     xmlns:mediaPlayer="clr-namespace:FlyleafLib.MediaPlayer;assembly=FlyleafLib"
                     xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+                    xmlns:loc="clr-namespace:Localization.Windows;assembly=Mafe.Localization.Windows"
                     xmlns:system="clr-namespace:System;assembly=System.Runtime"
                     xmlns:emoji="clr-namespace:Emoji.Wpf;assembly=Emoji.Wpf">
 
@@ -16,6 +17,11 @@
         <Setter Property="OverlayTemplate">
             <Setter.Value>
                 <ControlTemplate>
+                    <ControlTemplate.Triggers>
+                        <DataTrigger Binding="{loc:Translate CultureName}" Value="فارسی">
+                            <Setter Property="FontFamily" Value="{StaticResource PelakFont}"></Setter>
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
                     <Border BorderThickness="0.6">
                         <Border.Resources>
                             <ResourceDictionary>

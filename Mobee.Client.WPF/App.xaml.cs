@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 using FlyleafLib;
+using FlyleafLib.Controls.WPF;
 using Localization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -17,6 +18,7 @@ using Mobee.Client.WPF.Stores;
 using Mobee.Client.WPF.ViewModels;
 using Mobee.Common.Hubs;
 using Logger = Mobee.Client.WPF.Logs.Logger;
+using Settings = Mobee.Client.WPF.Properties.Settings;
 
 namespace Mobee.Client.WPF
 {
@@ -31,12 +33,13 @@ namespace Mobee.Client.WPF
 
         public App()
         {
-            LocalizationManager.Init(new DefaultVocabolaryServiceProvider { }, new CultureInfo("fa-IR"));
+            LocalizationManager.Init(new DefaultVocabolaryServiceProvider { }, new CultureInfo(Settings.Default.CULTURE ?? "en-US"));
             
             AppHost = Host.CreateDefaultBuilder()
                 .ConfigureServices((context, services) =>
                 {
                     services.AddSingleton<MainWindow>();
+                    services.AddSingleton<LanguageWindow>();
                     services.AddSingleton<ConfigureWindow>();
                     services.AddSingleton<ConfigurationStore>();
                     services.AddAbstractFactory<ConfigurationViewModel>();
@@ -65,8 +68,16 @@ namespace Mobee.Client.WPF
 
             await AppHost!.StartAsync();
 
-            StartConfiguration();
-
+            if (string.IsNullOrWhiteSpace(Settings.Default.CULTURE))
+            {
+                var window = AppHost.Services.GetRequiredService<LanguageWindow>();
+                window.Show();
+            }
+            else
+            {
+                StartConfiguration();
+            }
+            
             Logger.Instance.Log("Startup Complete...", true);
 
             base.OnStartup(e);
@@ -78,7 +89,7 @@ namespace Mobee.Client.WPF
             window.Show();
         }
         
-        public static void Reconfigure()
+        public static void Restart()
         {
             System.Windows.Forms.Application.Restart();
             System.Windows.Application.Current.Shutdown();

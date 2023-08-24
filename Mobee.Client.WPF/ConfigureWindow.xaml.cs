@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Microsoft.Win32;
 using Mobee.Client.WPF.IoC;
+using Mobee.Client.WPF.Properties;
 using Mobee.Client.WPF.Stores;
 using Mobee.Client.WPF.ViewModels;
 
@@ -57,6 +58,14 @@ namespace Mobee.Client.WPF
 
             Close();
         }
+        
+        private void ChangeLanguage_Click(object sender, RoutedEventArgs e)
+        {
+            Settings.Default.CULTURE = null;
+            Settings.Default.Save();
+
+            App.Restart();
+        }
 
         private void saveConfiguration()
         {
@@ -82,5 +91,6 @@ namespace Mobee.Client.WPF
             if (!string.IsNullOrWhiteSpace(Properties.Settings.Default.LAST_GROUPNAME))
                 ViewModel.GroupName = Properties.Settings.Default.LAST_GROUPNAME;
         }
+
     }
 }

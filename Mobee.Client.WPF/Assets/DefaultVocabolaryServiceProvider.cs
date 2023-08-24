@@ -21,6 +21,8 @@ namespace Mobee.Client.WPF.Assets
             all = new Dictionary<string, Vocabolary>
             {
                 {"fa-IR", new Vocabolary {
+                        { "CultureName","فارسی" },
+
                         { "Config.Screen.Size","560" },
                         { "Config.Screen.Welcome","به موبی خوش آمدید" },
                         { "Config.Screen.Subtitle","پخش همزمان فیلم و ویدئو" },
@@ -37,6 +39,9 @@ namespace Mobee.Client.WPF.Assets
                         { "Config.Screen.MediaFileDescription","چیزی که می خواهید تماشا کنید:" },
                         { "Config.Screen.Browse","انتخاب" },
                         { "Config.Screen.Launch","بزن بریم!" },
+                        { "Config.Screen.ChangeLanguage","تغییر زبان" },
+                        
+                        { "Flyleaf.Popup.Exit","خروج" },
 
                         { "MainWindowTitle","موبی" },
                         { "Direction", FlowDirection.RightToLeft.ToString() },
@@ -50,6 +55,8 @@ namespace Mobee.Client.WPF.Assets
                     }
                 },
                 {"en-US", new Vocabolary {
+                        { "CultureName","English" },
+
                         { "Config.Screen.Size","540" },
                         { "Config.Screen.Welcome","Welcome to Mobee" },
                         { "Config.Screen.Subtitle","Synced Video and Movie Player" },
@@ -66,9 +73,12 @@ namespace Mobee.Client.WPF.Assets
                         { "Config.Screen.MediaFileDescription","File to watch on this computer:" },
                         { "Config.Screen.Browse","Browse" },
                         { "Config.Screen.Launch","Let's Go!" },
+                        { "Config.Screen.ChangeLanguage","Change Language" },
+                        
+                        { "Flyleaf.Popup.Exit","Exit" },
 
                         { "MainWindowTitle","Mobee Player" },
-                        { "Direction", FlowDirection.RightToLeft.ToString() },
+                        { "Direction", FlowDirection.LeftToRight.ToString() },
 
                         // Config.Server.Options:
                         { "Config.Server.Option1", "Mobee Server (free)"},

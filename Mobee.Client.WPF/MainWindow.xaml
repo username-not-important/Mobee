@@ -10,6 +10,8 @@
         xmlns:system="clr-namespace:System;assembly=System.Runtime"
         xmlns:data="clr-namespace:Mobee.Client.WPF.Data"
         xmlns:loc="clr-namespace:Localization.Windows;assembly=Mafe.Localization.Windows"
+        xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:behaviors="clr-namespace:Mobee.Client.WPF.Behaviors"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         TextElement.FontWeight="Regular"
         TextElement.FontSize="13"
@@ -21,7 +23,9 @@
         Name="Window"
         MinHeight="640" MinWidth="640"
         Title="{loc:Translate MainWindowTitle}" Height="640" Width="1200" WindowStartupLocation="CenterScreen">
-
+    <b:Interaction.Behaviors>
+        <behaviors:FontChangeBehavior></behaviors:FontChangeBehavior>
+    </b:Interaction.Behaviors>
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

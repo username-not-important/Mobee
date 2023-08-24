@@ -12,7 +12,9 @@ namespace Mobee.Client.WPF.ViewModels
     public partial class MainWindowViewModel
     {
         public event EventHandler? ReconfigureInvoked;
-
+        
+        public event EventHandler? ChangeLanguageInvoked;
+        
         public Player Player { get; set; }
 
         public Config Config { get; set; }
@@ -21,6 +23,12 @@ namespace Mobee.Client.WPF.ViewModels
         public void InvokeReconfigure()
         {
             ReconfigureInvoked?.Invoke(this, EventArgs.Empty);
+        }
+        
+        [RelayCommand]
+        public void InvokeChangeLanguage()
+        {
+            ChangeLanguageInvoked?.Invoke(this, EventArgs.Empty);
         }
 
         public MainWindowViewModel()

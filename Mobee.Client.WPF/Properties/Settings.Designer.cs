@@ -106,5 +106,17 @@ namespace Mobee.Client.WPF.Properties {
                 this["LAST_GROUPNAME"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("en-US")]
+        public string CULTURE {
+            get {
+                return ((string)(this["CULTURE"]));
+            }
+            set {
+                this["CULTURE"] = value;
+            }
+        }
     }
 }

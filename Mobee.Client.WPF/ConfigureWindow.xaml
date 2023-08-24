@@ -153,7 +153,19 @@
                 </Grid>
             </materialDesign:Card>
 
-            <Button IsEnabled="{Binding CanLaunch}" Click="Launch_Click" Margin="16,0,16,0" Content="{loc:Translate ResourceKey=Config.Screen.Launch}"/>
+            <Grid Margin="16,0,16,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="4*"/>
+                </Grid.ColumnDefinitions>
+                <Button Style="{StaticResource MaterialDesignFlatButton}" Margin="0,0,8,0" Click="ChangeLanguage_Click" Grid.Column="0" >
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="Language"></materialDesign:PackIcon>
+                        <TextBlock Margin="4,0,0,0" Text="{loc:Translate ResourceKey=Config.Screen.ChangeLanguage}"></TextBlock>
+                    </StackPanel>
+                </Button>
+                <Button IsEnabled="{Binding CanLaunch}" Margin="8,0,0,0" Click="Launch_Click" Content="{loc:Translate ResourceKey=Config.Screen.Launch}" Grid.Column="1" />
+            </Grid>
         </StackPanel>
     </Grid>
 </Window>

@@ -6,6 +6,7 @@
                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     xmlns:wpf="clr-namespace:FlyleafLib.Controls.WPF;assembly=FlyleafLib.Controls.WPF"
+                    xmlns:loc="clr-namespace:Localization.Windows;assembly=Mafe.Localization.Windows"
                     mc:Ignorable="d">
     
     <ResourceDictionary.MergedDictionaries>
@@ -452,6 +453,12 @@
             <Setter.Value>
                 <ControlTemplate
                     TargetType="{x:Type MenuBase}">
+                    <ControlTemplate.Triggers>
+                        <DataTrigger Binding="{loc:Translate CultureName}" Value="فارسی">
+                            <Setter Property="FontFamily" Value="{StaticResource PelakFont}"></Setter>
+                            <Setter Property="FlowDirection" Value="{loc:Translate Direction}"></Setter>
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
                     <AdornerDecorator>
                         <Grid>
                             <Border
@@ -779,7 +786,8 @@
 
         <Separator />
         <MenuItem Header="Reconfigure" Icon="{materialDesign:PackIcon CogRefresh}" Command="{Binding Source={StaticResource MainWindowViewModel}, Path=InvokeReconfigureCommand}"></MenuItem>
-        <MenuItem Header="Exit" Icon="{materialDesign:PackIcon ExitToApp}" Command="{Binding ExitApplication}"/>
+        <MenuItem Header="Change Language" Icon="{materialDesign:PackIcon Language}" Command="{Binding Source={StaticResource MainWindowViewModel}, Path=InvokeChangeLanguageCommand}"></MenuItem>
+        <MenuItem Header="{loc:Translate ResourceKey=Flyleaf.Popup.Exit}" Icon="{materialDesign:PackIcon ExitToApp}" Command="{Binding ExitApplication}"/>
     </ContextMenu>
 
 

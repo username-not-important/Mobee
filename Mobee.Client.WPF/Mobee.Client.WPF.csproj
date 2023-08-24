@@ -23,6 +23,9 @@
     <None Remove="Assets\Fonts\Shabnam-Light-FD.ttf" />
     <None Remove="Assets\Fonts\Shabnam-Medium-FD.ttf" />
     <None Remove="Assets\Fonts\Shabnam-Thin-FD.ttf" />
+    <None Remove="Assets\Icon.png" />
+    <None Remove="Assets\Language\English.jpg" />
+    <None Remove="Assets\Language\Persian.jpg" />
     <None Remove="Assets\MobeeLogoDark.png" />
     <None Remove="Icon.png" />
   </ItemGroup>
@@ -38,6 +41,9 @@
     <Resource Include="Assets\Fonts\Shabnam-Light-FD.ttf" />
     <Resource Include="Assets\Fonts\Shabnam-Medium-FD.ttf" />
     <Resource Include="Assets\Fonts\Shabnam-Thin-FD.ttf" />
+    <Resource Include="Assets\Icon.png" />
+    <Resource Include="Assets\Language\English.jpg" />
+    <Resource Include="Assets\Language\Persian.jpg" />
   </ItemGroup>
 
   <ItemGroup>
@@ -73,6 +79,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="LanguageWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Properties\Settings.Designer.cs">
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <AutoGen>True</AutoGen>

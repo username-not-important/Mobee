@@ -23,5 +23,8 @@
     <Setting Name="LAST_GROUPNAME" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="CULTURE" Type="System.String" Scope="User">
+      <Value Profile="(Default)">en-US</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

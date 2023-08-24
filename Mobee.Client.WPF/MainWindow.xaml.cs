@@ -84,7 +84,7 @@ namespace Mobee.Client.WPF
             {
                 MessageBox.Show("Failed to Connect to Server... Please Reconfigure the Application.");
 
-                App.Reconfigure();
+                App.Restart();
             }
             else
             {
@@ -110,7 +110,14 @@ namespace Mobee.Client.WPF
                 storyboard!.Begin();
             });
 
-            ViewModel.ReconfigureInvoked += (sender, args) => App.Reconfigure();
+            ViewModel.ReconfigureInvoked += (sender, args) => App.Restart();
+            ViewModel.ChangeLanguageInvoked += (sender, args) =>
+            {
+                Properties.Settings.Default.CULTURE = null;
+                Properties.Settings.Default.Save();
+
+                App.Restart();
+            };
 
             await uiResize;
             await uiReady;
