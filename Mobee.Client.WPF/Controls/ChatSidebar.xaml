@@ -7,6 +7,8 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:data="clr-namespace:Mobee.Client.WPF.Data"
              xmlns:emoji="clr-namespace:Emoji.Wpf;assembly=Emoji.Wpf"
+             xmlns:loc="clr-namespace:Localization.Windows;assembly=Mafe.Localization.Windows"
+             xmlns:util="clr-namespace:Mobee.Client.WPF.Utilities"
              mc:Ignorable="d" 
              DataContext="{StaticResource ChatViewModel}"
              MouseEnter="ChatSidebar_OnMouseEnter"
@@ -22,8 +24,8 @@
 
     <Border CornerRadius="8" Padding="4" Background="#4C000000" BorderBrush="{StaticResource PrimaryHueMidBrush}">
         <DockPanel>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,5,0,0" DockPanel.Dock="Top">
-                <TextBlock VerticalAlignment="Center" FontWeight="Bold" FontSize="16" Foreground="{StaticResource MaterialDesignBody}" Text="Chat"></TextBlock>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,5,0,0" DockPanel.Dock="Top" FlowDirection="{loc:Translate Direction}">
+                <TextBlock VerticalAlignment="Center" FontWeight="Bold" FontSize="16" Foreground="{StaticResource MaterialDesignBody}" Text="{util:MobeeTranslate ResourceKey=Chat.Title, IsOneWay=True}"></TextBlock>
                 <materialDesign:Chip ToolTip="{Binding OnlineUsersNames}" VerticalAlignment="Center"
                                      Margin="8,0,0,0"
                                      Foreground="{StaticResource MaterialDesignDarkForeground}"
@@ -36,7 +38,7 @@
                         <TextBlock FontSize="12">
                             <TextBlock.Inlines>
                                 <Run Text="{Binding OnlineUsers.Count, Mode=OneWay}"></Run>
-                                <Run Text="online"></Run>
+                                <Run Text="{util:MobeeTranslate ResourceKey=Chat.OnlinePostfix, IsOneWay=True}"></Run>
                             </TextBlock.Inlines>
                         </TextBlock>
                     </materialDesign:Chip.Content>

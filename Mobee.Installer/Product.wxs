@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+﻿<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs" xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
 
   <!-- Give product a unique ID per platform -->
   <?if $(var.Platform)=x64 ?>
@@ -11,22 +10,19 @@
   <!-- Fixed upgrade Id -->
   <?define UpgradeCode = "{8C197FE6-57DF-41FD-A0CD-84B5D3B97BDC}" ?>
 
-	<Product Id="$(var.ProductCode)" Name="!(loc.ProductName_$(var.Platform))" Language="!(loc.Language)" Version="$(var.BuildVersion)" Manufacturer="!(loc.Company)" UpgradeCode="$(var.UpgradeCode)">
-		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" Platform="$(var.Platform)" Manufacturer="!(loc.Company)" Description="!(loc.Description)" Keywords="!(loc.Keywords)" Comments="!(loc.Comments)" Languages="!(loc.Language)"/>
+	<Package Name="!(loc.ProductName_$(var.Platform))" Language="!(loc.Language)" Version="$(var.BuildVersion)" Manufacturer="!(loc.Company)" UpgradeCode="$(var.UpgradeCode)" InstallerVersion="200" ProductCode="$(var.ProductCode)">
+		<SummaryInformation Manufacturer="!(loc.Company)" Description="!(loc.Description)" Keywords="!(loc.Keywords)" />
 
 		<MajorUpgrade DowngradeErrorMessage="A newer version of Mobee is already installed." />
-		<MediaTemplate EmbedCab="yes"/>
+		<MediaTemplate EmbedCab="yes" />
 
-    <Icon Id="icon.ico" SourceFile="$(var.Mobee.Client.WPF.ProjectDir)\Icon.ico"/>
+    <Icon Id="icon.ico" SourceFile="$(var.Mobee.Client.WPF.ProjectDir)\Icon.ico" />
 
-    <Property Id="ARPPRODUCTICON">icon.ico</Property>
+    <Property Id="ARPPRODUCTICON" Value="icon.ico" />
 
     <UI>
-      <UIRef Id="WixUI_Minimal" />
-      <Publish Dialog="ExitDialog"
-               Control="Finish"
-               Event="DoAction"
-               Value="LaunchApplication">WIXUI_EXITDIALOGOPTIONALCHECKBOX = 1 and NOT Installed</Publish>
+      <ui:WixUI Id="WixUI_Minimal" />
+      <Publish Dialog="ExitDialog" Control="Finish" Event="DoAction" Value="LaunchApplication" Condition="WIXUI_EXITDIALOGOPTIONALCHECKBOX = 1 and NOT Installed" />
     </UI>
     <Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOXTEXT" Value="Start Mobee Now" />
 
@@ -37,10 +33,7 @@
       <ComponentGroupRef Id="PublishedLibsx86" />
     </Feature>
 
-    <CustomAction Id="LaunchApplication"
-                  Directory="INSTALLFOLDER"
-                  ExeCommand="[INSTALLFOLDER]Mobee.Client.WPF.exe"
-                  Impersonate="yes" />
-	</Product>
+    <CustomAction Id="LaunchApplication" Directory="INSTALLFOLDER" ExeCommand="[INSTALLFOLDER]Mobee.Client.WPF.exe" Impersonate="yes" />
+	</Package>
 
 </Wix>

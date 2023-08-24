@@ -1,39 +1,38 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+﻿<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
     <Fragment>
         <DirectoryRef Id="LIBSx86FFMPEG">
-            <Component Id="cmp3D8C1B954DBEFBB661A6F7338E5769EB" Guid="{A16B856C-4EB7-4495-8F17-4BB8DEF40AA4}">
-                <File Id="filF1938A4A0E6B1A0698FEFF96F6CE85C0" KeyPath="yes" Source="$(var.Libsx86Path)\avcodec-58.dll" />
+            <Component Id="cmpTsqkWWnD6sU9UXbWBcyDaxtn3Us" Guid="{E7A5F787-C23C-4F54-9704-3104AB5D09B8}">
+                <File Id="filQNFuNSNWK9kkk2pRI9uTOqDFXeA" KeyPath="yes" Source="$(var.Libsx86Path)\avcodec-58.dll" />
             </Component>
-            <Component Id="cmp7F59B55136936DCA776081814401CAA6" Guid="{FD6B9622-DA07-4001-9546-7AD86BC6DBBF}">
-                <File Id="fil7581A2512EBAE5B4F879BFC857FEE398" KeyPath="yes" Source="$(var.Libsx86Path)\avdevice-58.dll" />
+            <Component Id="cmppS96YzvvII2y6nivmzWRJ2LlFtI" Guid="{80AC33D1-EFDC-4794-B06A-9D5B34AF4D4B}">
+                <File Id="filbjRi_0FYb5bh5yZ5Ceb4AL8Ol6U" KeyPath="yes" Source="$(var.Libsx86Path)\avdevice-58.dll" />
             </Component>
-            <Component Id="cmpF2897CB394DDADF9A781D505565780BA" Guid="{80B6320F-2208-4EE7-A0D0-828A919CCC28}">
-                <File Id="filFC87823E771B46B8035FB0CAD78D00F2" KeyPath="yes" Source="$(var.Libsx86Path)\avformat-58.dll" />
+            <Component Id="cmpGbFZw4DWdKEnSSWrdBTFtiGrlTo" Guid="{EF505D4D-EA6D-47E5-8BB1-5875E477FF91}">
+                <File Id="filV0ApP_4w7xcyiwN57pEtSWUJQqw" KeyPath="yes" Source="$(var.Libsx86Path)\avformat-58.dll" />
             </Component>
-            <Component Id="cmp18E3CDBDF68798DFEDB0397D8B69107E" Guid="{4CAC21D0-AE29-4473-ABEE-A97FC301A986}">
-                <File Id="fil58AF98F004689350C0DE1CC5DACEE004" KeyPath="yes" Source="$(var.Libsx86Path)\avutil-56.dll" />
+            <Component Id="cmp9.h2iWgGGigR4TXQkOed.oycdPc" Guid="{303DCC0B-ECF5-4FD1-B47F-76A4EBE208EC}">
+                <File Id="filbw4j0VO.5z2zl0VMX_QMAvCDiv4" KeyPath="yes" Source="$(var.Libsx86Path)\avutil-56.dll" />
             </Component>
-            <Component Id="cmp91AFE6CE713C73C06DCCAC1F005E53FF" Guid="{47045216-2FFC-4E08-8C65-3E23FAFA5FC5}">
-                <File Id="fil6C8717189173152FAD3B85ED6C78BBF2" KeyPath="yes" Source="$(var.Libsx86Path)\postproc-55.dll" />
+            <Component Id="cmpy8MAKJwt0hlO97lMWuzcuOR0P8I" Guid="{3F414768-61EC-49B9-83D9-7F394989824F}">
+                <File Id="filuwzvMrDZB1dt.p2Tm9d4.tBFisc" KeyPath="yes" Source="$(var.Libsx86Path)\postproc-55.dll" />
             </Component>
-            <Component Id="cmpF5E47824A1E5EE2BE43412D1FEDF8687" Guid="{6166515E-D1E8-4A86-81EE-D801926AFA7B}">
-                <File Id="fil13F7C256644F5351E861935CD4D1724E" KeyPath="yes" Source="$(var.Libsx86Path)\swresample-3.dll" />
+            <Component Id="cmp3cqUlxnzkxxjzqCC3LZqj_CkLAA" Guid="{5E29DE53-76C1-44B6-8BFA-FC3FFF1B1D29}">
+                <File Id="filcgQQssHRMUwa74_138w6Qwcxdyo" KeyPath="yes" Source="$(var.Libsx86Path)\swresample-3.dll" />
             </Component>
-            <Component Id="cmp422D317F23DB2103AE62DA489916C7E5" Guid="{33013300-7D25-4B3B-BFC7-88824754195C}">
-                <File Id="fil3A79EE98D199714712447E3C54A88AE2" KeyPath="yes" Source="$(var.Libsx86Path)\swscale-5.dll" />
+            <Component Id="cmpxlso5mVwK5vZFDw1AQiFhHbCrsg" Guid="{071CDFCE-330E-461A-A050-5A6694D699A8}">
+                <File Id="fil.lDpSuMkVBa2uI3i.R1ZdA6T5IQ" KeyPath="yes" Source="$(var.Libsx86Path)\swscale-5.dll" />
             </Component>
         </DirectoryRef>
     </Fragment>
     <Fragment>
         <ComponentGroup Id="PublishedLibsx86">
-            <ComponentRef Id="cmp3D8C1B954DBEFBB661A6F7338E5769EB" />
-            <ComponentRef Id="cmp7F59B55136936DCA776081814401CAA6" />
-            <ComponentRef Id="cmpF2897CB394DDADF9A781D505565780BA" />
-            <ComponentRef Id="cmp18E3CDBDF68798DFEDB0397D8B69107E" />
-            <ComponentRef Id="cmp91AFE6CE713C73C06DCCAC1F005E53FF" />
-            <ComponentRef Id="cmpF5E47824A1E5EE2BE43412D1FEDF8687" />
-            <ComponentRef Id="cmp422D317F23DB2103AE62DA489916C7E5" />
+            <ComponentRef Id="cmpTsqkWWnD6sU9UXbWBcyDaxtn3Us" />
+            <ComponentRef Id="cmppS96YzvvII2y6nivmzWRJ2LlFtI" />
+            <ComponentRef Id="cmpGbFZw4DWdKEnSSWrdBTFtiGrlTo" />
+            <ComponentRef Id="cmp9.h2iWgGGigR4TXQkOed.oycdPc" />
+            <ComponentRef Id="cmpy8MAKJwt0hlO97lMWuzcuOR0P8I" />
+            <ComponentRef Id="cmp3cqUlxnzkxxjzqCC3LZqj_CkLAA" />
+            <ComponentRef Id="cmpxlso5mVwK5vZFDw1AQiFhHbCrsg" />
         </ComponentGroup>
     </Fragment>
 </Wix>

@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Localization;
 using MaterialDesignThemes.Wpf;
 using Mobee.Client.WPF.Data;
 
@@ -18,7 +19,7 @@ namespace Mobee.Client.WPF.ViewModels
         {
             EmojiList = new List<string>()
             {
-                "😂", "😍", "😘", "🥺", "😭", "☹️", "😐", "💖", "😡"
+                "😂", "😍", "😘", "🥺", "😭", "☹️", "😐", "💖", "😢", "😡"
             };
 
             OnlineUsers.CollectionChanged += (s,e) => OnPropertyChanged(nameof(OnlineUsersNames));
@@ -66,7 +67,10 @@ namespace Mobee.Client.WPF.ViewModels
             if (emoji == null || string.IsNullOrWhiteSpace(emoji))
                 return;
 
-            SendEmojiInvoked?.Invoke(this, emoji);
+            if (string.IsNullOrWhiteSpace(MessageInput))
+                SendEmojiInvoked?.Invoke(this, emoji);
+            else
+                MessageInput += emoji;
         }
         
         public void PrevevntIdle()
@@ -85,7 +89,7 @@ namespace Mobee.Client.WPF.ViewModels
 
         public List<string> EmojiList { get; }
 
-        public string OnlineUsersNames => OnlineUsers.Count == 0 ? "no one else is online..." : string.Join(", ", OnlineUsers);
+        public string OnlineUsersNames => OnlineUsers.Count == 0 ? LocalizationManager.Translate("Chat.NoOneOnline") : string.Join(", ", OnlineUsers);
 
         public ObservableCollection<string> OnlineUsers { get; } = new();
         public ObservableCollection<ChatMessage> Messages { get; } = new();

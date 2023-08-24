@@ -1,49 +1,46 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+﻿<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
 
   <Fragment>
-    <Directory Id="TARGETDIR" Name="SourceDir">
 
       <!-- Start Menu -->
-      <Directory Id="ProgramMenuFolder">
+      <StandardDirectory Id="ProgramMenuFolder">
         <Directory Id="InstallProgramMenuFolder" Name="!(loc.ProductFolderName)" />
-      </Directory>
+      </StandardDirectory>
 
       <?if $(var.Platform)=x64 ?>
 
-        <Directory Id="ProgramFiles64Folder">
-          <Directory Id="INSTALLFOLDER" Name="!(loc.ProductFolderName)" >
-            <Directory Id="LIBSFOLDER" Name="Libs">
-              <Directory Id="LIBSx64" Name="x64">
-                <Directory Id="LIBSx64FFMPEG" Name="FFmpeg"/>
-              </Directory>
-              <Directory Id="LIBSx86" Name="x86">
-                <Directory Id="LIBSx86FFMPEG" Name="FFmpeg"/>
-              </Directory>
-            </Directory>
-          </Directory>
-        </Directory>
-
-      <?else?>
-
-        <Directory Id="ProgramFilesFolder">
+        <StandardDirectory Id="ProgramFiles64Folder">
           <Directory Id="INSTALLFOLDER" Name="!(loc.ProductFolderName)">
             <Directory Id="LIBSFOLDER" Name="Libs">
               <Directory Id="LIBSx64" Name="x64">
-                <Directory Id="LIBSx64FFMPEG" Name="FFmpeg"/>
+                <Directory Id="LIBSx64FFMPEG" Name="FFmpeg" />
               </Directory>
               <Directory Id="LIBSx86" Name="x86">
-                <Directory Id="LIBSx86FFMPEG" Name="FFmpeg"/>
+                <Directory Id="LIBSx86FFMPEG" Name="FFmpeg" />
               </Directory>
             </Directory>
           </Directory>
-        </Directory>
+        </StandardDirectory>
+
+      <?else?>
+
+        <StandardDirectory Id="ProgramFilesFolder">
+          <Directory Id="INSTALLFOLDER" Name="!(loc.ProductFolderName)">
+            <Directory Id="LIBSFOLDER" Name="Libs">
+              <Directory Id="LIBSx64" Name="x64">
+                <Directory Id="LIBSx64FFMPEG" Name="FFmpeg" />
+              </Directory>
+              <Directory Id="LIBSx86" Name="x86">
+                <Directory Id="LIBSx86FFMPEG" Name="FFmpeg" />
+              </Directory>
+            </Directory>
+          </Directory>
+        </StandardDirectory>
 
       <?endif?>
 
       
 
-    </Directory>
-  </Fragment>
+    </Fragment>
 
 </Wix>

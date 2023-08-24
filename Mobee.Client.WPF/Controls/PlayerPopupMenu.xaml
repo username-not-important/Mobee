@@ -647,8 +647,8 @@
     </collections:ArrayList>
 
     <ContextMenu x:Key="PopUpMenu" Style="{StaticResource FlyleafContextMenu}" d:DataContext="{d:DesignInstance wpf:FlyleafME}">
-        <MenuItem Header="Open File" Command="{Binding OpenFileDialog}" Icon="{materialDesign:PackIcon FolderOutline}"/>
-        <MenuItem Header="Paste Url" Command="{Binding Player.Commands.OpenFromClipboard}" IsEnabled="{Binding CanPaste}" Icon="{materialDesign:PackIcon ContentPaste}"/>
+        <MenuItem Header="{loc:Translate ResourceKey=ContextMenu.OpenFile}" Command="{Binding OpenFileDialog}" Icon="{materialDesign:PackIcon FolderOutline}"/>
+        <MenuItem Header="{loc:Translate ResourceKey=ContextMenu.PasteUrl}" Command="{Binding Player.Commands.OpenFromClipboard}" IsEnabled="{Binding CanPaste}" Icon="{materialDesign:PackIcon ContentPaste}"/>
         <Separator />
 
         <MenuItem ItemsSource="{Binding Player.Playlist.Items}" Icon="{materialDesign:PackIcon ViewList}">
@@ -782,12 +782,12 @@
         </MenuItem>
 
         <Separator />
-        <MenuItem Header="Show Debug" IsCheckable="True" IsChecked="{Binding ShowDebug}"/>
+        <MenuItem Header="{loc:Translate ResourceKey=ContextMenu.ShowDebug}" IsCheckable="True" IsChecked="{Binding ShowDebug}"/>
 
         <Separator />
-        <MenuItem Header="Reconfigure" Icon="{materialDesign:PackIcon CogRefresh}" Command="{Binding Source={StaticResource MainWindowViewModel}, Path=InvokeReconfigureCommand}"></MenuItem>
-        <MenuItem Header="Change Language" Icon="{materialDesign:PackIcon Language}" Command="{Binding Source={StaticResource MainWindowViewModel}, Path=InvokeChangeLanguageCommand}"></MenuItem>
-        <MenuItem Header="{loc:Translate ResourceKey=Flyleaf.Popup.Exit}" Icon="{materialDesign:PackIcon ExitToApp}" Command="{Binding ExitApplication}"/>
+        <MenuItem Header="{loc:Translate ResourceKey=ContextMenu.Reconfigure}" Icon="{materialDesign:PackIcon CogRefresh}" Command="{Binding Source={StaticResource MainWindowViewModel}, Path=InvokeReconfigureCommand}"></MenuItem>
+        <MenuItem Header="{loc:Translate ResourceKey=ContextMenu.ChangeLanguage}" Icon="{materialDesign:PackIcon Language}" Command="{Binding Source={StaticResource MainWindowViewModel}, Path=InvokeChangeLanguageCommand}"></MenuItem>
+        <MenuItem Header="{loc:Translate ResourceKey=ContextMenu.Exit}" Icon="{materialDesign:PackIcon ExitToApp}" Command="{Binding ExitApplication}"/>
     </ContextMenu>
 
 

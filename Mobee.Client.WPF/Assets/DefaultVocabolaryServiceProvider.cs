@@ -41,7 +41,16 @@ namespace Mobee.Client.WPF.Assets
                         { "Config.Screen.Launch","بزن بریم!" },
                         { "Config.Screen.ChangeLanguage","تغییر زبان" },
                         
-                        { "Flyleaf.Popup.Exit","خروج" },
+                        { "Chat.Title","چت" },
+                        { "Chat.OnlinePostfix","نفر آنلاین" },
+                        { "Chat.NoOneOnline","کاربر دیگری آنلاین نیست..." },
+                        
+                        { "ContextMenu.OpenFile","باز کردن فایل" },
+                        { "ContextMenu.PasteUrl","باز کردن آدرس اینترنتی" },
+                        { "ContextMenu.ShowDebug","عیب یابی" },
+                        { "ContextMenu.Reconfigure","تنظیم مجدد" },
+                        { "ContextMenu.ChangeLanguage","تغییر زبان" },
+                        { "ContextMenu.Exit","خروج" },
 
                         { "MainWindowTitle","موبی" },
                         { "Direction", FlowDirection.RightToLeft.ToString() },
@@ -75,7 +84,16 @@ namespace Mobee.Client.WPF.Assets
                         { "Config.Screen.Launch","Let's Go!" },
                         { "Config.Screen.ChangeLanguage","Change Language" },
                         
-                        { "Flyleaf.Popup.Exit","Exit" },
+                        { "Chat.Title","Chat" },
+                        { "Chat.OnlinePostfix","online" },
+                        { "Chat.NoOneOnline","no one else is online..." },
+                        
+                        { "ContextMenu.OpenFile","Open File" },
+                        { "ContextMenu.PasteUrl","Paste Url" },
+                        { "ContextMenu.ShowDebug","Show Debug" },
+                        { "ContextMenu.Reconfigure","Reconfigure" },
+                        { "ContextMenu.ChangeLanguage","Change Language" },
+                        { "ContextMenu.Exit","Exit" },
 
                         { "MainWindowTitle","Mobee Player" },
                         { "Direction", FlowDirection.LeftToRight.ToString() },

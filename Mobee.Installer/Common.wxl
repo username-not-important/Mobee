@@ -1,19 +1,18 @@
-<?xml version="1.0" encoding="utf-8"?>
-<WixLocalization Culture="en-us" xmlns="http://schemas.microsoft.com/wix/2006/localization">
+﻿<WixLocalization Culture="en-us" xmlns="http://wixtoolset.org/schemas/v4/wxl">
 
-  <String Id="Company">Mobee</String>
+  <String Id="Company" Value="Mobee" />
 
-  <String Id="ProductFolderName">Mobee</String>
+  <String Id="ProductFolderName" Value="Mobee" />
   
-  <String Id="ProductName_x86">Mobee (32bit)</String>
-  <String Id="ProductName_x64">Mobee (64bit)</String>
+  <String Id="ProductName_x86" Value="Mobee (32bit)" />
+  <String Id="ProductName_x64" Value="Mobee (64bit)" />
 
-  <String Id="Description">Mobee is a Synced-Video-Player for Windows</String>
-  <String Id="Comments">Mobee is an Open-Source Synced-Video-Player for Windows</String>
-  <String Id="Keywords">videoplayer,application,installer</String>
+  <String Id="Description" Value="Mobee is a Synced-Video-Player for Windows" />
+  <String Id="Comments" Value="Mobee is an Open-Source Synced-Video-Player for Windows" />
+  <String Id="Keywords" Value="videoplayer,application,installer" />
 
-  <String Id="DowngradeErrorMessage">A newer version of Mobee is already installed.</String>
+  <String Id="DowngradeErrorMessage" Value="A newer version of Mobee is already installed." />
   
-  <String Id="Language">1033</String>
+  <String Id="Language" Value="1033" />
   
 </WixLocalization>
