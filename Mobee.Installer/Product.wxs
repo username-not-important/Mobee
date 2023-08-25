@@ -2,9 +2,9 @@
 
   <!-- Give product a unique ID per platform -->
   <?if $(var.Platform)=x64 ?>
-  <?define ProductCode = "{DE3B1CBB-BF7B-46BA-BCBB-4B1542C9B3BC}" ?>
+  <?define ProductCode = "{DE3B1CBB-BF7B-46BA-BCBB-4B1542C9B3BD}" ?>
   <?else?>
-  <?define ProductCode = "{B6C0672A-D365-4D2B-B6A1-42E908D181E1}" ?>
+  <?define ProductCode = "{B6C0672A-D365-4D2B-B6A1-42E908D181E2}" ?>
   <?endif?>
 
   <!-- Fixed upgrade Id -->
@@ -19,6 +19,10 @@
     <Icon Id="icon.ico" SourceFile="$(var.Mobee.Client.WPF.ProjectDir)\Icon.ico" />
 
     <Property Id="ARPPRODUCTICON" Value="icon.ico" />
+    <Property Id="ARPURLINFOABOUT" Value="http://mobees.ir"/>
+
+    <WixVariable Id="WixUIDialogBmp" Value="assets\background.bmp" />
+    <WixVariable Id="WixUILicenseRtf" Value="assets\ula.rtf" />
 
     <UI>
       <ui:WixUI Id="WixUI_Minimal" />

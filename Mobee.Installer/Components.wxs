@@ -3,25 +3,27 @@
   <Fragment>
 
     <ComponentGroup Id="ProductComponents">
-        <!-- Shortcut -->
-        <ComponentRef Id="MainAppShortcut" />
+      <!-- Shortcut -->
+      <ComponentRef Id="MainAppShortcut" />
 
-      </ComponentGroup>
+    </ComponentGroup>
 
-      <DirectoryRef Id="INSTALLFOLDER" FileSource="..\Mobee.Client.WPF\bin\$(var.Configuration)\net7.0-windows\publish\">
+    <DirectoryRef Id="INSTALLFOLDER" FileSource="..\Mobee.Client.WPF\bin\$(var.Configuration)\net7.0-windows\publish\">
 
-        <!-- Shortcut to main application -->
-        <Component Id="MainAppShortcut" Guid="{0995664D-AE63-4DD6-B894-708A99611370}">
+      <!-- Shortcut to main application -->
+      <Component Id="MainAppShortcut" Guid="{0995664D-AE63-4DD6-B894-708A99611370}">
 
-          <Shortcut Id="MainAppShortcut" Name="!(loc.ProductName_$(var.Platform))" Target="[INSTALLFOLDER]Mobee.Client.WPF.exe" Directory="InstallProgramMenuFolder" WorkingDirectory="INSTALLFOLDER" Icon="icon.ico" />
+        <Shortcut Id="MainAppShortcut" Name="!(loc.ProductName_$(var.Platform))" Target="[INSTALLFOLDER]Mobee.Client.WPF.exe" Directory="InstallProgramMenuFolder" WorkingDirectory="INSTALLFOLDER" Icon="icon.ico" />
 
-          <!-- Our unique key for this component/shortcut -->
-          <RegistryValue Id="RegShortcutKey" Root="HKCU" Key="SOFTWARE\!(loc.ProductFolderName)" Name="Shortcut" Value="1" Type="integer" KeyPath="yes" />
+        <Shortcut Id="DesktopAppShortcut" Name="!(loc.ProductName_$(var.Platform))" Target="[INSTALLFOLDER]Mobee.Client.WPF.exe" Directory="DesktopFolder" WorkingDirectory="INSTALLFOLDER" Icon="icon.ico" />
 
-          <!--Remove start menu items -->
-          <RemoveFolder Id="RemoveStartMenu" Directory="InstallProgramMenuFolder" On="uninstall" />
+        <!-- Our unique key for this component/shortcut -->
+        <RegistryValue Id="RegShortcutKey" Root="HKCU" Key="SOFTWARE\!(loc.ProductFolderName)" Name="Shortcut" Value="1" Type="integer" KeyPath="yes" />
 
-        </Component>
+        <!--Remove start menu items -->
+        <RemoveFolder Id="RemoveStartMenu" Directory="InstallProgramMenuFolder" On="uninstall" />
+
+      </Component>
 
     </DirectoryRef>
   </Fragment>

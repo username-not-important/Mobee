@@ -10,6 +10,9 @@
     <OutputPath>bin\$(Configuration)\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="assets\background.bmp" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Mobee.Client.WPF\Mobee.Client.WPF.csproj">
       <Name>Mobee.Client.WPF</Name>
       <Project>{3fef49b9-5a96-4184-9035-30bed1695aa4}</Project>
@@ -24,6 +27,9 @@
     <PackageReference Include="WixToolset.Util.wixext" Version="4.0.1" />
     <PackageReference Include="WixToolset.UI.wixext" Version="4.0.1" />
     <PackageReference Include="WixToolset.Heat" Version="4.0.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="assets\ula.rtf" />
   </ItemGroup>
   <Import Project="Sdk.targets" Sdk="WixToolset.Sdk" Version="4.0.1" />
   <Target Name="BeforeBuild">

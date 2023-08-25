@@ -1,25 +1,25 @@
 ﻿<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
     <Fragment>
         <DirectoryRef Id="LIBSx64FFMPEG">
-            <Component Id="cmprjq8nEPjw8TLygsLx25UHxnWd5Y" Guid="{5FFEF06B-CE0C-465E-A526-6FD6EF0F0E89}">
+            <Component Id="cmprjq8nEPjw8TLygsLx25UHxnWd5Y" Guid="{24975CE9-FC2B-4B4C-9CF9-B07B0FC6E600}">
                 <File Id="filunbCTB448pL4Pcaqy94TVgZTe7c" KeyPath="yes" Source="$(var.Libsx64Path)\avcodec-58.dll" />
             </Component>
-            <Component Id="cmpivoPqj3QSrBpMXyO2tpRewpcXaY" Guid="{3C68A0D3-10A2-4438-B8D7-34A01E49E98D}">
+            <Component Id="cmpivoPqj3QSrBpMXyO2tpRewpcXaY" Guid="{4F23C926-F8F0-4411-92F3-E3D885C4BBC4}">
                 <File Id="fily0_sm9WuIyY.oBS7lwuUsI.SJ74" KeyPath="yes" Source="$(var.Libsx64Path)\avdevice-58.dll" />
             </Component>
-            <Component Id="cmpRLEXFOjyrRD1VzzoVP7WqlyjDOI" Guid="{8222912A-3C75-4243-A8FD-ABD32D175A3F}">
+            <Component Id="cmpRLEXFOjyrRD1VzzoVP7WqlyjDOI" Guid="{F3CEB5AE-CCD1-4602-8032-B8D42465C340}">
                 <File Id="fillfW1khGg6lozPS9TySOoKxzJR.k" KeyPath="yes" Source="$(var.Libsx64Path)\avformat-58.dll" />
             </Component>
-            <Component Id="cmpoyYSD5zG13vvILtkgG_nmaoJ9Lk" Guid="{4093E0E2-7D70-41CF-B9B7-05C4C87F9747}">
+            <Component Id="cmpoyYSD5zG13vvILtkgG_nmaoJ9Lk" Guid="{6E028CD7-BD4D-4B7F-897B-C0E701E27D81}">
                 <File Id="filUgWY1TkJs98GjVhED93DqFJCmvM" KeyPath="yes" Source="$(var.Libsx64Path)\avutil-56.dll" />
             </Component>
-            <Component Id="cmpDzo7zpxZFSQBjIBPaYJvI2xjywM" Guid="{483B4948-5E37-4C99-8165-35BA211678F4}">
+            <Component Id="cmpDzo7zpxZFSQBjIBPaYJvI2xjywM" Guid="{17AA7E3E-8A84-43EA-85FD-0D3D3BC6DEA7}">
                 <File Id="filQJDPCLtWci6NvAVQd.2SJb_ZyqE" KeyPath="yes" Source="$(var.Libsx64Path)\postproc-55.dll" />
             </Component>
-            <Component Id="cmphQ2nUmKI99UfrS5vuylb3NRK38Q" Guid="{F581369B-4BA0-45FE-AF3F-ADE68736729D}">
+            <Component Id="cmphQ2nUmKI99UfrS5vuylb3NRK38Q" Guid="{D5801191-E87D-4D6F-ACA7-93B91658FD81}">
                 <File Id="filj05PJvk3ajQCbtbD.W0okY8mO34" KeyPath="yes" Source="$(var.Libsx64Path)\swresample-3.dll" />
             </Component>
-            <Component Id="cmplEGM1zfhLqvJV4Ytf6V6oYOP3v8" Guid="{7DD18CF2-BE91-4963-BCFD-AAF2BCF361E4}">
+            <Component Id="cmplEGM1zfhLqvJV4Ytf6V6oYOP3v8" Guid="{0561AE42-A537-4884-A01F-810450775DF0}">
                 <File Id="filxbnb9DDrEq9JLall2wScMdRq4g4" KeyPath="yes" Source="$(var.Libsx64Path)\swscale-5.dll" />
             </Component>
         </DirectoryRef>
