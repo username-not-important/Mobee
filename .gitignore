@@ -401,5 +401,7 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+/Mobee.Client.WPF/Assets/Fonts/*
 /Mobee.Server.Aspnet/wwwroot/css/minimal
 /Mobee.Server.Aspnet/wwwroot/js/minimal
+/Mobee.Server.Aspnet/wwwroot/fonts/Pelak

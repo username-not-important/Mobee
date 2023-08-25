@@ -7,7 +7,23 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\fonts\Pelak\PelakFA-Bold.ttf" />
+    <Content Remove="wwwroot\fonts\Pelak\PelakFA-Medium.ttf" />
+    <Content Remove="wwwroot\fonts\Pelak\PelakFA-Regular.ttf" />
+    <Content Remove="wwwroot\fonts\Pelak\PelakFA-SemiBold.ttf" />
+    <Content Remove="wwwroot\fonts\Pelak\PelakFA-Thin.ttf" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Mobee.Common\Mobee.Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="wwwroot\fonts\Pelak\PelakFA-Bold.ttf" />
+    <Resource Include="wwwroot\fonts\Pelak\PelakFA-Medium.ttf" />
+    <Resource Include="wwwroot\fonts\Pelak\PelakFA-Regular.ttf" />
+    <Resource Include="wwwroot\fonts\Pelak\PelakFA-SemiBold.ttf" />
+    <Resource Include="wwwroot\fonts\Pelak\PelakFA-Thin.ttf" />
   </ItemGroup>
 
 </Project>
