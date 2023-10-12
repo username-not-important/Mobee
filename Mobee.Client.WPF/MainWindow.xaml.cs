@@ -179,13 +179,20 @@ namespace Mobee.Client.WPF
             await connection.StartAsync();
         }
 
-        private Task OnReconnected(string? ex)
+        private async Task OnReconnected(string? ex)
         {
             Logger.Instance.Log($"Hub Reconnected\r\n{ex}", Logger.CH_COMMS);
-
+            
             ConnectionViewModel.IsConnected = true;
 
-            return Task.CompletedTask;
+            try
+            {
+                await Hub.JoinGroup(ConfigurationStore.GroupName, ConfigurationStore.UserName);
+            }
+            catch (Exception e)
+            {
+                Logger.Instance.Log($"Join Group Failed\r\n{e}", Logger.CH_COMMS);
+            }
         }
         
         private Task OnReconnecting(Exception? ex)

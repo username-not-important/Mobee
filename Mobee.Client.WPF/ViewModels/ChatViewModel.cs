@@ -19,7 +19,7 @@ namespace Mobee.Client.WPF.ViewModels
         {
             EmojiList = new List<string>()
             {
-                "😂", "😍", "😘", "🥺", "😭", "☹️", "😐", "💖", "😢", "😡"
+                "😂", "🤣", "😄", "😍", "😳", "😘", "🥺", "😭", "☹️", "😐", "💖", "😢", "😡"
             };
 
             OnlineUsers.CollectionChanged += (s,e) => OnPropertyChanged(nameof(OnlineUsersNames));

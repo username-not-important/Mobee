@@ -1,4 +1,5 @@
-﻿<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs" xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
+﻿<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs" xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui"
+     xmlns:NetFX="http://wixtoolset.org/schemas/v4/wxs/netfx">
 
   <!-- Give product a unique ID per platform -->
   <?if $(var.Platform)=x64 ?>
@@ -10,7 +11,7 @@
   <!-- Fixed upgrade Id -->
   <?define UpgradeCode = "{8C197FE6-57DF-41FD-A0CD-84B5D3B97BDC}" ?>
 
-	<Package Name="!(loc.ProductName_$(var.Platform))" Language="!(loc.Language)" Version="$(var.BuildVersion)" Manufacturer="!(loc.Company)" UpgradeCode="$(var.UpgradeCode)" InstallerVersion="200" ProductCode="$(var.ProductCode)">
+  <Package Name="!(loc.ProductName_$(var.Platform))" Language="!(loc.Language)" Version="$(var.BuildVersion)" Manufacturer="!(loc.Company)" UpgradeCode="$(var.UpgradeCode)" InstallerVersion="200" ProductCode="$(var.ProductCode)">
 		<SummaryInformation Manufacturer="!(loc.Company)" Description="!(loc.Description)" Keywords="!(loc.Keywords)" />
 
 		<MajorUpgrade DowngradeErrorMessage="A newer version of Mobee is already installed." />
@@ -20,6 +21,15 @@
 
     <Property Id="ARPPRODUCTICON" Value="icon.ico" />
     <Property Id="ARPURLINFOABOUT" Value="http://mobees.ir"/>
+
+    <NetFX:DotNetCompatibilityCheck
+      Id="Runtime"
+      Property="DOTNETRUNTIMECHECK"
+      RollForward="major"
+      RuntimeType="desktop"
+      Platform="$(var.Platform)"
+      Version="7.0.5"
+    />
 
     <WixVariable Id="WixUIDialogBmp" Value="assets\background.bmp" />
     <WixVariable Id="WixUILicenseRtf" Value="assets\ula.rtf" />
@@ -36,6 +46,8 @@
       <ComponentGroupRef Id="PublishedLibsx64" />
       <ComponentGroupRef Id="PublishedLibsx86" />
     </Feature>
+
+    <!--<Launch Condition="Installed OR DOTNETRUNTIMECHECK = 0" Message=".NET 7 Desktop runtime required" />-->
 
     <CustomAction Id="LaunchApplication" Directory="INSTALLFOLDER" ExeCommand="[INSTALLFOLDER]Mobee.Client.WPF.exe" Impersonate="yes" />
 	</Package>

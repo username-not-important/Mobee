@@ -7,7 +7,7 @@ namespace Mobee.Server.Aspnet.Pages
     {
         public IActionResult OnGet()
         {
-            return Redirect("https://github.com/username-not-important/Mobee/releases/download/WPF-Client-v0.5.0/Mobee.WPF.Client.v0.5.0-alpha.msi");
+            return Redirect("https://github.com/username-not-important/Mobee/releases/download/WPF-Client-v0.6.1/Mobee.WPF.Client.v0.6.1-alpha.msi");
         }
     }
 }

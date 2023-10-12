@@ -44,9 +44,9 @@
         public List<string> GetGroupUsersExcept(string groupName, string userName)
         {
             return _users
-                .Where(x => x.GroupName == groupName && x.UserName != userName)
+                .Where(x => x.GroupName == groupName && x.UserName != userName && x.UserName != null)
                 .Select(x => x.UserName)
-                .ToList();
+                .ToList()!;
         }
 
         public string? GetUserGroup(string connectionId)

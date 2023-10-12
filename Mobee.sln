@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mobee.Common", "Mobee.Commo
 EndProject
 Project("{B7DD6F7E-DEF8-4E67-B5B7-07EF123DB6F0}") = "Mobee.Installer", "Mobee.Installer\Mobee.Installer.wixproj", "{FD4FCAB1-C302-4D06-85E8-178B876F243B}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mobee.Server.Aspnet.Official", "Mobee.Server.Aspnet.Official\Mobee.Server.Aspnet.Official.csproj", "{1EC1B435-ED76-48FE-8954-30A5B1C00D26}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,14 @@ Global
 		{FD4FCAB1-C302-4D06-85E8-178B876F243B}.Release|Any CPU.Build.0 = Release|x86
 		{FD4FCAB1-C302-4D06-85E8-178B876F243B}.Release|x86.ActiveCfg = Release|x86
 		{FD4FCAB1-C302-4D06-85E8-178B876F243B}.Release|x86.Build.0 = Release|x86
+		{1EC1B435-ED76-48FE-8954-30A5B1C00D26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1EC1B435-ED76-48FE-8954-30A5B1C00D26}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1EC1B435-ED76-48FE-8954-30A5B1C00D26}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1EC1B435-ED76-48FE-8954-30A5B1C00D26}.Debug|x86.Build.0 = Debug|Any CPU
+		{1EC1B435-ED76-48FE-8954-30A5B1C00D26}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1EC1B435-ED76-48FE-8954-30A5B1C00D26}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1EC1B435-ED76-48FE-8954-30A5B1C00D26}.Release|x86.ActiveCfg = Release|Any CPU
+		{1EC1B435-ED76-48FE-8954-30A5B1C00D26}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
