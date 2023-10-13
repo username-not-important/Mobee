@@ -34,6 +34,7 @@ Mobee is an Open-Source Synced-Video-Player for Windows based on Client-Server a
  - Support
  - Notification Sounds
  - Associate Movie/Music file formats
+ - Chat Font-Size settings
  
 ## Thanks To:
  - [Flyleaf](https://github.com/SuRGeoNix/Flyleaf)
