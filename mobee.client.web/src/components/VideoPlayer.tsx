@@ -42,27 +42,50 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, Props>(
             },
         }));
 
-        //useEffect(() => {
-        //    const plyr = playerRef.current?.plyr;
-        //    if (!plyr) return;
+        useEffect(() => {
+            let interval: NodeJS.Timeout | null = null;
 
-        //    const handlePlay = () =>
-        //        onPlayPause(true, plyr.currentTime * 1000 * 10000);
-        //    const handlePause = () =>
-        //        onPlayPause(false, plyr.currentTime * 1000 * 10000);
-        //    const handleSeeked = () =>
-        //        onSeek(plyr.currentTime * 1000 * 10000);
+            function tryAttachListeners() {
+                const plyr = playerRef.current?.plyr;
+                if (plyr) {
+                    const handlePlay = () =>
+                        onPlayPause(true, plyr.currentTime * 1000 * 10000);
+                    const handlePause = () =>
+                        onPlayPause(false, plyr.currentTime * 1000 * 10000);
+                    const handleSeeked = () =>
+                        onSeek(plyr.currentTime * 1000 * 10000);
 
-        //    plyr.on('play', handlePlay);
-        //    plyr.on('pause', handlePause);
-        //    plyr.on('seeked', handleSeeked);
+                    plyr.on('play', handlePlay);
+                    plyr.on('pause', handlePause);
+                    plyr.on('seeked', handleSeeked);
 
-        //    return () => {
-        //        plyr.off('play', handlePlay);
-        //        plyr.off('pause', handlePause);
-        //        plyr.off('seeked', handleSeeked);
-        //    };
-        //}, [onPlayPause, onSeek]);
+                    // Cleanup
+                    return () => {
+                        plyr.off('play', handlePlay);
+                        plyr.off('pause', handlePause);
+                        plyr.off('seeked', handleSeeked);
+                    };
+                }
+                return null;
+            }
+
+            let cleanup: (() => void) | null = null;
+            interval = setInterval(() => {
+                if (!cleanup) {
+                    const cleanupFn = tryAttachListeners();
+                    if (cleanupFn) {
+                        cleanup = cleanupFn;
+                        if (interval) clearInterval(interval);
+                    }
+                }
+            }, 100);
+
+            return () => {
+                if (interval) clearInterval(interval);
+                if (cleanup) cleanup();
+            };
+        }, [onPlayPause, onSeek]);
+
 
         return (
             <Plyr
