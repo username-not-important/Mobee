@@ -2,15 +2,15 @@
 import './App.css';
 import { SignalRService } from './services/signalRService';
 import * as signalR from '@microsoft/signalr';
+import VideoPlayer, { VideoPlayerHandle } from './components/VideoPlayer';
 
 const signalRService = new SignalRService();
 
 function App() {
-    const videoRef = useRef < HTMLVideoElement | null > (null);
-    const [group] = useState('default'); // Static group for now
-    const [username] = useState('ali'); // You can change this dynamically
-    const [isConnected, setIsConnected] = useState(false);
-    const [chatMessages, setChatMessages] = useState < string[] > ([]);
+    const playerRef = useRef<VideoPlayerHandle>(null);
+    const [group] = useState('default');
+    const [username] = useState('ali');
+    const [chatMessages, setChatMessages] = useState<string[]>([]);
     const [messageInput, setMessageInput] = useState('');
 
     useEffect(() => {
@@ -18,33 +18,34 @@ function App() {
             try {
                 await signalRService.start();
 
-                // Wait until the connection is actually in the 'Connected' state
-                const waitUntilConnected = () =>
-                    new Promise<void>((resolve) => {
-                        const check = () => {
-                            if (signalRService.connection?.state === signalR.HubConnectionState.Connected) {
-                                resolve();
-                            } else {
-                                setTimeout(check, 100); // check every 100ms
-                            }
-                        };
-                        check();
-                    });
+                await new Promise<void>((resolve) => {
+                    const check = () => {
+                        if (
+                            signalRService.connection?.state ===
+                            signalR.HubConnectionState.Connected
+                        ) {
+                            resolve();
+                        } else {
+                            setTimeout(check, 100);
+                        }
+                    };
+                    check();
+                });
 
-                await waitUntilConnected(); // 🔒 ensure ready
-
-                await signalRService.joinGroup(group, username); // ✅ safe to call now
+                await signalRService.joinGroup(group, username);
             } catch (err) {
                 console.error('Failed to connect:', err);
             }
 
             signalRService.onPlaybackToggled((user, isPlaying, position) => {
-                const video = videoRef.current;
-                if (!video) return;
+                const player = playerRef.current;
+                if (!player) return;
 
-                video.currentTime = position / 1000 / 10000;
-                isPlaying ? video.play() : video.pause();
-                console.log(`Playback toggled by ${user}: ${isPlaying ? 'play' : 'pause'} at ${position}`);
+                player.setPosition(position);
+                isPlaying ? player.play() : player.pause();
+                console.log(
+                    `Playback toggled by ${user}: ${isPlaying ? 'play' : 'pause'} at ${position}`
+                );
             });
 
             signalRService.onReceiveMessage((from, message) => {
@@ -64,21 +65,28 @@ function App() {
     }, [group, username]);
 
     const togglePlayback = async () => {
-        const video = videoRef.current;
-        if (!video) return;
+        const player = playerRef.current;
+        if (!player) return;
 
-        const isPlaying = !video.paused;
-        const position = Math.floor(video.currentTime * 1000 * 10000);
-
-        console.log(position);
+        const isPlaying = playerRef.current?.plyr?.playing;
+        const currentTime = playerRef.current?.plyr?.currentTime ?? 0;
+        const position = Math.floor(currentTime * 1000 * 10000);
 
         if (isPlaying) {
-            video.pause();
+            player.pause();
         } else {
-            video.play();
+            player.play();
         }
 
         await signalRService.togglePlayback(group, username, !isPlaying, position);
+    };
+
+    const handleSeek = async (position: number) => {
+        await signalRService.togglePlayback(group, username, false, position);
+    };
+
+    const handlePlayPause = async (isPlaying: boolean, position: number) => {
+        await signalRService.togglePlayback(group, username, isPlaying, position);
     };
 
     const sendMessage = async () => {
@@ -90,14 +98,12 @@ function App() {
     return (
         <div className="App">
             <h2>Mobee Web Client</h2>
-            <video
-                ref={videoRef}
-                width="640"
-                height="360"
-                controls
-                src="/sample.mp4" // Put your video file in public folder or use file picker
-            ></video>
-
+            <VideoPlayer
+                ref={playerRef}
+                source="/sample.mp4"
+                onSeek={handleSeek}
+                onPlayPause={handlePlayPause}
+            />
             <div style={{ margin: '1rem 0' }}>
                 <button onClick={togglePlayback}>Toggle Play/Pause (Sync)</button>
             </div>
