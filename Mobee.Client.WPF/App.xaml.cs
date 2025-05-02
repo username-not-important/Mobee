@@ -70,22 +70,27 @@ namespace Mobee.Client.WPF
 
             if (string.IsNullOrWhiteSpace(Settings.Default.CULTURE))
             {
-                var window = AppHost.Services.GetRequiredService<LanguageWindow>();
-                window.Show();
+                ShowLanguage();
             }
             else
             {
-                StartConfiguration();
+                ShowConfiguration();
             }
             
             Logger.Instance.Log("Startup Complete...", true);
 
             base.OnStartup(e);
         }
-
-        public void StartConfiguration()
+        
+        public void ShowLanguage()
         {
-            var window = AppHost.Services.GetRequiredService<ConfigureWindow>();
+            var window = GetRequiredService<LanguageWindow>();
+            window.Show();
+        }
+
+        public void ShowConfiguration()
+        {
+            var window = GetRequiredService<ConfigureWindow>();
             window.Show();
         }
         

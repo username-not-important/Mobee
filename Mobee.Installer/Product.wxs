@@ -1,55 +1,63 @@
-﻿<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs" xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui"
+﻿<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs"
+	 xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui"
      xmlns:NetFX="http://wixtoolset.org/schemas/v4/wxs/netfx">
 
-  <!-- Give product a unique ID per platform -->
-  <?if $(var.Platform)=x64 ?>
-  <?define ProductCode = "{DE3B1CBB-BF7B-46BA-BCBB-4B1542C9B3BD}" ?>
-  <?else?>
-  <?define ProductCode = "{B6C0672A-D365-4D2B-B6A1-42E908D181E2}" ?>
-  <?endif?>
+	<!-- Give product a unique ID per platform -->
+	<?if $(var.Platform)=x64 ?>
+	<?define ProductCode = "{DE3B1CBB-BF7B-46BA-BCBB-4B1542C9B3BF}" ?>
+	<?else?>
+	<?define ProductCode = "{B6C0672A-D365-4D2B-B6A1-42E908D181E4}" ?>
+	<?endif?>
 
-  <!-- Fixed upgrade Id -->
-  <?define UpgradeCode = "{8C197FE6-57DF-41FD-A0CD-84B5D3B97BDC}" ?>
+	<!-- Fixed upgrade Id -->
+	<?define UpgradeCode = "{8C197FE6-57DF-41FD-A0CD-84B5D3B97BDC}" ?>
 
-  <Package Name="!(loc.ProductName_$(var.Platform))" Language="!(loc.Language)" Version="$(var.BuildVersion)" Manufacturer="!(loc.Company)" UpgradeCode="$(var.UpgradeCode)" InstallerVersion="200" ProductCode="$(var.ProductCode)">
+	<Package Name="!(loc.ProductName_$(var.Platform))" Language="!(loc.Language)" Version="$(var.BuildVersion)" Manufacturer="!(loc.Company)" UpgradeCode="$(var.UpgradeCode)" InstallerVersion="200" ProductCode="$(var.ProductCode)">
 		<SummaryInformation Manufacturer="!(loc.Company)" Description="!(loc.Description)" Keywords="!(loc.Keywords)" />
 
 		<MajorUpgrade DowngradeErrorMessage="A newer version of Mobee is already installed." />
 		<MediaTemplate EmbedCab="yes" />
 
-    <Icon Id="icon.ico" SourceFile="$(var.Mobee.Client.WPF.ProjectDir)\Icon.ico" />
+		<Icon Id="icon.ico" SourceFile="$(var.Mobee.Client.WPF.ProjectDir)\Icon.ico" />
 
-    <Property Id="ARPPRODUCTICON" Value="icon.ico" />
-    <Property Id="ARPURLINFOABOUT" Value="http://mobees.ir"/>
+		<Property Id="ARPPRODUCTICON" Value="icon.ico" />
+		<Property Id="ARPURLINFOABOUT" Value="http://mobees.ir"/>
 
-    <NetFX:DotNetCompatibilityCheck
-      Id="Runtime"
-      Property="DOTNETRUNTIMECHECK"
-      RollForward="major"
-      RuntimeType="desktop"
-      Platform="$(var.Platform)"
-      Version="7.0.5"
+		<NetFX:DotNetCompatibilityCheck
+		  Id="Runtime"
+		  Property="DOTNETRUNTIMECHECK"
+		  RollForward="major"
+		  RuntimeType="desktop"
+		  Platform="$(var.Platform)"
+		  Version="7.0.5"
     />
 
-    <WixVariable Id="WixUIDialogBmp" Value="assets\background.bmp" />
-    <WixVariable Id="WixUILicenseRtf" Value="assets\ula.rtf" />
+		<CustomAction Id="InstallDotNet" FileRef="DotNetInstaller" ExeCommand="windowsdesktop-runtime-7.0.5-win-x64.exe /quiet" Return="check"/>
 
-    <UI>
-      <ui:WixUI Id="WixUI_Minimal" />
-      <Publish Dialog="ExitDialog" Control="Finish" Event="DoAction" Value="LaunchApplication" Condition="WIXUI_EXITDIALOGOPTIONALCHECKBOX = 1 and NOT Installed" />
-    </UI>
-    <Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOXTEXT" Value="Start Mobee Now" />
+		<InstallExecuteSequence>
+			<Custom Action="InstallDotNet" After="InstallFinalize" Condition="NOT Installed AND DOTNETRUNTIMECHECK = 0"></Custom>
+		</InstallExecuteSequence>
 
-    <Feature Id="ProductFeature" Title="Mobee" Level="1">
+		<WixVariable Id="WixUIDialogBmp" Value="assets\background.bmp" />
+		<WixVariable Id="WixUILicenseRtf" Value="assets\ula.rtf" />
+
+		<UI>
+			<ui:WixUI Id="WixUI_Minimal" />
+			<Publish Dialog="ExitDialog" Control="Finish" Event="DoAction" Value="LaunchApplication" Condition="WIXUI_EXITDIALOGOPTIONALCHECKBOX = 1 and NOT Installed" />
+		</UI>
+		<Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOXTEXT" Value="Start Mobee Now" />
+
+		<Feature Id="ProductFeature" Title="Mobee" Level="1">
 			<ComponentGroupRef Id="ProductComponents" />
-      <ComponentGroupRef Id="PublishedComponents" />
-      <ComponentGroupRef Id="PublishedLibsx64" />
-      <ComponentGroupRef Id="PublishedLibsx86" />
-    </Feature>
+			<ComponentGroupRef Id="RequirementComponents" />
+			<ComponentGroupRef Id="PublishedComponents" />
+			<ComponentGroupRef Id="PublishedLibsx64" />
+			<ComponentGroupRef Id="PublishedLibsx86" />
+		</Feature>
 
-    <!--<Launch Condition="Installed OR DOTNETRUNTIMECHECK = 0" Message=".NET 7 Desktop runtime required" />-->
+		<!--<Launch Condition="Installed OR DOTNETRUNTIMECHECK = 0" Message=".NET 7 Desktop runtime required" />-->
 
-    <CustomAction Id="LaunchApplication" Directory="INSTALLFOLDER" ExeCommand="[INSTALLFOLDER]Mobee.Client.WPF.exe" Impersonate="yes" />
+		<CustomAction Id="LaunchApplication" Directory="INSTALLFOLDER" ExeCommand="[INSTALLFOLDER]Mobee.Client.WPF.exe" Impersonate="yes" />
 	</Package>
 
 </Wix>

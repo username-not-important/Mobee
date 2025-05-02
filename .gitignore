@@ -45,6 +45,12 @@ bld/
 # Official Server
 Mobee.Server.Aspnet.Official/
 
+# Official Client
+Mobee.Client.WPF.Official/
+
+# Official Common Library
+Mobee.Common.Official/
+
 # Visual Studio 2017 auto generated files
 Generated\ Files/
 

@@ -1,0 +1,19 @@
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs"
+     xmlns:NetFX="http://wixtoolset.org/schemas/v4/wxs/netfx">
+
+	<Fragment>
+
+		<ComponentGroup Id="RequirementComponents">
+			<!-- Shortcut -->
+			<ComponentRef Id="DotNetInstaller" />
+
+		</ComponentGroup>
+		
+		<DirectoryRef Id="INSTALLFOLDER">
+			<Component Id="DotNetInstaller" Guid="{A1234567-BF7B-46BA-BCBB-4B1542C9B3BE}">
+				<File Id="DotNetInstaller" Source="..\.wsb\windowsdesktop-runtime-7.0.5-win-x64.exe"/>
+			</Component>
+		</DirectoryRef>
+	</Fragment>
+
+</Wix>

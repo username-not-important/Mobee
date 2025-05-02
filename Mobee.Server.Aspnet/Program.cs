@@ -8,7 +8,18 @@ namespace Mobee.Server.Aspnet
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
+            builder.Services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(policy =>
+                {
+                    policy
+                        .WithOrigins("http://localhost:5173")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials(); // This is important for SignalR!
+                });
+            });
+
             builder.Services.AddSingleton(typeof(UsersRepository));
             builder.Services.AddRazorPages();
             builder.Services.AddSignalR();
@@ -27,7 +38,7 @@ namespace Mobee.Server.Aspnet
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseCors();
             app.UseAuthorization();
 
             app.MapRazorPages();

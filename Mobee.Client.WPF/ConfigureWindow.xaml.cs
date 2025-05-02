@@ -69,27 +69,27 @@ namespace Mobee.Client.WPF
 
         private void saveConfiguration()
         {
-            Properties.Settings.Default.SERVER_BASEURI = ConfigurationStore.ServerAddress = ViewModel.ServerAddress;
-            Properties.Settings.Default.LAST_MEDIA_FILE = ConfigurationStore.FilePath = ViewModel.FilePath;
-            Properties.Settings.Default.LAST_USERNAME = ConfigurationStore.UserName = ViewModel.UserName;
-            Properties.Settings.Default.LAST_GROUPNAME = ConfigurationStore.GroupName = ViewModel.GroupName;
+            Settings.Default.SERVER_BASEURI = ConfigurationStore.ServerAddress = ViewModel.ServerAddress;
+            Settings.Default.LAST_MEDIA_FILE = ConfigurationStore.FilePath = ViewModel.FilePath;
+            Settings.Default.LAST_USERNAME = ConfigurationStore.UserName = ViewModel.UserName;
+            Settings.Default.LAST_GROUPNAME = ConfigurationStore.GroupName = ViewModel.GroupName;
 
-            Properties.Settings.Default.Save();
+            Settings.Default.Save();
         }
 
         private void loadConfiguration()
         {
-            if (!string.IsNullOrWhiteSpace(Properties.Settings.Default.SERVER_BASEURI))
-                ViewModel.ServerAddress = Properties.Settings.Default.SERVER_BASEURI;
+            if (!string.IsNullOrWhiteSpace(Settings.Default.SERVER_BASEURI))
+                ViewModel.ServerAddress = Settings.Default.SERVER_BASEURI;
 
-            if (!string.IsNullOrWhiteSpace(Properties.Settings.Default.LAST_MEDIA_FILE))
-                ViewModel.FilePath = Properties.Settings.Default.LAST_MEDIA_FILE;
+            if (!string.IsNullOrWhiteSpace(Settings.Default.LAST_MEDIA_FILE))
+                ViewModel.FilePath = Settings.Default.LAST_MEDIA_FILE;
             
-            if (!string.IsNullOrWhiteSpace(Properties.Settings.Default.LAST_USERNAME))
-                ViewModel.UserName = Properties.Settings.Default.LAST_USERNAME;
+            if (!string.IsNullOrWhiteSpace(Settings.Default.LAST_USERNAME))
+                ViewModel.UserName = Settings.Default.LAST_USERNAME;
 
-            if (!string.IsNullOrWhiteSpace(Properties.Settings.Default.LAST_GROUPNAME))
-                ViewModel.GroupName = Properties.Settings.Default.LAST_GROUPNAME;
+            if (!string.IsNullOrWhiteSpace(Settings.Default.LAST_GROUPNAME))
+                ViewModel.GroupName = Settings.Default.LAST_GROUPNAME;
         }
 
     }
