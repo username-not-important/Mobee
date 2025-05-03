@@ -3,8 +3,19 @@ import './App.css';
 import { SignalRService } from './services/SignalRService';
 import * as signalR from '@microsoft/signalr';
 import VideoPlayer, { VideoPlayerHandle } from './components/VideoPlayer';
+import { IconButton, Box } from '@mui/material';
+import TextField from '@mui/material/TextField';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import SendIcon from '@mui/icons-material/Send';
+
 
 const signalRService = new SignalRService();
+const theme = createTheme({
+    palette: {
+        mode: 'dark',
+        primary: { main: '#efb61d' },
+    },
+});
 
 function App() {
     const playerRef = useRef<VideoPlayerHandle>(null);
@@ -122,65 +133,72 @@ function App() {
     };
 
     return (
-        <div className="App">
-            {connectionState !== signalR.HubConnectionState.Connected && (
-                <div
-                    style={{
-                        position: 'fixed',
-                        top: 0,
-                        left: 0,
-                        height: '4px',
-                        width: '100vw',
-                        background: 'linear-gradient(90deg, #2196f3 0%, #21cbf3 100%)',
-                        zIndex: 1000,
-                        transition: 'opacity 0.3s',
-                    }}
-                >
+        <ThemeProvider theme={theme}>
+
+            <div className="App">
+                {connectionState !== signalR.HubConnectionState.Connected && (
                     <div
-                        className="progress-indeterminate"
                         style={{
-                            height: '100%',
-                            width: '100%',
-                            background:
-                                'repeating-linear-gradient(90deg, #fff6, #fff6 10px, transparent 10px, transparent 20px)',
-                            animation: 'move 1.2s linear infinite',
+                            position: 'fixed',
+                            top: 0,
+                            left: 0,
+                            height: '4px',
+                            width: '100vw',
+                            background: 'linear-gradient(90deg, #2196f3 0%, #21cbf3 100%)',
+                            zIndex: 1000,
+                            transition: 'opacity 0.3s',
                         }}
-                    ></div>
-                </div>
-            )}
+                    >
+                        <div
+                            className="progress-indeterminate"
+                            style={{
+                                height: '100%',
+                                width: '100%',
+                                background:
+                                    'repeating-linear-gradient(90deg, #fff6, #fff6 10px, transparent 10px, transparent 20px)',
+                                animation: 'move 1.2s linear infinite',
+                            }}
+                        ></div>
+                    </div>
+                )}
 
-            <VideoPlayer
-                ref={playerRef}
-                source="/sample.mp4"
-                onSeek={handleSeek}
-                onPlayPause={handlePlayPause}
-                playbackSyncLock={playbackSyncLock}
-            />
+                <VideoPlayer
+                    ref={playerRef}
+                    source="/sample.mp4"
+                    onSeek={handleSeek}
+                    onPlayPause={handlePlayPause}
+                    playbackSyncLock={playbackSyncLock}
+                />
 
-            {/* Right Chat Panel */}
-            <div className="chat-panel">
-                {/* Your chat UI here */}
-                <div className="chat-header">
-                    <span>Chat</span>
-                    <span className="chat-online">* online</span>
+                {/* Right Chat Panel */}
+                <div className="chat-panel">
+                    {/* Your chat UI here */}
+                    <div className="chat-header">
+                        <span>Chat</span>
+                        <span className="chat-online">* online</span>
+                    </div>
+                    <div className="chat-messages">
+                        {chatMessages.map((msg, idx) => (
+                            <div key={idx}>{msg}</div>
+                        ))}
+                    </div>
+                    <div className="chat-controls">
+                        <TextField
+                            id="outlined-multiline-flexible"
+                            label="Type Message"
+                            multiline
+                            value={messageInput}
+                            onChange={(e) => setMessageInput(e.target.value)}
+                            maxRows={4}
+                        />
+                        <IconButton onClick={sendMessage} color="primary">
+                            <SendIcon />
+                        </IconButton>
+                    </div>
                 </div>
-                <div className="chat-messages">
-                    {chatMessages.map((msg, idx) => (
-                        <div key={idx}>{msg}</div>
-                    ))}
-                </div>
-                <div className="chat-controls">
-                    <input
-                        type="text"
-                        value={messageInput}
-                        onChange={(e) => setMessageInput(e.target.value)}
-                        placeholder="Type message..."
-                    />
-                    <button onClick={sendMessage}>Send</button>
-                </div>
+
             </div>
-
-        </div>
+        </ThemeProvider>
     );
 }
 

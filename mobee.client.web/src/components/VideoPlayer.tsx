@@ -7,6 +7,9 @@
     useState,
 } from 'react';
 import ReactPlayer from 'react-player';
+import { IconButton, Slider, Box } from '@mui/material';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import PauseIcon from '@mui/icons-material/Pause';
 
 export interface VideoPlayerHandle {
     setPosition: (position: number) => void;
@@ -120,7 +123,7 @@ const VideoPlayer = React.memo(
             };
 
             return (
-                <div className="video-wrapper">
+                <Box className="video-wrapper">
                     {/* Video fills the wrapper */}
                     <ReactPlayer
                         ref={playerRef}
@@ -136,11 +139,10 @@ const VideoPlayer = React.memo(
                         style={{ position: 'absolute', top: 0, left: 0 }}
                     />
 
-                    {/* Bottom Controls Bar */}
-                    <div className="controls-bar">
-                        <button onClick={() => setIsPlaying(p => !p)}>
-                            {isPlaying ? '⏸' : '▶️'}
-                        </button>
+                    <Box display="flex" alignItems="center" width="100%" className="controls-bar">
+                        <IconButton onClick={() => setIsPlaying(p => !p)} color="primary">
+                            {isPlaying ? <PauseIcon /> : <PlayArrowIcon />}
+                        </IconButton>
                         <span className="time">{formatTime(duration * played)}</span>
                         <input
                             type="range"
@@ -155,8 +157,8 @@ const VideoPlayer = React.memo(
                         />
                         <span className="time">{formatTime(duration)}</span>
                         {/* Add more controls: volume, captions, etc. */}
-                    </div>
-                </div>
+                    </Box>
+                </Box>
             );
         }
     )

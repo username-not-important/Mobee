@@ -73,12 +73,10 @@
 .chat-messages {
     flex: 1;
     overflow-y: auto;
-    /* Add padding or styling as needed */
 }
 
 .chat-controls {
     margin-top: 8px;
-    /* Add input and send button styling */
 }
 
 .controls-bar {
