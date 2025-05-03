@@ -157,21 +157,29 @@ function App() {
                 playbackSyncLock={playbackSyncLock}
             />
 
-            <div className="chat">
-                <h4>Chat</h4>
-                <div className="chat-box">
+            {/* Right Chat Panel */}
+            <div className="chat-panel">
+                {/* Your chat UI here */}
+                <div className="chat-header">
+                    <span>Chat</span>
+                    <span className="chat-online">* online</span>
+                </div>
+                <div className="chat-messages">
                     {chatMessages.map((msg, idx) => (
                         <div key={idx}>{msg}</div>
                     ))}
                 </div>
-                <input
-                    type="text"
-                    value={messageInput}
-                    onChange={(e) => setMessageInput(e.target.value)}
-                    placeholder="Type message..."
-                />
-                <button onClick={sendMessage}>Send</button>
+                <div className="chat-controls">
+                    <input
+                        type="text"
+                        value={messageInput}
+                        onChange={(e) => setMessageInput(e.target.value)}
+                        placeholder="Type message..."
+                    />
+                    <button onClick={sendMessage}>Send</button>
+                </div>
             </div>
+
         </div>
     );
 }

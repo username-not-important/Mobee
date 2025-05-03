@@ -4,6 +4,7 @@
     useRef,
     useEffect,
     useCallback,
+    useState,
 } from 'react';
 import ReactPlayer from 'react-player';
 
@@ -21,74 +22,144 @@ interface Props {
     onPlayPause: (isPlaying: boolean, position: number) => void;
 }
 
-const VideoPlayer = React.memo(forwardRef<VideoPlayerHandle, Props>(
-    ({ source, playbackSyncLock, onSeek, onPlayPause }, ref) => {
-        const playerRef = useRef<ReactPlayer>(null);
-        const playingStatusRef = useRef(false);
-        const [isPlaying, setIsPlaying] = React.useState(false);
-
-        // Expose imperative methods to parent
-        useImperativeHandle(ref, () => ({
-            setPosition: (position: number) => {
-                // position is in 100-nanosecond units, convert to seconds
-                const seconds = position / 1000 / 10000;
-                playerRef.current?.seekTo(seconds, 'seconds');
+const VideoPlayer = React.memo(
+    forwardRef<VideoPlayerHandle, Props>(
+        (
+            {
+                source,
+                playbackSyncLock,
+                onSeek,
+                onPlayPause,
+                // Pass chat props here
             },
-            play: () => setIsPlaying(true),
-            pause: () => setIsPlaying(false),
-            getPlaying: () => playingStatusRef.current,
-        }));
+            ref
+        ) => {
+            const playerRef = useRef<ReactPlayer>(null);
+            const [isPlaying, setIsPlaying] = useState(false);
+            const [duration, setDuration] = useState(0);
+            const [played, setPlayed] = useState(0); // 0..1
+            const [seeking, setSeeking] = useState(false);
+            const playingStatusRef = useRef(false);
 
-        // Handle play/pause and seeking events
-        const handlePlay = useCallback(() => {
-            if (playbackSyncLock?.current) return;
+            // Imperative handle for parent
+            useImperativeHandle(ref, () => ({
+                setPosition: (position: number) => {
+                    const seconds = position / 1000 / 10000;
+                    playerRef.current?.seekTo(seconds, 'seconds');
+                },
+                play: () => setIsPlaying(true),
+                pause: () => setIsPlaying(false),
+                getPlaying: () => playingStatusRef.current,
+            }));
 
-            playingStatusRef.current = true;
+            // Play/Pause events
+            const handlePlay = useCallback(() => {
+                if (playbackSyncLock?.current) return;
+                playingStatusRef.current = true;
+                setIsPlaying(true);
+                if (playerRef.current) {
+                    const sec = playerRef.current.getCurrentTime();
+                    onPlayPause(true, Math.round(sec * 1000 * 10000));
+                }
+            }, [onPlayPause, playbackSyncLock]);
 
-            if (playerRef.current) {
-                const sec = playerRef.current.getCurrentTime();
-                onPlayPause(true, Math.round(sec * 1000 * 10000));
-            }
-        }, [onPlayPause, playbackSyncLock]);
+            const handlePause = useCallback(() => {
+                if (playbackSyncLock?.current) return;
+                playingStatusRef.current = false;
+                setIsPlaying(false);
+                if (playerRef.current) {
+                    const sec = playerRef.current.getCurrentTime();
+                    onPlayPause(false, Math.round(sec * 1000 * 10000));
+                }
+            }, [onPlayPause, playbackSyncLock]);
 
-        const handlePause = useCallback(() => {
-            if (playbackSyncLock?.current) return;
+            // Seek events
+            const handleSeekMouseDown = () => setSeeking(true);
 
-            playingStatusRef.current = false;
+            const handleSeekChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+                setPlayed(parseFloat(e.target.value));
+            };
 
-            if (playerRef.current) {
-                const sec = playerRef.current.getCurrentTime();
-                onPlayPause(false, Math.round(sec * 1000 * 10000));
-            }
-        }, [onPlayPause, playbackSyncLock]);
+            const handleSeekMouseUp = (e: React.ChangeEvent<HTMLInputElement>) => {
+                setSeeking(false);
+                const newPlayed = parseFloat(e.target.value);
+                const newTime = newPlayed * duration;
+                playerRef.current?.seekTo(newTime, 'seconds');
+                onSeek(isPlaying, Math.round(newTime * 1000 * 10000));
+            };
 
-        const handleSeek = useCallback((seconds: number) => {
-            if (playbackSyncLock?.current) return;
+            // Progress from player
+            const handleProgress = (state: { played: number }) => {
+                if (!seeking) setPlayed(state.played);
+            };
 
-            onSeek(playingStatusRef.current, Math.round(seconds * 1000 * 10000));
-        }, [onSeek, playbackSyncLock]);
+            // Duration from player
+            const handleDuration = (dur: number) => setDuration(dur);
 
-        useEffect(() => {
-            // Sync playing status with internal ref
-            playingStatusRef.current = isPlaying;
-        }, [isPlaying]);
+            // Keyboard controls (optional): Space to play/pause, arrows to seek
+            useEffect(() => {
+                const onKeyDown = (e: KeyboardEvent) => {
+                    if (e.code === 'Space') {
+                        setIsPlaying(p => !p);
+                    } else if (e.code === 'ArrowRight') {
+                        playerRef.current?.seekTo(playerRef.current.getCurrentTime() + 5, 'seconds');
+                    } else if (e.code === 'ArrowLeft') {
+                        playerRef.current?.seekTo(playerRef.current.getCurrentTime() - 5, 'seconds');
+                    }
+                };
+                window.addEventListener('keydown', onKeyDown);
+                return () => window.removeEventListener('keydown', onKeyDown);
+            }, []);
 
-        return (
-            <div>
-                <ReactPlayer
-                    ref={playerRef}
-                    url={source}
-                    playing={isPlaying}
-                    controls
-                    width="100%"
-                    height="auto"
-                    onPlay={handlePlay}
-                    onPause={handlePause}
-                    onSeek={handleSeek}
-                />
-            </div>
-        );
-    }
-));
+            // Format time helper
+            const formatTime = (seconds: number) => {
+                if (isNaN(seconds)) return '00:00';
+                const m = Math.floor(seconds / 60);
+                const s = Math.floor(seconds % 60);
+                return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+            };
+
+            return (
+                <div className="video-wrapper">
+                    {/* Video fills the wrapper */}
+                    <ReactPlayer
+                        ref={playerRef}
+                        url={source}
+                        playing={isPlaying}
+                        controls={false} // Hide default controls
+                        width="100%"
+                        height="100%"
+                        onPlay={handlePlay}
+                        onPause={handlePause}
+                        onProgress={handleProgress}
+                        onDuration={handleDuration}
+                        style={{ position: 'absolute', top: 0, left: 0 }}
+                    />
+
+                    {/* Bottom Controls Bar */}
+                    <div className="controls-bar">
+                        <button onClick={() => setIsPlaying(p => !p)}>
+                            {isPlaying ? '⏸' : '▶️'}
+                        </button>
+                        <span className="time">{formatTime(duration * played)}</span>
+                        <input
+                            type="range"
+                            min={0}
+                            max={1}
+                            step="any"
+                            value={played}
+                            onMouseDown={handleSeekMouseDown}
+                            onChange={handleSeekChange}
+                            onMouseUp={handleSeekMouseUp}
+                            className="seekbar"
+                        />
+                        <span className="time">{formatTime(duration)}</span>
+                        {/* Add more controls: volume, captions, etc. */}
+                    </div>
+                </div>
+            );
+        }
+    )
+);
 
 export default VideoPlayer;

@@ -1,7 +1,6 @@
 .App {
     font-family: sans-serif;
     text-align: center;
-    padding: 1rem;
 }
 
 @keyframes move {
@@ -27,3 +26,80 @@
     padding: 0.5rem;
     margin-bottom: 0.5rem;
 }
+
+/*video player styles*/
+
+.video-wrapper {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background: #000;
+}
+
+.chat-panel {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 320px;
+    height: calc(100% - 80px);
+    background: rgba(25, 25, 25, 0.4);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    z-index: 2;
+    padding: 15px;
+    border-radius: 15px;
+    box-sizing: border-box;
+}
+
+.chat-header {
+    font-weight: bold;
+    font-size: 1.2em;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chat-online {
+    background: orange;
+    border-radius: 16px;
+    padding: 2px 10px;
+    color: #222;
+    font-size: 0.9em;
+}
+
+.chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    /* Add padding or styling as needed */
+}
+
+.chat-controls {
+    margin-top: 8px;
+    /* Add input and send button styling */
+}
+
+.controls-bar {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background: rgba(20,20,20,0.88);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    padding: 8px 24px 8px 0px;
+    z-index: 2;
+}
+
+    .controls-bar .seekbar {
+        flex: 1;
+        margin: 0 12px;
+    }
+
+    .controls-bar .time {
+        min-width: 62px;
+        text-align: center;
+    }
