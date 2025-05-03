@@ -8,6 +8,7 @@ const signalRService = new SignalRService();
 
 function App() {
     const playerRef = useRef<VideoPlayerHandle>(null);
+    const playbackSyncLock = useRef(false);
     const [group] = useState('default');
     const [username] = useState('ali');
     const [chatMessages, setChatMessages] = useState<string[]>([]);
@@ -16,12 +17,19 @@ function App() {
         signalR.HubConnectionState.Disconnected
     );
 
+    function ticksToHMS(ticks) {
+        const totalSeconds = Math.floor(ticks / 10000 / 1000);
+        const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, '0');
+        const minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
+        const seconds = String(totalSeconds % 60).padStart(2, '0');
+        return `${hours}:${minutes}:${seconds}`;
+    }
+
     useEffect(() => {
         const connect = async () => {
             try {
                 await signalRService.start();
 
-                // Listen for connection state changes
                 signalRService.connection?.onreconnecting(() => {
                     setConnectionState(signalR.HubConnectionState.Reconnecting);
                 });
@@ -52,18 +60,22 @@ function App() {
             }
 
             signalRService.onPlaybackToggled((user, isPlaying, position) => {
-                if (user === username) {
-                    return; // Ignore callbacks from myself to avoid double reactions / loopbacks
-                }
+                if (user === username) return;
 
                 const player = playerRef.current;
                 if (!player) return;
 
+                playbackSyncLock.current = true;
+
                 player.setPosition(position);
                 isPlaying ? player.play() : player.pause();
-                console.log(
-                    `Playback toggled by ${user}: ${isPlaying ? 'play' : 'pause'} at ${position}`
-                );
+
+                setTimeout(() => {
+                    playbackSyncLock.current = false;
+                }, 200);
+
+                //setChatMessages((prev) => [...prev, `${isPlaying ? '▶️' : '⏸️'} ${ticksToHMS(position)}`]);
+                //console.log(`Playback toggled by ${user}: ${isPlaying ? 'play' : 'pause'} at ${position}`);
             });
 
             signalRService.onReceiveMessage((from, message) => {
@@ -82,31 +94,9 @@ function App() {
         connect();
     }, [group, username]);
 
-    const togglePlayback = async () => {
-        const player = playerRef.current;
-        if (!player) return;
-
-        const isPlaying = playerRef.current?.plyr?.playing;
-        const currentTime = playerRef.current?.plyr?.currentTime ?? 0;
-        const position = Math.floor(currentTime * 1000 * 10000);
-
-        if (isPlaying) {
-            player.pause();
-        } else {
-            player.play();
-        }
-
-        await signalRService.togglePlayback(group, username, !isPlaying, position);
-    };
-
-    const handleSeek = async (position: number) => {
-        const isPlaying = playerRef.current?.getPlaying() ?? false;
-
-        console.log(`Handling Seek by ${username} , Playing: ${isPlaying} , ${position}`);
-
+    const handleSeek = async (isPlaying: boolean, position: number) => {
         await signalRService.togglePlayback(group, username, isPlaying, position);
     };
-
 
     const handlePlayPause = async (isPlaying: boolean, position: number) => {
         await signalRService.togglePlayback(group, username, isPlaying, position);
@@ -153,6 +143,7 @@ function App() {
                 source="/sample.mp4"
                 onSeek={handleSeek}
                 onPlayPause={handlePlayPause}
+                playbackSyncLock={playbackSyncLock}
             />
 
             <div className="chat">

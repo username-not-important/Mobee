@@ -4,6 +4,7 @@ import React, {
     useImperativeHandle,
     useRef,
     useEffect,
+    useMemo,
 } from 'react';
 import Plyr from 'plyr-react';
 import 'plyr-react/plyr.css';
@@ -17,13 +18,22 @@ export interface VideoPlayerHandle {
 
 interface Props {
     source: string;
-    onSeek: (position: number) => void;
+    playbackSyncLock: React.RefObject<boolean>;
+    onSeek: (isPlaying: boolean, position: number) => void;
     onPlayPause: (isPlaying: boolean, position: number) => void;
 }
 
 const VideoPlayer = forwardRef<VideoPlayerHandle, Props>(
-    ({ source, onSeek, onPlayPause }, ref) => {
+    ({ source, onSeek, onPlayPause, playbackSyncLock }, ref) => {
         const playerRef = useRef<any>(null);
+        const playingStatusRef = useRef<boolean>(false);
+        const memoSource = useMemo(
+            () => ({
+                type: 'video',
+                sources: [{ src: source, type: 'video/mp4' }]
+            }),
+            [source]
+        );
 
         useImperativeHandle(ref, () => ({
             setPosition: (position: number) => {
@@ -41,7 +51,7 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, Props>(
             pause: () => {
                 playerRef.current?.plyr?.pause();
             },
-            getPlaying: () => { return !!playerRef.current?.plyr?.playing; },
+            getPlaying: () => playingStatusRef.current,
         }));
 
         useEffect(() => {
@@ -50,12 +60,26 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, Props>(
             function tryAttachListeners() {
                 const plyr = playerRef.current?.plyr;
                 if (plyr) {
-                    const handlePlay = () =>
-                        onPlayPause(true, plyr.currentTime * 1000 * 10000);
-                    const handlePause = () =>
-                        onPlayPause(false, plyr.currentTime * 1000 * 10000);
-                    const handleSeeked = () =>
-                        onSeek(plyr.currentTime * 1000 * 10000);
+                    const handlePlay = () => {
+                        if (plyr.seeking) return;
+                        if (playbackSyncLock?.current) return;
+
+                        //console.log(`plyr on play at ${Math.round(plyr.currentTime * 1000 * 10000) }`);
+                        playingStatusRef.current = true;
+                        onPlayPause(true, Math.round(plyr.currentTime * 1000 * 10000));
+                    };
+                    const handlePause = () => {
+                        if (plyr.seeking) return;
+                        if (playbackSyncLock?.current) return;
+
+                        //console.log(`plyr on pause at ${Math.round(plyr.currentTime * 1000 * 10000) }`);
+                        playingStatusRef.current = false;
+                        onPlayPause(false, Math.round(plyr.currentTime * 1000 * 10000));
+                    };
+                    const handleSeeked = () => {
+                        //console.log(`plyr on seek, status ${playingStatusRef.current} at ${Math.round(plyr.currentTime * 1000 * 10000)}`);
+                        onSeek(playingStatusRef.current, Math.round(plyr.currentTime * 1000 * 10000));
+                    };
 
                     plyr.on('play', handlePlay);
                     plyr.on('pause', handlePause);
@@ -88,19 +112,10 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, Props>(
             };
         }, [onPlayPause, onSeek]);
 
-
         return (
             <Plyr
                 ref={playerRef}
-                source={{
-                    type: 'video',
-                    sources: [
-                        {
-                            src: source,
-                            type: 'video/mp4',
-                        },
-                    ],
-                }}
+                source={memoSource}
                 options={{ controls: ['play', 'progress', 'current-time', 'mute', 'volume', 'fullscreen'] }}
             />
         );

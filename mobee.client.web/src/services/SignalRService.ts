@@ -92,4 +92,21 @@ export class SignalRService {
     onMemberLeft = (callback: (user: string) => void) => {
         this.connection.on('MemberLeft', callback);
     };
+
+    offPlaybackToggled = (callback: (user: string, isPlaying: boolean, position: number) => void) => {
+        this.connection.off('PlaybackToggled', callback);
+    };
+
+    offReceiveMessage = (callback: (from: string, message: string) => void) => {
+        this.connection.off('ReceiveMessage', callback);
+    };
+
+    offMemberJoined = (callback: (user: string) => void) => {
+        this.connection.off('MemberJoined', callback);
+    };
+
+    offMemberLeft = (callback: (user: string) => void) => {
+        this.connection.off('MemberLeft', callback);
+    };
+
 }
