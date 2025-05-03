@@ -25,9 +25,9 @@ export class SignalRService {
             await this.waitForConnection(timeoutMs);
         }
 
-        if (this.connection.state !== signalR.HubConnectionState.Connected) {
-            throw new Error('SignalR is not connected.');
-        }
+        //if (this.connection.state !== signalR.HubConnectionState.Connected) {
+        //    throw new Error('SignalR is not connected.');
+        //}
     }
 
     // Helper to wait for connection state

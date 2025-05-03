@@ -1,6 +1,6 @@
 ﻿import React, { useEffect, useRef, useState } from 'react';
 import './App.css';
-import { SignalRService } from './services/signalRService';
+import { SignalRService } from './services/SignalRService';
 import * as signalR from '@microsoft/signalr';
 import VideoPlayer, { VideoPlayerHandle } from './components/VideoPlayer';
 
@@ -17,33 +17,34 @@ function App() {
         signalR.HubConnectionState.Disconnected
     );
 
-    function ticksToHMS(ticks) {
+    function ticksToHMS(ticks: number) {
         const totalSeconds = Math.floor(ticks / 10000 / 1000);
         const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, '0');
         const minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
         const seconds = String(totalSeconds % 60).padStart(2, '0');
         return `${hours}:${minutes}:${seconds}`;
     }
-
+    console.log('App component rendered');
     useEffect(() => {
+        let isMounted = true;
         const connect = async () => {
             try {
                 await signalRService.start();
 
                 signalRService.connection?.onreconnecting(() => {
-                    setConnectionState(signalR.HubConnectionState.Reconnecting);
+                    if (isMounted) setConnectionState(signalR.HubConnectionState.Reconnecting);
                 });
                 signalRService.connection?.onreconnected(() => {
-                    setConnectionState(signalR.HubConnectionState.Connected);
+                    if (isMounted) setConnectionState(signalR.HubConnectionState.Connected);
                 });
                 signalRService.connection?.onclose(() => {
-                    setConnectionState(signalR.HubConnectionState.Disconnected);
+                    if (isMounted) setConnectionState(signalR.HubConnectionState.Disconnected);
                 });
 
                 await new Promise<void>((resolve) => {
                     const check = () => {
                         const state = signalRService.connection?.state;
-                        setConnectionState(state ?? signalR.HubConnectionState.Disconnected);
+                        if (isMounted) setConnectionState(state ?? signalR.HubConnectionState.Disconnected);
                         if (state === signalR.HubConnectionState.Connected) {
                             resolve();
                         } else {
@@ -55,44 +56,56 @@ function App() {
 
                 await signalRService.joinGroup(group, username);
             } catch (err) {
-                setConnectionState(signalR.HubConnectionState.Disconnected);
+                if (isMounted) setConnectionState(signalR.HubConnectionState.Disconnected);
                 console.error('Failed to connect:', err);
             }
-
-            signalRService.onPlaybackToggled((user, isPlaying, position) => {
-                if (user === username) return;
-
-                const player = playerRef.current;
-                if (!player) return;
-
-                playbackSyncLock.current = true;
-
-                player.setPosition(position);
-                isPlaying ? player.play() : player.pause();
-
-                setTimeout(() => {
-                    playbackSyncLock.current = false;
-                }, 200);
-
-                //setChatMessages((prev) => [...prev, `${isPlaying ? '▶️' : '⏸️'} ${ticksToHMS(position)}`]);
-                //console.log(`Playback toggled by ${user}: ${isPlaying ? 'play' : 'pause'} at ${position}`);
-            });
-
-            signalRService.onReceiveMessage((from, message) => {
-                setChatMessages((prev) => [...prev, `${from}: ${message}`]);
-            });
-
-            signalRService.onMemberJoined((user) => {
-                setChatMessages((prev) => [...prev, `🟢 ${user} joined`]);
-            });
-
-            signalRService.onMemberLeft((user) => {
-                setChatMessages((prev) => [...prev, `🔴 ${user} left`]);
-            });
         };
 
         connect();
+
+        return () => { isMounted = false; };
     }, [group, username]);
+
+    useEffect(() => {
+        const playbackToggledHandler = (user: string, isPlaying: boolean, position: number) => {
+            if (user === username) return;
+            const player = playerRef.current;
+            if (!player) return;
+
+            playbackSyncLock.current = true;
+            player.setPosition(position);
+            isPlaying ? player.play() : player.pause();
+            setTimeout(() => {
+                playbackSyncLock.current = false;
+            }, 200);
+
+            setChatMessages((prev) => [...prev, `${isPlaying ? '▶️' : '⏸️'} ${ticksToHMS(position)}`]);
+        };
+
+        const receiveMessageHandler = (from: string, message: string) => {
+            setChatMessages((prev) => [...prev, `${from}: ${message}`]);
+        };
+
+        const memberJoinedHandler = (user: string) => {
+            setChatMessages((prev) => [...prev, `🟢 ${user} joined`]);
+        };
+
+        const memberLeftHandler = (user: string) => {
+            setChatMessages((prev) => [...prev, `🔴 ${user} left`]);
+        };
+
+        signalRService.onPlaybackToggled(playbackToggledHandler);
+        signalRService.onReceiveMessage(receiveMessageHandler);
+        signalRService.onMemberJoined(memberJoinedHandler);
+        signalRService.onMemberLeft(memberLeftHandler);
+
+        return () => {
+            signalRService.offPlaybackToggled(playbackToggledHandler);
+            signalRService.offReceiveMessage(receiveMessageHandler);
+            signalRService.offMemberJoined(memberJoinedHandler);
+            signalRService.offMemberLeft(memberLeftHandler);
+        };
+    }, [username, ticksToHMS]);
 
     const handleSeek = async (isPlaying: boolean, position: number) => {
         await signalRService.togglePlayback(group, username, isPlaying, position);
@@ -105,7 +118,6 @@ function App() {
     const sendMessage = async () => {
         if (messageInput.trim() === '') return;
         await signalRService.sendMessage(group, username, messageInput);
-        chatMessages.push(messageInput);
         setMessageInput('');
     };
 
@@ -137,7 +149,6 @@ function App() {
                 </div>
             )}
 
-            <h2>Mobee Web Client</h2>
             <VideoPlayer
                 ref={playerRef}
                 source="/sample.mp4"
