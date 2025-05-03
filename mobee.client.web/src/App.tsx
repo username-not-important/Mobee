@@ -12,18 +12,31 @@ function App() {
     const [username] = useState('ali');
     const [chatMessages, setChatMessages] = useState<string[]>([]);
     const [messageInput, setMessageInput] = useState('');
+    const [connectionState, setConnectionState] = useState<signalR.HubConnectionState>(
+        signalR.HubConnectionState.Disconnected
+    );
 
     useEffect(() => {
         const connect = async () => {
             try {
                 await signalRService.start();
 
+                // Listen for connection state changes
+                signalRService.connection?.onreconnecting(() => {
+                    setConnectionState(signalR.HubConnectionState.Reconnecting);
+                });
+                signalRService.connection?.onreconnected(() => {
+                    setConnectionState(signalR.HubConnectionState.Connected);
+                });
+                signalRService.connection?.onclose(() => {
+                    setConnectionState(signalR.HubConnectionState.Disconnected);
+                });
+
                 await new Promise<void>((resolve) => {
                     const check = () => {
-                        if (
-                            signalRService.connection?.state ===
-                            signalR.HubConnectionState.Connected
-                        ) {
+                        const state = signalRService.connection?.state;
+                        setConnectionState(state ?? signalR.HubConnectionState.Disconnected);
+                        if (state === signalR.HubConnectionState.Connected) {
                             resolve();
                         } else {
                             setTimeout(check, 100);
@@ -34,10 +47,15 @@ function App() {
 
                 await signalRService.joinGroup(group, username);
             } catch (err) {
+                setConnectionState(signalR.HubConnectionState.Disconnected);
                 console.error('Failed to connect:', err);
             }
 
             signalRService.onPlaybackToggled((user, isPlaying, position) => {
+                if (user === username) {
+                    return; // Ignore callbacks from myself to avoid double reactions / loopbacks
+                }
+
                 const player = playerRef.current;
                 if (!player) return;
 
@@ -82,8 +100,13 @@ function App() {
     };
 
     const handleSeek = async (position: number) => {
-        await signalRService.togglePlayback(group, username, false, position);
+        const isPlaying = playerRef.current?.getPlaying() ?? false;
+
+        console.log(`Handling Seek by ${username} , Playing: ${isPlaying} , ${position}`);
+
+        await signalRService.togglePlayback(group, username, isPlaying, position);
     };
+
 
     const handlePlayPause = async (isPlaying: boolean, position: number) => {
         await signalRService.togglePlayback(group, username, isPlaying, position);
@@ -92,11 +115,38 @@ function App() {
     const sendMessage = async () => {
         if (messageInput.trim() === '') return;
         await signalRService.sendMessage(group, username, messageInput);
+        chatMessages.push(messageInput);
         setMessageInput('');
     };
 
     return (
         <div className="App">
+            {connectionState !== signalR.HubConnectionState.Connected && (
+                <div
+                    style={{
+                        position: 'fixed',
+                        top: 0,
+                        left: 0,
+                        height: '4px',
+                        width: '100vw',
+                        background: 'linear-gradient(90deg, #2196f3 0%, #21cbf3 100%)',
+                        zIndex: 1000,
+                        transition: 'opacity 0.3s',
+                    }}
+                >
+                    <div
+                        className="progress-indeterminate"
+                        style={{
+                            height: '100%',
+                            width: '100%',
+                            background:
+                                'repeating-linear-gradient(90deg, #fff6, #fff6 10px, transparent 10px, transparent 20px)',
+                            animation: 'move 1.2s linear infinite',
+                        }}
+                    ></div>
+                </div>
+            )}
+
             <h2>Mobee Web Client</h2>
             <VideoPlayer
                 ref={playerRef}
@@ -104,9 +154,6 @@ function App() {
                 onSeek={handleSeek}
                 onPlayPause={handlePlayPause}
             />
-            <div style={{ margin: '1rem 0' }}>
-                <button onClick={togglePlayback}>Toggle Play/Pause (Sync)</button>
-            </div>
 
             <div className="chat">
                 <h4>Chat</h4>

@@ -1,36 +1,79 @@
 ﻿// src/services/signalRService.ts
 import * as signalR from '@microsoft/signalr';
 
+const SERVER_URL = 'https://localhost:7016/playersHub'; // Ensure casing matches backend
+
 export class SignalRService {
     public connection: signalR.HubConnection;
 
     constructor() {
         this.connection = new signalR.HubConnectionBuilder()
-            .withUrl('https://localhost:7016/playersHub') // ⬅️ match casing
+            .withUrl(SERVER_URL)
             .withAutomaticReconnect()
             .build();
     }
 
-    async start() {
-        if (this.connection.state === signalR.HubConnectionState.Disconnected) {
+    // Wait for connection to be established, up to timeoutMs
+    private async ensureConnected(timeoutMs = 5000) {
+        if (this.connection.state === signalR.HubConnectionState.Connected) return;
+        if (this.connection.state === signalR.HubConnectionState.Connecting) {
+            // Wait for connecting to finish, or timeout
+            await this.waitForConnection(timeoutMs);
+        } else if (this.connection.state === signalR.HubConnectionState.Disconnected) {
             await this.connection.start();
+        } else if (this.connection.state === signalR.HubConnectionState.Reconnecting) {
+            await this.waitForConnection(timeoutMs);
+        }
+
+        if (this.connection.state !== signalR.HubConnectionState.Connected) {
+            throw new Error('SignalR is not connected.');
+        }
+    }
+
+    // Helper to wait for connection state
+    private waitForConnection(timeoutMs = 5000): Promise<void> {
+        return new Promise((resolve, reject) => {
+            const start = Date.now();
+            const check = () => {
+                if (this.connection.state === signalR.HubConnectionState.Connected) {
+                    resolve();
+                } else if (Date.now() - start > timeoutMs) {
+                    reject(new Error('SignalR connection timeout.'));
+                } else {
+                    setTimeout(check, 100);
+                }
+            };
+            check();
+        });
+    }
+
+    async start() {
+        try {
+            await this.ensureConnected();
             console.log('SignalR connected.');
+        } catch (err) {
+            console.error('SignalR failed to connect:', err);
+            throw err;
         }
     }
 
     async joinGroup(group: string, user: string) {
+        await this.ensureConnected();
         return this.connection.invoke('JoinGroup', group, user);
     }
 
-    queryGroupUsers = (group: string, user: string) => {
+    queryGroupUsers = async (group: string, user: string) => {
+        await this.ensureConnected();
         return this.connection.invoke<string[]>('QueryGroupUsers', group, user);
     };
 
-    togglePlayback = (group: string, user: string, isPlaying: boolean, position: number) => {
+    togglePlayback = async (group: string, user: string, isPlaying: boolean, position: number) => {
+        await this.ensureConnected();
         return this.connection.invoke('TogglePlayback', group, user, isPlaying, position);
     };
 
-    sendMessage = (group: string, user: string, message: string) => {
+    sendMessage = async (group: string, user: string, message: string) => {
+        await this.ensureConnected();
         return this.connection.invoke('SendMessage', group, user, message);
     };
 

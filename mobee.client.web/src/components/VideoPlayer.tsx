@@ -12,6 +12,7 @@ export interface VideoPlayerHandle {
     setPosition: (position: number) => void;
     play: () => void;
     pause: () => void;
+    getPlaying: () => boolean;
 }
 
 interface Props {
@@ -40,6 +41,7 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, Props>(
             pause: () => {
                 playerRef.current?.plyr?.pause();
             },
+            getPlaying: () => { return !!playerRef.current?.plyr?.playing; },
         }));
 
         useEffect(() => {

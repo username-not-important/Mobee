@@ -74,8 +74,6 @@ namespace Mobee.Server.Aspnet.Hubs
             await base.OnDisconnectedAsync(exception);
         }
 
-        
-
         #endregion
     }
 }
