@@ -14,6 +14,7 @@ import VolumeOffIcon from '@mui/icons-material/VolumeOff';
 import PauseIcon from '@mui/icons-material/Pause';
 import FileOpenIcon from '@mui/icons-material/FileOpen';
 
+
 export interface VideoPlayerHandle {
     setPosition: (position: number) => void;
     play: () => void;
@@ -146,7 +147,7 @@ const VideoPlayer = React.memo(
                 <Box className="video-wrapper">
                     <ReactPlayer
                         ref={playerRef}
-                        url={videoSource || '/web/sample.mp4'}
+                        url={source}
                         playing={isPlaying}
                         volume={volume}
                         muted={volume === 0}

@@ -3,6 +3,7 @@ import { TextField, IconButton } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import { SignalRService } from '../services/SignalRService';
 
+
 interface ChatPanelProps {
     chatMessages: string[]; // Array of chat messages
     messageInput: string; // Current input value
