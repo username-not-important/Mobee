@@ -1,0 +1,16 @@
+.progress-indeterminate {
+    height: 100%;
+    width: 100%;
+    background: repeating-linear-gradient( 90deg, var(--progress-bar-color, rgba(255, 255, 255, 0.4)), var(--progress-bar-color, rgba(255, 255, 255, 0.4)) 10px, transparent 10px, transparent 20px );
+    animation: move 1.2s linear infinite;
+}
+
+@keyframes move {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-20px);
+    }
+}
