@@ -7,11 +7,12 @@
     useState,
 } from 'react';
 import ReactPlayer from 'react-player';
-import { IconButton, Slider, Box } from '@mui/material';
+import { Button, IconButton, Slider, Box } from '@mui/material';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import VolumeOffIcon from '@mui/icons-material/VolumeOff';
 import PauseIcon from '@mui/icons-material/Pause';
+import FileOpenIcon from '@mui/icons-material/FileOpen';
 
 export interface VideoPlayerHandle {
     setPosition: (position: number) => void;
@@ -47,6 +48,8 @@ const VideoPlayer = React.memo(
             const playingStatusRef = useRef(false);
             const [volume, setVolume] = useState(0.8); // Default volume is 80%
             const [lastVolume, setLastVolume] = useState(0.8); // Track last volume for muting/unmuting
+            const [videoSource, setVideoSource] = useState<string | null>(null); // Video source state
+            const [uploadedVideoURL, setUploadedVideoURL] = useState<string | null>(null); // Temporary URL for uploaded video
 
             // Imperative handle for parent
             useImperativeHandle(ref, () => ({
@@ -59,7 +62,16 @@ const VideoPlayer = React.memo(
                 getPlaying: () => playingStatusRef.current,
             }));
 
-            // Play/Pause events
+            const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+                const file = event.target.files?.[0]; // Get the selected file
+                if (file) {
+                    // Generate a temporary URL for the selected file
+                    const newVideoURL = URL.createObjectURL(file);
+                    setUploadedVideoURL(newVideoURL); // Save the temporary URL
+                    setVideoSource(newVideoURL); // Update the video player's source
+                }
+            };
+
             const handlePlay = useCallback(() => {
                 if (playbackSyncLock?.current) return;
                 playingStatusRef.current = true;
@@ -80,7 +92,6 @@ const VideoPlayer = React.memo(
                 }
             }, [onPlayPause, playbackSyncLock]);
 
-            // Seek events
             const handleSeekMouseDown = () => setSeeking(true);
 
             const handleSeekChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -95,15 +106,13 @@ const VideoPlayer = React.memo(
                 onSeek(isPlaying, Math.round(newTime * 1000 * 10000));
             };
 
-            // Progress from player
             const handleProgress = (state: { played: number }) => {
                 if (!seeking) setPlayed(state.played);
             };
 
-            // Duration from player
             const handleDuration = (dur: number) => setDuration(dur);
 
-            // Keyboard controls (optional): Space to play/pause, arrows to seek
+            // Keyboard controls: Space to play/pause, arrows to seek
             useEffect(() => {
                 const onKeyDown = (e: KeyboardEvent) => {
                     if (e.code === 'Space') {
@@ -118,6 +127,14 @@ const VideoPlayer = React.memo(
                 return () => window.removeEventListener('keydown', onKeyDown);
             }, []);
 
+            useEffect(() => {
+                return () => {
+                    if (uploadedVideoURL) {
+                        URL.revokeObjectURL(uploadedVideoURL); // Revoke the object URL to free up memory
+                    }
+                };
+            }, [uploadedVideoURL]);
+
             const formatTime = (seconds: number) => {
                 if (!seconds || isNaN(seconds)) return '00:00';
                 const m = Math.floor(seconds / 60);
@@ -129,7 +146,7 @@ const VideoPlayer = React.memo(
                 <Box className="video-wrapper">
                     <ReactPlayer
                         ref={playerRef}
-                        url={source}
+                        url={videoSource || '/web/sample.mp4'}
                         playing={isPlaying}
                         volume={volume}
                         muted={volume === 0}
@@ -219,6 +236,18 @@ const VideoPlayer = React.memo(
                                     },
                                 }}
                             />
+                        </Box>
+
+                        <Box display="flex" justifyContent="center" mx={1}>
+                            <Button variant="contained" component="label" color="primary" className="buttonFile">
+                                <FileOpenIcon/>
+                                <input
+                                    type="file"
+                                    accept="video/*" // Restrict file types to video
+                                    hidden
+                                    onChange={handleFileSelect}
+                                />
+                            </Button>
                         </Box>
                     </Box>
                 </Box>

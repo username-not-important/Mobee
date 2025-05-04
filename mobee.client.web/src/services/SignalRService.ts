@@ -1,7 +1,7 @@
 ﻿// src/services/signalRService.ts
 import * as signalR from '@microsoft/signalr';
 
-const SERVER_URL = 'https://localhost:7016/playersHub'; // Ensure casing matches backend
+const SERVER_URL = import.meta.env.VITE_SERVER_URL;
 
 export class SignalRService {
     public connection: signalR.HubConnection;

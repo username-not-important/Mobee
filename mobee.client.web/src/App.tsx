@@ -149,7 +149,7 @@ function App() {
 
                 <VideoPlayer
                     ref={playerRef}
-                    source="/sample.mp4"
+                    source="/web/sample.mp4"
                     onSeek={handleSeek}
                     onPlayPause={handlePlayPause}
                     playbackSyncLock={playbackSyncLock}
