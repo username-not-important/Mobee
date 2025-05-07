@@ -38,6 +38,8 @@ namespace Mobee.Server.Aspnet
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.MapFallbackToFile("/web/{*path}", "web/index.html");
+
             app.UseCors();
             app.UseAuthorization();
 

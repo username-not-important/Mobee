@@ -1,0 +1,19 @@
+{
+  "name": "Mobees - Synced Video Player",
+  "short_name": "Mobee",
+  "icons": [
+    {
+      "src": "/img/favicon/android-icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/img/favicon/android-icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "theme_color": "#efefef",
+  "background_color": "#efefef",
+  "display": "standalone"
+}

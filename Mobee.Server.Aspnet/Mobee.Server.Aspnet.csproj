@@ -26,4 +26,8 @@
     <Resource Include="wwwroot\fonts\Pelak\PelakFA-Thin.ttf" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\web\" />
+  </ItemGroup>
+
 </Project>
