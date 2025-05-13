@@ -4,13 +4,17 @@
 ## WIP
 ⚠️ This project is a work-in-progress ⚠️
 
-Mobee is an Open-Source Synced-Video-Player for Windows based on Client-Server architecture which works by utilizing SignalR. This repository contains the source code for the Windows Client and ASP.net server. a free Web Server is deployed on [Mobees.ir](https://mobees.ir/) and Clients are configured to use that server by default.
+Mobee is an Open-Source Synced-Video-Player for Desktop (Windows) and Web (React), based on Client-Server architecture which works by utilizing SignalR. This repository contains the source code for the Windows Client and ASP.net server, along with the Web Client. A free Web Server is deployed on [Mobees.ir](https://mobees.ir/) and Clients are configured to use that server by default.
 
 ### Configuration Screen
 ![Configuration Screen](https://user-images.githubusercontent.com/30866718/231969260-3bcc84a7-5b87-4e8d-8d70-dc5f7d451de3.png)
 
 ### Player
 ![Player](https://user-images.githubusercontent.com/30866718/231970191-578183bc-35f5-435b-a4dc-35b46780fa33.png)
+
+## Roadmap (Long-Term Goals)
+ - ✔️ Web Player (React)
+ - Online Video Sources
 
 ## Roadmap (Short-Term Goals)
  - ✔️ Attach working video player
@@ -27,12 +31,13 @@ Mobee is an Open-Source Synced-Video-Player for Windows based on Client-Server a
  - ✔️ Member Joined/Left notifications
  - ✔️ Keep Media Aspect-Ratio
  - ✔️ Persian Localization
+ - ✔️ Create Separate Official Server
+ - ✔️ Create Separate Official Installer
+ - ✔️ More Emojis
+ - ✔️ Notification Sounds
+ - WebRTC Voice-Chat
  - Easier Pairing
- - Create Separate Official Server
- - Create Separate Official Installer
- - More Emojis
  - Support
- - Notification Sounds
  - Associate Movie/Music file formats
  - Chat Font-Size settings
  
